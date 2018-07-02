@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import './App.css';
-import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 /* pages */
 import Login from './pages/Login';
 import CreateAccount from './pages/CreateAccount';
