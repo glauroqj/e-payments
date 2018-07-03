@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import * as firebase from 'firebase';
-import {config} from '../auth.js'
 import { SemipolarSpinner } from 'react-epic-spinners'
 import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import {verify, verifyOther} from '../components/modules/verifyLogin'
 
+import 'react-toastify/dist/ReactToastify.css';
 import '../assets/createAcc.css'
 
 class CreateAccount extends Component {
@@ -13,8 +13,15 @@ class CreateAccount extends Component {
     this.state = {
       email: '',
       password: '',
+      confirm_password: '',
       loading: false
     }
+  }
+
+  componentWillMount() {
+    /* verify if user is logged */
+    // const login = v.verify()
+    console.log( verify())
   }
 
   handleInput(e) {
@@ -29,17 +36,44 @@ class CreateAccount extends Component {
         password: e.target.value
       })
     }
+
+    if(e.target.id === 'confirm_password') {
+      this.setState({
+        confirm_password: e.target.value
+      })
+    }
   }
   
-  createAcc() {
-    toast.success('TESTER');
-
+  async createAcc() {
+    let data = this.state;
+    if(this.state.email === '' || this.state.password === '') {
+      toast.error('Campos vazios')
+      return false;
+    }
+    if(this.state.password !== this.state.confirm_password) {
+      toast.error('As senhas precisam ser identicas')
+      return false;
+    }
     this.setState({
       loading: true
     });
-  }
 
-  async submit() {
+    // window.location.href = '/dashboard'
+    // this.props.history.push('/dashboard');
+    
+
+    await firebase.auth().createUserWithEmailAndPassword(data.email, data.password)
+    .then((success) => {
+      console.log(success)
+      this.props.history.push('/dashboard');
+    })
+    .catch((error) => {
+      console.warn(error)
+      toast.error('Não foi possível completar seu cadastro no momento :(')
+      this.setState({
+        loading: false
+      });
+    })
 
   }
 
