@@ -99,7 +99,16 @@ class CreateAccount extends Component {
           <div>
             <ToastContainer autoClose={5000} hideProgressBar={true} position="top-right"/>
             <h5 className="createAcc_title">Criar Conta!</h5>
-            <form action="" className="createAcc_form">
+            <form action="" className="createAcc_form"
+                onKeyDown={
+                  (e) => {
+                    if (e.key == 'Enter') {
+                        e.preventDefault();
+                        this.createAcc()
+                    }
+                  }
+                }
+            >
               <div className="form-group row justify-content-sm-center">
                 <label className="col-sm-2 col-form-label">Email</label>
                 <div className="col-sm-6">
