@@ -5,6 +5,7 @@ import App from './App';
 
 /* css */
 import './assets/normalize.css';
+import './assets/template.css';
 import './assets/main.css';
 
 ReactDOM.render(
