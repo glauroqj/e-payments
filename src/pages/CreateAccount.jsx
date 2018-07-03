@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import * as firebase from 'firebase';
 import {config} from '../auth.js'
+import { SemipolarSpinner } from 'react-epic-spinners'
 import '../assets/createAcc.css'
 
 class CreateAccount extends Component {
@@ -8,7 +9,8 @@ class CreateAccount extends Component {
     super(props);
     this.state = {
       email: '',
-      password: ''
+      password: '',
+      loading: false
     }
   }
 
@@ -27,7 +29,9 @@ class CreateAccount extends Component {
   }
   
   createAcc() {
-    // window.location.href = '/create'
+    this.setState({
+      loading: true
+    });
   }
 
   async submit() {
@@ -58,7 +62,12 @@ class CreateAccount extends Component {
             </div>
           </div>
           <div className="form-group">
-            <button type="button" className="btn btn-success" onClick={this.createAcc}>Criar Conta</button>
+            <button type="button" className="btn btn-success " disabled={this.state.loading?'disbled':''} onClick={this.createAcc.bind(this)}>
+              {this.state.loading &&
+                <SemipolarSpinner size={30} color="white"/>
+              }
+              Criar Conta
+            </button>
           </div>
         </form>
       </div>
