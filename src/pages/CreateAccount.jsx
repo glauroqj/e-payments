@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import * as firebase from 'firebase';
 import {config} from '../auth.js'
 import { SemipolarSpinner } from 'react-epic-spinners'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import '../assets/createAcc.css'
 
 class CreateAccount extends Component {
@@ -29,6 +32,8 @@ class CreateAccount extends Component {
   }
   
   createAcc() {
+    toast.success('TESTER');
+
     this.setState({
       loading: true
     });
@@ -41,6 +46,7 @@ class CreateAccount extends Component {
   render() {
     return (
       <div className="createAcc container">
+        <ToastContainer autoClose={5000} hideProgressBar={true} position="top-right"/>
         <h5 className="createAcc_title">Criar Conta!</h5>
         <form action="" className="createAcc_form">
           <div className="form-group row justify-content-sm-center">
