@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import * as firebase from 'firebase';
 import { SemipolarSpinner } from 'react-epic-spinners'
 import { ToastContainer, toast } from 'react-toastify';
-import {verify, verifyOther} from '../components/modules/verifyLogin'
+import {verify} from '../components/modules/verifyLogin'
+import Loader from '../components/Loader';
 
 import 'react-toastify/dist/ReactToastify.css';
 import '../assets/createAcc.css'
@@ -14,14 +15,26 @@ class CreateAccount extends Component {
       email: '',
       password: '',
       confirm_password: '',
-      loading: false
+      btnLoading: false,
+      btnText: 'Criar Conta',
+      loading: true
     }
   }
 
   componentWillMount() {
     /* verify if user is logged */
-    // const login = v.verify()
-    console.log( verify())
+    verify().then((user) => {
+      console.log('LOGED: ', user)
+      /* redirect to dashboard */
+      this.props.history.push('/dashboard');
+      return false;
+    })
+    .catch((error) => {
+      console.log('Not Loged: ')
+      this.setState({
+        loading: false
+      });
+    })
   }
 
   handleInput(e) {
@@ -55,13 +68,13 @@ class CreateAccount extends Component {
       return false;
     }
     this.setState({
-      loading: true
+      btnLoading: true,
+      btnText: 'Criando Conta...'
     });
 
     // window.location.href = '/dashboard'
     // this.props.history.push('/dashboard');
     
-
     await firebase.auth().createUserWithEmailAndPassword(data.email, data.password)
     .then((success) => {
       console.log(success)
@@ -73,43 +86,50 @@ class CreateAccount extends Component {
       this.setState({
         loading: false
       });
-    })
-
+    });
   }
 
   render() {
     return (
       <div className="createAcc container">
-        <ToastContainer autoClose={5000} hideProgressBar={true} position="top-right"/>
-        <h5 className="createAcc_title">Criar Conta!</h5>
-        <form action="" className="createAcc_form">
-          <div className="form-group row justify-content-sm-center">
-            <label className="col-sm-2 col-form-label">Email</label>
-            <div className="col-sm-6">
-              <input type="text" className="form-control" id="email" placeholder="email@example.com" onChange={this.handleInput.bind(this)}/>
-            </div>
+        {this.state.loading &&
+          <Loader text="Carregando Criar Conta" color="#686de0"/>
+        }
+        {!this.state.loading &&
+          <div>
+            <ToastContainer autoClose={5000} hideProgressBar={true} position="top-right"/>
+            <h5 className="createAcc_title">Criar Conta!</h5>
+            <form action="" className="createAcc_form">
+              <div className="form-group row justify-content-sm-center">
+                <label className="col-sm-2 col-form-label">Email</label>
+                <div className="col-sm-6">
+                  <input type="text" className="form-control" id="email" placeholder="email@example.com" onChange={this.handleInput.bind(this)}/>
+                </div>
+              </div>
+              <div className="form-group row justify-content-sm-center">
+                <label className="col-sm-2 col-form-label">Senha</label>
+                <div className="col-sm-6">
+                  <input type="password" className="form-control" id="password" placeholder="*****" onChange={this.handleInput.bind(this)}/>
+                </div>
+              </div>
+              <div className="form-group row justify-content-sm-center">
+                <label className="col-sm-2 col-form-label">Confirmar Senha</label>
+                <div className="col-sm-6">
+                  <input type="password" className="form-control" id="confirm_password" placeholder="*****" onChange={this.handleInput.bind(this)}/>
+                </div>
+              </div>
+              <div className="form-group">
+                <button type="button" className="btn btn-success" disabled={this.state.btnLoading?'disbled':''} onClick={this.createAcc.bind(this)}>
+                  {this.state.btnLoading &&
+                    <SemipolarSpinner size={30} color="white"/>
+                  }
+                  <div>{this.state.btnText}</div>
+                </button>
+              </div>
+            </form>
           </div>
-          <div className="form-group row justify-content-sm-center">
-            <label className="col-sm-2 col-form-label">Senha</label>
-            <div className="col-sm-6">
-              <input type="password" className="form-control" id="password" placeholder="*****" onChange={this.handleInput.bind(this)}/>
-            </div>
-          </div>
-          <div className="form-group row justify-content-sm-center">
-            <label className="col-sm-2 col-form-label">Confirmar Senha</label>
-            <div className="col-sm-6">
-              <input type="password" className="form-control" id="confirm_password" placeholder="*****" onChange={this.handleInput.bind(this)}/>
-            </div>
-          </div>
-          <div className="form-group">
-            <button type="button" className="btn btn-success " disabled={this.state.loading?'disbled':''} onClick={this.createAcc.bind(this)}>
-              {this.state.loading &&
-                <SemipolarSpinner size={30} color="white"/>
-              }
-              Criar Conta
-            </button>
-          </div>
-        </form>
+        } 
+        {/* end no loading */}
       </div>
     );
   }
