@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import * as firebase from 'firebase';
+import {config} from '../auth.js'
 import '../assets/createAcc.css'
 
 class CreateAccount extends Component {
