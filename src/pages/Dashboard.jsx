@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import * as firebase from 'firebase';
 import { ToastContainer, toast } from 'react-toastify';
 import {verify} from '../components/modules/verifyLogin'
+import {getSessionId} from '../components/modules/payment'
 import Navbar from '../components/Navbar';
 import Loader from '../components/Loader';
 
@@ -16,7 +17,8 @@ class Dashboard extends Component {
       link: '/dashboard',
       donate: ['10', '15', '20', '30', '40', '50'],
       valueSelected: '0',
-      valueCustom: ''
+      valueCustom: '',
+      idSession: ''
     }
   }
 
@@ -35,6 +37,10 @@ class Dashboard extends Component {
       console.log('Not Loged: ')
       this.props.history.push('/login');
     });
+
+    getSessionId().then((session) => {
+      console.log('Session: ', session)
+    })
   }
 
   exit() {
