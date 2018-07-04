@@ -31,9 +31,9 @@ class Navbar extends Component {
             <li className={this.props.link === '/dashboard'?'nav-item active':'nav-item'}>
               <a className="nav-link" href="/dashboard">Doações</a>
             </li>
-            <li className={this.props.link === '/my-account'?'nav-item active':'nav-item'}>
+            {/* <li className={this.props.link === '/my-account'?'nav-item active':'nav-item'}>
               <a className="nav-link" href="/my-account">Minha Conta</a>
-            </li>
+            </li> */}
             <li className="nav-item">
               <a className="nav-link" onClick={this.exit.bind(this)}>Sair</a>
             </li>
