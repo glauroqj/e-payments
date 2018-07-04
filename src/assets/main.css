@@ -16,7 +16,8 @@ input[type=number]:focus, [type=text].form-control:focus,
 }
 
 .loading {
-
+	text-align: center;
+	margin-top: 15%;
 }
 
 .loading .spinner > div {
