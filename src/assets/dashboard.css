@@ -2,6 +2,18 @@
  
 }
 
+.dashboard .navbar {
+  margin-bottom: 20px;
+}
+
 .dashboard .navbar .nav-item a:hover {
  cursor: pointer;
+}
+
+.dashboard .dashboard_title h2 {
+
+}
+
+.dashboard .dashboard_values {
+  
 }

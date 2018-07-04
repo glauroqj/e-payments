@@ -8,8 +8,8 @@ import {config} from './auth.js'
 /* css */
 import './assets/vendor/normalize.css';
 import './assets/vendor/template.css';
-import './assets/main.css';
 import './assets/vendor/animate.css';
+import './assets/main.css';
 
 firebase.initializeApp(config);
 
