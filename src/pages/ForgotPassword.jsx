@@ -5,17 +5,17 @@ import { ToastContainer, toast } from 'react-toastify';
 import {verify} from '../components/modules/verifyLogin'
 import Loader from '../components/Loader';
 
-import '../assets/login.css'
+import '../assets/forgot-password.css'
 
-class Login extends Component {
+class ForgotPassword extends Component {
   constructor(props) {
     super(props);
     this.state = {
       email: '',
-      password: '',
       btnLoading: false,
-      btnText: 'Acessar',
-      loading: true
+      btnText: 'Enviar Email',
+      loading: true,
+      emailSended: false
     }
   }
 
@@ -41,52 +41,39 @@ class Login extends Component {
         email: e.target.value
       })
     }
-
-    if(e.target.id === 'password') {
-      this.setState({
-        password: e.target.value
-      })
-    }
-  }
-  
-  createAcc() {
-    // window.location.href = '/create'
-    this.props.history.push('/create');
-  }
-
-  forgotPass() {
-    this.props.history.push('/forgot-password');
   }
 
   submit(e) {
     e.preventDefault();
     let data = this.state;
-    if(this.state.email === '' || this.state.password === '') {
+    if(this.state.email === '') {
       toast.error('Campos vazios')
       return false;
     }
     this.setState({
       btnLoading: true,
-      btnText: 'Verificando acesso...'
+      btnText: 'Enviando email...'
     });
     
-    firebase.auth().signInWithEmailAndPassword(data.email, data.password)
+    firebase.auth().sendPasswordResetEmail(data.email)
     .then((success) => {
       console.log(success)
-      this.props.history.push('/dashboard');
+      this.setState({
+        emailSended: true
+      });
+      // this.props.history.push('/dashboard');
     })
     .catch((error) => {
       console.warn(error)
-      if(error.code === 'auth/wrong-password') {
-        toast.error('Email ou Senha inválidos :(')
-      }
       if(error.code === 'auth/invalid-email') {
         toast.error('Email inexistente!')
       }
+      if(error.code === 'auth/user-not-found') {
+        toast.error('Email não existe!')
+      }
       this.setState({
         email: '',
-        password: '',
-        btnText: 'Acessar',
+        btnText: 'Enviar Email',
         btnLoading: false
       });
     });
@@ -94,15 +81,16 @@ class Login extends Component {
 
   render() {
     return (
-      <div className="login container">
-        {this.state.loading &&
-          <Loader text="Carregando Login" color="#686de0"/>
+      <div className="forgotPassword container">
+        {(this.state.loading && !this.state.emailSended) &&
+          <Loader text="Carregando Resetar Senha" color="#686de0"/>
         }
-        {!this.state.loading &&
+        {(!this.state.loading && !this.state.emailSended) &&
           <div>
             <ToastContainer autoClose={5000} hideProgressBar={true} position="top-right"/>
-            <h5 className="login_title">Faça Login!</h5>
-              <form action="" className="login_form"
+            <h5 className="forgotPassword_title">Esqueci minha senha!</h5>
+            <h6>Forneça seu e-mail válido, para resetar sua senha.</h6>
+              <form action="" className="forgotPassword_form"
                     onKeyDown={
                       (e) => {
                           if (e.key === 'Enter') {
@@ -118,12 +106,6 @@ class Login extends Component {
                     <input type="text" className="form-control" id="email" placeholder="email@example.com" value={this.state.email} onChange={this.handleInput.bind(this)}/>
                   </div>
                 </div>
-                <div className="form-group row justify-content-sm-center">
-                  <label className="col-sm-2 col-form-label">Senha</label>
-                  <div className="col-sm-6">
-                    <input type="password" className="form-control" id="password" placeholder="*****" value={this.state.password} onChange={this.handleInput.bind(this)}/>
-                  </div>
-                </div>
                 <div className="form-group">
                   <button type="submit" className="btn btn-primary" disabled={this.state.btnLoading?'disbled':''} onClick={this.submit.bind(this)}>
                     {this.state.btnLoading &&
@@ -133,15 +115,14 @@ class Login extends Component {
                   </button>
                 </div>
               </form>
-              <div className="form-group justify-content-sm-left">
-                <button type="button" className="btn btn-link" onClick={this.createAcc.bind(this)}>Não tenho conta. Criar conta.</button>
-                <button type="button" className="btn btn-link" onClick={this.forgotPass.bind(this)}>Esqueci minha senha!</button>
-              </div>
           </div>
+        }
+        {this.state.emailSended && 
+          <h2>Email enviado! Em poucos instantes verifique sem e-mail para resetar sua senha!</h2>
         }
       </div>
     );
   }
 }
 
-export default Login;
+export default ForgotPassword;

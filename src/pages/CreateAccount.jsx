@@ -86,6 +86,9 @@ class CreateAccount extends Component {
       if(error.code === 'auth/invalid-email') {
         toast.error('Email inexistente!')
       }
+      if(error.code === 'auth/weak-password') {
+        toast.error('Senha muito fraca! Mínimo de 6 caracteres')
+      }
       toast.error('Não foi possível completar seu cadastro no momento :(')
       this.setState({
         email: '',
