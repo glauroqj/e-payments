@@ -13,6 +13,8 @@ class Login extends Component {
     this.state = {
       email: '',
       password: '',
+      btnLoading: false,
+      btnText: 'Acessar',
       loading: true
     }
   }
@@ -52,11 +54,38 @@ class Login extends Component {
     this.props.history.push('/create');
   }
 
-  async submit() {
+  submit(e) {
+    e.preventDefault();
+    let data = this.state;
     if(this.state.email === '' || this.state.password === '') {
       toast.error('Campos vazios')
       return false;
     }
+    this.setState({
+      btnLoading: true,
+      btnText: 'Verificando acesso...'
+    });
+    
+    firebase.auth().signInWithEmailAndPassword(data.email, data.password)
+    .then((success) => {
+      console.log(success)
+      this.props.history.push('/dashboard');
+    })
+    .catch((error) => {
+      console.warn(error)
+      if(error.code === 'auth/wrong-password') {
+        toast.error('Email ou Senha inválidos :(')
+      }
+      if(error.code === 'auth/invalid-email') {
+        toast.error('Email inexistente!')
+      }
+      this.setState({
+        email: '',
+        password: '',
+        btnText: 'Acessar',
+        btnLoading: false
+      });
+    });
   }
 
   render() {
@@ -69,35 +98,40 @@ class Login extends Component {
           <div>
             <ToastContainer autoClose={5000} hideProgressBar={true} position="top-right"/>
             <h5 className="login_title">Faça Login!</h5>
-            <form action="" className="login_form"
-                  onKeyDown={
-                    (e) => {
-                        if (e.key == 'Enter') {
-                            e.preventDefault();
-                            this.submit()
-                        }
+              <form action="" className="login_form"
+                    onKeyDown={
+                      (e) => {
+                          if (e.key === 'Enter') {
+                              e.preventDefault();
+                              this.submit(e)
+                          }
+                      }
                     }
-                  }
-            >
-              <div className="form-group row justify-content-sm-center">
-                <label className="col-sm-2 col-form-label">Email</label>
-                <div className="col-sm-6">
-                  <input type="text" className="form-control" id="email" placeholder="email@example.com" onChange={this.handleInput.bind(this)}/>
+              >
+                <div className="form-group row justify-content-sm-center">
+                  <label className="col-sm-2 col-form-label">Email</label>
+                  <div className="col-sm-6">
+                    <input type="text" className="form-control" id="email" placeholder="email@example.com" value={this.state.email} onChange={this.handleInput.bind(this)}/>
+                  </div>
                 </div>
-              </div>
-              <div className="form-group row justify-content-sm-center">
-                <label className="col-sm-2 col-form-label">Senha</label>
-                <div className="col-sm-6">
-                  <input type="password" className="form-control" id="password" placeholder="*****" onChange={this.handleInput.bind(this)}/>
+                <div className="form-group row justify-content-sm-center">
+                  <label className="col-sm-2 col-form-label">Senha</label>
+                  <div className="col-sm-6">
+                    <input type="password" className="form-control" id="password" placeholder="*****" value={this.state.password} onChange={this.handleInput.bind(this)}/>
+                  </div>
                 </div>
-              </div>
-              <div className="form-group">
-                <button type="submit" className="btn btn-primary" onClick={this.submit.bind(this)}>Acessar</button>
-              </div>
-              <div className="form-group justify-content-sm-left">
-                <button type="button" href="/create" className="btn btn-link" onClick={this.createAcc.bind(this)}>Não tenho conta ainda. Criar conta!</button>
-              </div>
-            </form>
+                <div className="form-group">
+                  <button type="submit" className="btn btn-primary" disabled={this.state.btnLoading?'disbled':''} onClick={this.submit.bind(this)}>
+                    {this.state.btnLoading &&
+                      <SemipolarSpinner size={30} color="white"/>
+                    }
+                    <div>{this.state.btnText}</div>
+                  </button>
+                </div>
+                <div className="form-group justify-content-sm-left">
+                  <button type="button" href="/create" className="btn btn-link" onClick={this.createAcc.bind(this)}>Não tenho conta ainda. Criar conta!</button>
+                </div>
+              </form>
           </div>
         }
       </div>

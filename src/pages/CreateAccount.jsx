@@ -57,7 +57,8 @@ class CreateAccount extends Component {
     }
   }
   
-  async createAcc() {
+  createAcc(e) {
+    e.preventDefault();
     let data = this.state;
     if(this.state.email === '' || this.state.password === '') {
       toast.error('Campos vazios')
@@ -75,16 +76,23 @@ class CreateAccount extends Component {
     // window.location.href = '/dashboard'
     // this.props.history.push('/dashboard');
     
-    await firebase.auth().createUserWithEmailAndPassword(data.email, data.password)
+    firebase.auth().createUserWithEmailAndPassword(data.email, data.password)
     .then((success) => {
       console.log(success)
       this.props.history.push('/dashboard');
     })
     .catch((error) => {
       console.warn(error)
+      if(error.code === 'auth/invalid-email') {
+        toast.error('Email inexistente!')
+      }
       toast.error('Não foi possível completar seu cadastro no momento :(')
       this.setState({
-        loading: false
+        email: '',
+        password: '',
+        confirm_password: '',
+        btnText: 'Criar Conta',
+        btnLoading: false
       });
     });
   }
@@ -102,9 +110,9 @@ class CreateAccount extends Component {
             <form action="" className="createAcc_form"
                 onKeyDown={
                   (e) => {
-                    if (e.key == 'Enter') {
+                    if (e.key === 'Enter') {
                         e.preventDefault();
-                        this.createAcc()
+                        this.createAcc(e)
                     }
                   }
                 }
@@ -112,19 +120,19 @@ class CreateAccount extends Component {
               <div className="form-group row justify-content-sm-center">
                 <label className="col-sm-2 col-form-label">Email</label>
                 <div className="col-sm-6">
-                  <input type="text" className="form-control" id="email" placeholder="email@example.com" onChange={this.handleInput.bind(this)}/>
+                  <input type="text" className="form-control" id="email" placeholder="email@example.com" value={this.state.email} onChange={this.handleInput.bind(this)}/>
                 </div>
               </div>
               <div className="form-group row justify-content-sm-center">
                 <label className="col-sm-2 col-form-label">Senha</label>
                 <div className="col-sm-6">
-                  <input type="password" className="form-control" id="password" placeholder="*****" onChange={this.handleInput.bind(this)}/>
+                  <input type="password" className="form-control" id="password" placeholder="*****" value={this.state.password} onChange={this.handleInput.bind(this)}/>
                 </div>
               </div>
               <div className="form-group row justify-content-sm-center">
                 <label className="col-sm-2 col-form-label">Confirmar Senha</label>
                 <div className="col-sm-6">
-                  <input type="password" className="form-control" id="confirm_password" placeholder="*****" onChange={this.handleInput.bind(this)}/>
+                  <input type="password" className="form-control" id="confirm_password" placeholder="*****" value={this.state.confirm_password} onChange={this.handleInput.bind(this)}/>
                 </div>
               </div>
               <div className="form-group">
