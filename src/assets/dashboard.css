@@ -1,3 +1,7 @@
 .dashboard {
  
 }
+
+.dashboard .navbar .nav-item a:hover {
+ cursor: pointer;
+}

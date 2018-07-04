@@ -1,33 +1,41 @@
 import React, { Component } from 'react';
-import { SemipolarSpinner } from 'react-epic-spinners'
 
 class Navbar extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      showMenu: false
     }
   }
+
+  exit() {
+    return this.props.exit()
+  }
+
+  menu() {
+    this.setState({
+      showMenu: !this.state.showMenu
+    })
+  }
+
   render() {
     return (
       <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
-        <a className="navbar-brand" href="">Navbar</a>
-        <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+        <a className="navbar-brand" href="/">E-Pagamentos</a>
+        <button className="navbar-toggler" type="button" onClick={this.menu.bind(this)}>
           <span className="navbar-toggler-icon"></span>
         </button>
 
-        <div className="collapse navbar-collapse" id="navbarColor01">
-          <ul className="navbar-nav mr-auto">
-            <li className="nav-item active">
-              <a className="nav-link" href="">Home <span className="sr-only">(current)</span></a>
+        <div className={this.state.showMenu?'collapse navbar-collapse show animated fadeIn':'collapse navbar-collapse'}>
+          <ul className="navbar-nav ml-auto">
+            <li className={this.props.link === '/dashboard'?'nav-item active':'nav-item'}>
+              <a className="nav-link" href="/dashboard">Doações</a>
+            </li>
+            <li className={this.props.link === '/my-account'?'nav-item active':'nav-item'}>
+              <a className="nav-link" href="/my-account">Minha Conta</a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="">Features</a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="">Pricing</a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="">About</a>
+              <a className="nav-link" onClick={this.exit.bind(this)}>Sair</a>
             </li>
           </ul>
         </div>

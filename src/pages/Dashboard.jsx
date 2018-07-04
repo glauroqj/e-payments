@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 // import { SemipolarSpinner } from 'react-epic-spinners'
+import * as firebase from 'firebase';
 import { ToastContainer, toast } from 'react-toastify';
 import {verify} from '../components/modules/verifyLogin'
 import Navbar from '../components/Navbar';
@@ -11,7 +12,8 @@ class Dashboard extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading: true
+      loading: true,
+      link: '/dashboard'
     }
   }
 
@@ -32,6 +34,17 @@ class Dashboard extends Component {
     });
   }
 
+  exit() {
+    console.log('Deslogar')
+    firebase.auth().signOut()
+    .then((success) => {
+      this.props.history.push('/login');
+    })
+    .catch((error) => {
+      toast.error('Ocorreu um erro, tente novamente.')
+    })
+  }
+
   render() {
     return (
       <div className="dashboard">
@@ -41,7 +54,7 @@ class Dashboard extends Component {
         {!this.state.loading &&
           <div>
             <ToastContainer autoClose={5000} hideProgressBar={true} position="top-right"/>
-            <Navbar />
+            <Navbar exit={this.exit.bind(this)} link={this.state.link}/>
             <div className="container">
 
             </div>
