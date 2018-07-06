@@ -23,3 +23,7 @@ input[type=number]:focus, [type=text].form-control:focus,
 .loading .spinner > div {
 	margin: 0 auto;
 }
+
+.navbar {
+  margin-bottom: 20px;
+}

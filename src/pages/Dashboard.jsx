@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import * as firebase from 'firebase';
 import { ToastContainer, toast } from 'react-toastify';
 import {verify} from '../components/modules/verifyLogin'
-import {getSessionId} from '../components/modules/payment'
+import {payment} from '../payment-auth'
 import Navbar from '../components/Navbar';
 import Loader from '../components/Loader';
 
@@ -37,10 +37,6 @@ class Dashboard extends Component {
       console.log('Not Loged: ')
       this.props.history.push('/login');
     });
-
-    getSessionId().then((session) => {
-      console.log('Session: ', session)
-    })
   }
 
   exit() {
@@ -140,7 +136,12 @@ class Dashboard extends Component {
               </ul>
               <div id="myTabContent" className="tab-content">
                 <div className="tab-pane fade active show" id="home">
-                  <p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid. Aliquip placeat salvia cillum iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi qui.</p>
+                  <form action="https://pagseguro.uol.com.br/checkout/v2/donation.html" method="post">
+                    <input type="hidden" name="currency" value="BRL" />
+                    <input type="hidden" name="receiverEmail" value="glauro.juliani@hotmail.com" />
+                    <input type="hidden" name="iot" value="button" />
+                    <input type="image" src="https://stc.pagseguro.uol.com.br/public/img/botoes/doacoes/205x30-doar.gif" name="submit" alt="Pague com PagSeguro - é rápido, grátis e seguro!" />
+                  </form>
                 </div>
                 <div className="tab-pane fade" id="profile">
                   <p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit.</p>

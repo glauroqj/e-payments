@@ -2,10 +2,6 @@
  
 }
 
-.dashboard .navbar {
-  margin-bottom: 20px;
-}
-
 .dashboard .navbar .nav-item a:hover {
  cursor: pointer;
 }
