@@ -27,3 +27,16 @@ input[type=number]:focus, [type=text].form-control:focus,
 .navbar {
   margin-bottom: 20px;
 }
+
+.navbar .profile {
+	text-align: center;
+}
+
+.navbar .profile img {
+	width: 25%;
+  border-radius: 50%;
+}
+.navbar .profile .name {
+	color: #fff;
+	font-size: 12px;
+}

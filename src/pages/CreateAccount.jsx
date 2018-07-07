@@ -133,8 +133,14 @@ class CreateAccount extends Component {
           photoURL: this.state.instagram.profile_pic_url,
           displayName: this.state.instagram.full_name
         });
+        setTimeout(() => {
+          this.props.history.push('/dashboard');
+        }, 750);
+        return false;
       }
-      this.props.history.push('/dashboard');
+      if(this.state.instagram.profile_pic_url === '' || this.state.full_name === '') {
+        this.props.history.push('/dashboard');
+      }
     })
     .catch((error) => {
       console.warn(error)

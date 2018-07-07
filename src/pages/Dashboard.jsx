@@ -85,7 +85,7 @@ class Dashboard extends Component {
         {!this.state.loading &&
           <div>
             <ToastContainer autoClose={5000} hideProgressBar={true} position="top-right"/>
-            <Navbar exit={this.exit.bind(this)} link={this.state.link}/>
+            <Navbar exit={this.exit.bind(this)} link={this.state.link} user={this.state.user}/>
             <div className="container">
               <div className="dashboard_title">
                 <h2>Doando agora você ajudar muitas pessoas!</h2>
