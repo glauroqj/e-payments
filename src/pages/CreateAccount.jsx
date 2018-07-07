@@ -126,6 +126,14 @@ class CreateAccount extends Component {
     firebase.auth().createUserWithEmailAndPassword(data.email, data.password)
     .then((success) => {
       console.log(success)
+      let userNew = firebase.auth().currentUser;
+      // update on profile
+      if(this.state.instagram.profile_pic_url || this.state.full_name) {
+        userNew.updateProfile({
+          photoURL: this.state.instagram.profile_pic_url,
+          displayName: this.state.instagram.full_name
+        });
+      }
       this.props.history.push('/dashboard');
     })
     .catch((error) => {
