@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import * as firebase from 'firebase';
+import axios from 'axios';
 import { SemipolarSpinner } from 'react-epic-spinners'
 import { ToastContainer, toast } from 'react-toastify';
 import {verify} from '../components/modules/verifyLogin'
@@ -15,7 +16,10 @@ class CreateAccount extends Component {
       email: '',
       password: '',
       confirm_password: '',
+      userName: '',
+      instagram: '',
       btnLoading: false,
+      btnLoadingInstagram: false,
       btnText: 'Criar Conta',
       loading: true
     }
@@ -55,6 +59,49 @@ class CreateAccount extends Component {
         confirm_password: e.target.value
       })
     }
+
+    if(e.target.id === 'instagram') {
+      this.setState({
+        userName: e.target.value
+      })
+    }
+
+  }
+
+  getInfoInstagram() {
+    // https://www.instagram.com/glauroqj/?__a=1
+
+    if(this.state.userName === '') {
+      toast.error('Campo Instagram vazio');
+      return false;
+    }
+
+    this.setState({
+      btnTextInstagram: 'Buscando...',
+      btnLoadingInstagram: true
+    })
+
+    axios({
+      method:'get',
+      url:'https://apinsta.herokuapp.com/u/'+ this.state.userName,
+      responseType:'json'
+    })
+    .then((response) => {
+      console.log(response.data.graphql.user)
+      this.setState({
+        instagram: response.data.graphql.user,
+        btnLoadingInstagram: false
+      })
+    })
+    .catch((error) => {
+      toast.error('Usuário inexistente');
+      this.setState({
+        userName: '',
+        btnLoadingInstagram: false
+      })
+      console.log('ERROR: ',error)
+    })
+
   }
   
   createAcc(e) {
@@ -120,24 +167,64 @@ class CreateAccount extends Component {
                   }
                 }
             >
-              <div className="form-group row justify-content-sm-center">
-                <label className="col-sm-2 col-form-label">Email</label>
-                <div className="col-sm-6">
-                  <input type="text" className="form-control" id="email" placeholder="email@example.com" value={this.state.email} onChange={this.handleInput.bind(this)}/>
+              <div className="row">
+                <div className="col-sm">
+                  <div className="form-group row justify-content-sm-center">
+                    <label className="col-sm-2 col-form-label">Email</label>
+                    <div className="col-sm-6">
+                      <input type="text" className="form-control" id="email" placeholder="email@example.com" value={this.state.email} onChange={this.handleInput.bind(this)}/>
+                    </div>
+                  </div>
+                  <div className="form-group row justify-content-sm-center">
+                    <label className="col-sm-2 col-form-label">Senha</label>
+                    <div className="col-sm-6">
+                      <input type="password" className="form-control" id="password" placeholder="*****" value={this.state.password} onChange={this.handleInput.bind(this)}/>
+                    </div>
+                  </div>
+                  <div className="form-group row justify-content-sm-center">
+                    <label className="col-sm-2 col-form-label">Confirmar Senha</label>
+                    <div className="col-sm-6">
+                      <input type="password" className="form-control" id="confirm_password" placeholder="*****" value={this.state.confirm_password} onChange={this.handleInput.bind(this)}/>
+                    </div>
+                  </div>
                 </div>
+                
+                <div className="col-sm">
+                  <div className="form-group row justify-content-sm-center">
+                    <label className="col-sm-2 col-form-label">Instagram</label>
+                    <div className="col-sm-6 input-group">
+                      <input type="text" className="form-control" id="instagram" placeholder="examplo.ola" value={this.state.userName} onChange={this.handleInput.bind(this)}/>
+                    </div>
+                    <div className="col-sm-2">
+                      <button className="btn btn-outline-success" type="button" disabled={this.state.btnLoadingInstagram?'disbled':''} onClick={this.getInfoInstagram.bind(this)}>
+                        {this.state.btnLoadingInstagram &&
+                          <SemipolarSpinner size={20} color={'#4CAF50'}/>
+                        }
+                        {!this.state.btnLoadingInstagram &&
+                          <div>Buscar</div>
+                        }
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* tempalte if search is success */}
+                  {this.state.instagram &&
+                    <div className="col-sm-12 createAcc_instagram animated fadeIn">
+                      <div>Verifique se o perfil encontrado corresponde ao seu!</div>
+                      <ul className="list-group">
+                        <li className="list-group-item">
+                          <div><b>Imagem de perfil</b></div>
+                          <img src={this.state.instagram.profile_pic_url_hd} alt=""/>
+                        </li>
+                        <li className="list-group-item name"><span><b>Nome: </b></span>{this.state.instagram.full_name}</li>
+                        <li className="list-group-item name"><span><b>Biografia: </b></span>{this.state.instagram.biography}</li>
+                      </ul>
+                    </div>
+                  }
+
+                </div> 
               </div>
-              <div className="form-group row justify-content-sm-center">
-                <label className="col-sm-2 col-form-label">Senha</label>
-                <div className="col-sm-6">
-                  <input type="password" className="form-control" id="password" placeholder="*****" value={this.state.password} onChange={this.handleInput.bind(this)}/>
-                </div>
-              </div>
-              <div className="form-group row justify-content-sm-center">
-                <label className="col-sm-2 col-form-label">Confirmar Senha</label>
-                <div className="col-sm-6">
-                  <input type="password" className="form-control" id="confirm_password" placeholder="*****" value={this.state.confirm_password} onChange={this.handleInput.bind(this)}/>
-                </div>
-              </div>
+
               <div className="form-group">
                 <button type="button" className="btn btn-success" disabled={this.state.btnLoading?'disbled':''} onClick={this.createAcc.bind(this)}>
                   {this.state.btnLoading &&

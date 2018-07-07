@@ -10,3 +10,17 @@
 .createAcc_form {
   
 }
+
+.createAcc_instagram {
+  margin-bottom: 20px;
+}
+
+.createAcc_instagram img {
+  width: 20%;
+  border-radius: 50%;
+  height: auto;
+}
+
+.createAcc_instagram .name {
+
+}
