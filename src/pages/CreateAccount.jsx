@@ -128,7 +128,12 @@ class CreateAccount extends Component {
       console.log(success)
       let userNew = firebase.auth().currentUser;
       // update on profile
-      if(this.state.instagram.profile_pic_url || this.state.full_name) {
+      if(data.instagram === '') {
+        this.props.history.push('/dashboard');
+        return false;
+      }
+
+      if(data.instagram) {
         userNew.updateProfile({
           photoURL: this.state.instagram.profile_pic_url,
           displayName: this.state.instagram.full_name
@@ -136,10 +141,6 @@ class CreateAccount extends Component {
         setTimeout(() => {
           this.props.history.push('/dashboard');
         }, 750);
-        return false;
-      }
-      if(this.state.instagram.profile_pic_url === '' || this.state.full_name === '') {
-        this.props.history.push('/dashboard');
       }
     })
     .catch((error) => {
@@ -149,6 +150,9 @@ class CreateAccount extends Component {
       }
       if(error.code === 'auth/weak-password') {
         toast.error('Senha muito fraca! Mínimo de 6 caracteres')
+      }
+      if(error.code === 'auth/email-already-in-use') {
+        toast.error('Email já utilizado.')
       }
       toast.error('Não foi possível completar seu cadastro no momento :(')
       this.setState({
