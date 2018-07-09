@@ -14,6 +14,7 @@ class MyAccount extends Component {
     this.state = {
       loading: true,
       showMenu: false,
+      user: '',
       link: '/my-account',
     }
   }
@@ -55,7 +56,7 @@ class MyAccount extends Component {
         {!this.state.loading &&
           <div>
             <ToastContainer autoClose={5000} hideProgressBar={true} position="top-right"/>
-            <Navbar exit={this.exit.bind(this)} link={this.state.link}/>
+            <Navbar exit={this.exit.bind(this)} link={this.state.link} user={this.state.user}/>
             <div className="container">
               <div className="myAccount_title">
                 <h2>Configure sua conta</h2>

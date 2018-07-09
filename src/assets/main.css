@@ -28,6 +28,10 @@ input[type=number]:focus, [type=text].form-control:focus,
   margin-bottom: 20px;
 }
 
+.navbar .nav-item a:hover {
+	cursor: pointer;
+ }
+
 .navbar .profile {
 	text-align: center;
 }
