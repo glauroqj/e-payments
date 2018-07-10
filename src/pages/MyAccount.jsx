@@ -68,8 +68,14 @@ class MyAccount extends Component {
         editName: '',
         showTemplateName: true
       });
+      return false;
     }
-
+    if(type === 'email') {
+      this.setState({
+        editEmail: '',
+        showTemplateEmail: true
+      });
+    }
   }
 
   saveInfo(type, e) {
@@ -80,20 +86,25 @@ class MyAccount extends Component {
         displayName: this.state.editName,
       })
       .then(() => {
-        // Update successful.
         toast.success('Nome alterado com sucesso!');
         this.setState({
           showTemplateName: false
         });
         this.reloadState()
       })
-      .catch((error) => {
-        // An error happened.
-      });
+      .catch((error) => {});
       return false;
     }
     if(type === 'email') {
-
+      this.state.user.updateEmail(this.state.editEmail)
+      .then(() => {
+        toast.success('E-mail alterado com sucesso!');
+        this.setState({
+          showTemplateEmail: false
+        });
+        this.reloadState()
+      })
+      .catch((error) => {});
     }
   }
 
@@ -116,6 +127,11 @@ class MyAccount extends Component {
     if(e.target.id === 'name') {
       this.setState({
         editName: e.target.value
+      })
+    }
+    if(e.target.id === 'email') {
+      this.setState({
+        editEmail: e.target.value
       })
     }
   }
@@ -154,7 +170,6 @@ class MyAccount extends Component {
                                     if (e.key === 'Enter') {
                                       console.log('ENTER')
                                       this.saveInfo.bind(this, 'name')
-                                      // e.preventDefault();
                                     }
                                 }
                             }
@@ -173,31 +188,51 @@ class MyAccount extends Component {
                           </div>
                         }
                       </li>
-                      {/* <li className="list-group-item">
-                        <h5 className="card-title">Email</h5>
-                        <div className="form-group">
-                          <input type="text" id="email" className="form-control" value={this.state.user.email} disabled/>
-                        </div>
-                        <div className="myAccount_box_edit">
-                          <button className="btn btn-warning btn-xs" id="email" onClick={this.editInfo.bind(this, 'email')}><i className="fa fa-user-edit"></i></button>
-                        </div>
-                      </li> */}
+                      {!this.state.user.emailVerified &&
+                        <li className="list-group-item">
+                          <h5 className="card-title">Email</h5>
+                          <h6 className="card-subtitle text-muted">{this.state.user.email}</h6>
+                          {this.state.showTemplateEmail &&
+                            <form action=""
+                              onKeyDown={
+                                (e) => {
+                                      if (e.key === 'Enter') {
+                                        console.log('ENTER')
+                                        this.saveInfo.bind(this, 'email')
+                                      }
+                                  }
+                              }
+                            >
+                              <div className="form-group animated fadeIn">
+                                <input type="text" id="email" className="form-control" value={this.state.editEmail} onChange={this.updateInput.bind(this)}/>
+                              </div>
+                              <div className="myAccount_box_edit">
+                                  <button type="submit" className="btn btn-success btn-xs save" id="email" onClick={this.saveInfo.bind(this, 'email')}><i className="fa fa-check"></i></button>
+                              </div>
+                            </form>
+                          }
+                          {!this.state.showTemplateEmail &&
+                            <div className="myAccount_box_edit">
+                              <button className="btn btn-warning btn-xs edit" id="name" onClick={this.editInfo.bind(this, 'email')}><i className="fa fa-user-edit"></i></button>
+                            </div>
+                          }
+                        </li>
+                      }
                       <li className="list-group-item">
                         <h5 className="card-title">Email verificado?</h5>
                         {this.state.user.emailVerified &&
                           <button type="button" className="btn btn-success btn-sm disabled">Verificado</button>
                         }
                         {!this.state.user.emailVerified &&
-                          <button type="button" className="btn btn-outline-danger btn-sm" onClick={this.verifyEmail.bind(this)}>Não, Verificar Agora!</button>
+                          <div>
+                            <p className="text-muted">Após o e-mail verificado, não é possível altera-lo</p>
+                            <button type="button" className="btn btn-outline-danger btn-sm" onClick={this.verifyEmail.bind(this)}>Não, Verificar Agora!</button>
+                          </div>
                         }
                       </li>
                     </ul>
-                    <div className="card-body">
-                      <a href="" className="card-link">Card link</a>
-                      <a href="" className="card-link">Another link</a>
-                    </div>
                     <div className="card-footer text-muted">
-                      2 days ago
+                      {this.state.user.metadata.creationTime}
                     </div>
                   </div>
                 </div>
