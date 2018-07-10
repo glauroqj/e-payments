@@ -5,3 +5,31 @@
 .myAccount .myAccount_title {
   
 }
+
+.myAccount .myAccount_box {
+
+}
+
+.myAccount .myAccount_box img {
+  margin: 0 auto;
+  width: 40%;
+}
+.myAccount .myAccount_box_edit {
+  position: relative;
+  width: 100%;
+}
+.myAccount .myAccount_box_edit button.edit {
+  padding: 5px;
+  font-size: 12px;
+  position: absolute;
+  right: 0;
+  bottom: 10px;
+}
+
+.myAccount .myAccount_box_edit button.save {
+  padding: 5px;
+  font-size: 12px;
+  position: absolute;
+  right: 0;
+  bottom: 10px;
+}
