@@ -8,11 +8,11 @@ jobs:
       - run: apt-get update
       - run: apt-get install -y sudo
       - checkout
-      - run: npm install -g firebase-tools
+      - run: npm install firebase-tools
       - run: npm install
       - run: npm build
       - deploy:
-          command: ./node_modules/.bin/firebase deploy --token "$FIREBASE_DEPLOY"
+          command: ./node_modules/.bin/firebase deploy --token=$FIREBASE_TOKEN
 
 workflows:
   version: 2
