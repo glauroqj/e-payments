@@ -39,7 +39,7 @@ class Dashboard extends Component {
     });
   }
 
-  exit() {
+  exit = () => {
     console.log('Deslogar')
     firebase.auth().signOut()
     .then((success) => {
@@ -50,7 +50,7 @@ class Dashboard extends Component {
     })
   }
 
-  updateValue(e) {
+  updateValue = (e) => {
     if(e.target.type === 'number' && e.target.value < 150) {
       this.setState({
         valueSelected: e.target.value,
@@ -85,7 +85,7 @@ class Dashboard extends Component {
         {!this.state.loading &&
           <div>
             <ToastContainer autoClose={5000} hideProgressBar={true} position="top-right"/>
-            <Navbar exit={this.exit.bind(this)} link={this.state.link} user={this.state.user}/>
+            <Navbar exit={this.exit} link={this.state.link} user={this.state.user}/>
             <div className="container">
               <div className="dashboard_title">
                 <h2>Doando agora você ajudar muitas pessoas!</h2>
@@ -100,7 +100,7 @@ class Dashboard extends Component {
                         <li className="list-inline-item">
                           <button type="button" 
                             className={this.state.valueSelected === key?'btn btn-lg btn-outline-success active':'btn btn-outline-success'} 
-                            onClick={this.updateValue.bind(this)} value={key}>R$ {key}
+                            onClick={this.updateValue} value={key}>R$ {key}
                           </button>
                         </li>
                       </React.Fragment>
@@ -114,7 +114,7 @@ class Dashboard extends Component {
                           <div className="input-group-prepend">
                             <span className="input-group-text">R$</span>
                           </div>
-                          <input type="number" className="form-control" value={this.state.valueCustom} onChange={this.updateValue.bind(this)}/>
+                          <input type="number" className="form-control" value={this.state.valueCustom} onChange={this.updateValue}/>
                         </div>
                       </div>
                     </div>

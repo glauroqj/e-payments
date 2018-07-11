@@ -8,7 +8,7 @@ class Navbar extends Component {
     }
   }
 
-  exit() {
+  exit = () => {
     return this.props.exit()
   }
 
@@ -39,7 +39,7 @@ class Navbar extends Component {
               <a className="nav-link" href="/my-account">Minha Conta</a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" onClick={this.exit.bind(this)}>Sair</a>
+              <a className="nav-link" onClick={this.exit}>Sair</a>
             </li>
           </ul>
         </div>

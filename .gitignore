@@ -8,6 +8,7 @@
 
 /src/auth.js
 /src/payment-auth.js
+/.circleci
 
 # misc
 .DS_Store

@@ -40,7 +40,7 @@ class MyAccount extends Component {
     }); 
   }
 
-  exit() {
+  exit = () => {
     console.log('Deslogar')
     firebase.auth().signOut()
     .then((success) => {
@@ -145,7 +145,7 @@ class MyAccount extends Component {
         {!this.state.loading &&
           <div>
             <ToastContainer autoClose={5000} hideProgressBar={true} position="top-right"/>
-            <Navbar exit={this.exit.bind(this)} link={this.state.link} user={this.state.user}/>
+            <Navbar exit={this.exit} link={this.state.link} user={this.state.user}/>
             <div className="container">
               <div className="myAccount_title">
                 <h2>Configure sua conta</h2>
