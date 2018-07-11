@@ -7,9 +7,10 @@ jobs:
     steps:
       - run: apt-get update
       - run: apt-get install -y sudo
+      - checkout
       - run: npm install firebase-tools
       - run: npm install
-      - run: npm run build
+      - run: npm build
       - run: firebase login:ci
       - deploy:
           command: ./node_modules/.bin/firebase deploy --token=$FIREBASE_DEPLOY_TOKEN
