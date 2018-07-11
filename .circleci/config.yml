@@ -11,9 +11,8 @@ jobs:
       - run: npm install firebase-tools
       - run: npm install
       - run: npm build
-      - checkout
       - deploy:
-        command: firebase deploy --token=$FIREBASE_TOKEN
+        command: npm build && firebase deploy --token=$FIREBASE_TOKEN
           # command: ./node_modules/.bin/firebase deploy --token=$FIREBASE_TOKEN
 
 workflows:
