@@ -10,7 +10,7 @@ jobs:
       - checkout
       - run: npm install firebase-tools
       - run: npm install
-      - run: npm build
+      - run: npm run build
       - deploy:
           command: ./node_modules/.bin/firebase deploy --token=$FIREBASE_TOKEN
 
