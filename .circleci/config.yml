@@ -10,9 +10,11 @@ jobs:
       - checkout
       - run: npm install firebase-tools
       - run: npm install
-      - run: yarn build
+      - run: npm build
+      - checkout
       - deploy:
-          command: ./node_modules/.bin/firebase deploy --token=$FIREBASE_TOKEN
+        command: firebase deploy --token=$FIREBASE_TOKEN
+          # command: ./node_modules/.bin/firebase deploy --token=$FIREBASE_TOKEN
 
 workflows:
   version: 2
