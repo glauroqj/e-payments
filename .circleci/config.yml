@@ -12,7 +12,7 @@ jobs:
       - run: npm install
       - run: npm build
       - deploy:
-          command: ./node_modules/.bin/firebase deploy --token=$FIREBASE_DEPLOY
+          command: ./node_modules/.bin/firebase deploy --token "$FIREBASE_DEPLOY"
 
 workflows:
   version: 2
