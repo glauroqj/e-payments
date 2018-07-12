@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import * as firebase from 'firebase';
 import { ToastContainer, toast } from 'react-toastify';
 import {verify} from '../components/modules/verifyLogin'
-import {payment} from '../payment-auth'
 import Navbar from '../components/Navbar';
 import Loader from '../components/Loader';
 
