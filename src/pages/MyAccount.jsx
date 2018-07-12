@@ -19,7 +19,8 @@ class MyAccount extends Component {
       showTemplateName: false,
       showTemplateEmail: false,
       editName: '',
-      editEmail: ''
+      editEmail: '',
+      emailSended: false
     }
   }
 
@@ -52,6 +53,9 @@ class MyAccount extends Component {
   }
 
   verifyEmail() {
+    this.setState({
+      emailSended: true
+    })
     this.state.user.sendEmailVerification()
     .then((success) => {
       console.log('Enviao de email: ',success)
@@ -154,13 +158,15 @@ class MyAccount extends Component {
                 <div className="col-sm-4">
                   <div className="card mb-3">
                     <h3 className="card-header">Dados da Conta</h3>
-                    <img className="img-responsive" src={this.state.user.photoURL} alt="Profile Photo"/>
+                    {this.state.user.photoURL &&
+                      <img className="img-responsive" src={this.state.user.photoURL} alt="Profile Photo"/>
+                    }
                     <ul className="list-group list-group-flush">
                       <li className="list-group-item">
                         <h5 className="card-title">Status</h5>
                         <h6 className="card-subtitle text-muted">Doador</h6>
                       </li>
-                      <li className="list-group-item">
+                      <li className="list-group-item myAccount_box_edit">
                         <h5 className="card-title">Nome</h5>
                         <h6 className="card-subtitle text-muted">{this.state.user.displayName}</h6>
                         {this.state.showTemplateName &&
@@ -174,22 +180,20 @@ class MyAccount extends Component {
                                 }
                             }
                           >
-                            <div className="form-group animated fadeIn">
+                            <div className="input-group myAccount_box_template animated fadeIn">
                               <input type="text" id="name" className="form-control" value={this.state.editName} onChange={this.updateInput.bind(this)}/>
-                            </div>
-                            <div className="myAccount_box_edit">
-                                <button type="submit" className="btn btn-success btn-xs save" id="name" onClick={this.saveInfo.bind(this, 'name')}><i className="fa fa-check"></i></button>
+                              <div class="input-group-append">
+                                <button class="btn btn-outline-success btn-xs save" type="submit" id="name" onClick={this.saveInfo.bind(this, 'name')}><i className="fa fa-check"/></button>
+                              </div>
                             </div>
                           </form>
                         }
                         {!this.state.showTemplateName &&
-                          <div className="myAccount_box_edit">
-                            <button className="btn btn-warning btn-xs edit" id="name" onClick={this.editInfo.bind(this, 'name')}><i className="fa fa-user-edit"></i></button>
-                          </div>
+                          <button className="btn btn-warning btn-xs edit" id="name" onClick={this.editInfo.bind(this, 'name')}><i className="fa fa-user-edit"></i></button>
                         }
                       </li>
                       {!this.state.user.emailVerified &&
-                        <li className="list-group-item">
+                        <li className="list-group-item myAccount_box_edit">
                           <h5 className="card-title">Email</h5>
                           <h6 className="card-subtitle text-muted">{this.state.user.email}</h6>
                           {this.state.showTemplateEmail &&
@@ -203,18 +207,16 @@ class MyAccount extends Component {
                                   }
                               }
                             >
-                              <div className="form-group animated fadeIn">
+                              <div className="input-group myAccount_box_template animated fadeIn">
                                 <input type="text" id="email" className="form-control" value={this.state.editEmail} onChange={this.updateInput.bind(this)}/>
-                              </div>
-                              <div className="myAccount_box_edit">
-                                  <button type="submit" className="btn btn-success btn-xs save" id="email" onClick={this.saveInfo.bind(this, 'email')}><i className="fa fa-check"></i></button>
+                                <div class="input-group-append">
+                                  <button class="btn btn-outline-success btn-xs save" type="submit" id="email" onClick={this.saveInfo.bind(this, 'email')}><i className="fa fa-check"/></button>
+                                </div>
                               </div>
                             </form>
                           }
                           {!this.state.showTemplateEmail &&
-                            <div className="myAccount_box_edit">
-                              <button className="btn btn-warning btn-xs edit" id="name" onClick={this.editInfo.bind(this, 'email')}><i className="fa fa-user-edit"></i></button>
-                            </div>
+                            <button className="btn btn-warning btn-xs edit" id="name" onClick={this.editInfo.bind(this, 'email')}><i className="fa fa-user-edit"></i></button>
                           }
                         </li>
                       }
@@ -226,7 +228,12 @@ class MyAccount extends Component {
                         {!this.state.user.emailVerified &&
                           <div>
                             <p className="text-muted">Após o e-mail verificado, não é possível altera-lo</p>
-                            <button type="button" className="btn btn-outline-danger btn-sm" onClick={this.verifyEmail.bind(this)}>Não, Verificar Agora!</button>
+                              {!this.state.emailSended &&
+                                <button type="button" className='btn btn-outline-danger btn-sm' onClick={this.verifyEmail.bind(this)}>Não, Verificar Agora!</button>
+                              }
+                              {this.state.emailSended &&
+                                <button type="button" class="btn btn-link btn-sm disabled">Email enviado</button>
+                              }
                           </div>
                         }
                       </li>

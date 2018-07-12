@@ -18,12 +18,17 @@
   position: relative;
   width: 100%;
 }
+
+.myAccount .myAccount_box_template {
+
+}
+
 .myAccount .myAccount_box_edit button.edit {
   padding: 5px;
   font-size: 12px;
   position: absolute;
-  right: 0;
-  bottom: 10px;
+  right: 20px;
+  top: 10px;
 }
 
 .myAccount .myAccount_box_edit button.save {
