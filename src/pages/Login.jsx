@@ -35,7 +35,7 @@ class Login extends Component {
     })
   }
 
-  handleInput(e) {
+  handleInput = (e) => {
     if(e.target.id === 'email') {
       this.setState({
         email: e.target.value
@@ -49,16 +49,16 @@ class Login extends Component {
     }
   }
   
-  createAcc() {
+  createAcc = () => {
     // window.location.href = '/create'
     this.props.history.push('/create');
   }
 
-  forgotPass() {
+  forgotPass = () => {
     this.props.history.push('/forgot-password');
   }
 
-  submit(e) {
+  submit = (e) => {
     e.preventDefault();
     let data = this.state;
     if(this.state.email === '' || this.state.password === '') {
@@ -77,7 +77,7 @@ class Login extends Component {
     })
     .catch((error) => {
       console.warn(error)
-      if(error.code === 'auth/wrong-password') {
+      if(error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found') {
         toast.error('Email ou Senha inválidos :(')
       }
       if(error.code === 'auth/invalid-email') {
@@ -115,17 +115,17 @@ class Login extends Component {
                 <div className="form-group row justify-content-sm-center">
                   <label className="col-sm-2 col-form-label">Email</label>
                   <div className="col-sm-6">
-                    <input type="text" className="form-control" id="email" placeholder="email@example.com" value={this.state.email} onChange={this.handleInput.bind(this)}/>
+                    <input type="text" className="form-control" id="email" placeholder="email@example.com" value={this.state.email} onChange={this.handleInput}/>
                   </div>
                 </div>
                 <div className="form-group row justify-content-sm-center">
                   <label className="col-sm-2 col-form-label">Senha</label>
                   <div className="col-sm-6">
-                    <input type="password" className="form-control" id="password" placeholder="*****" value={this.state.password} onChange={this.handleInput.bind(this)}/>
+                    <input type="password" className="form-control" id="password" placeholder="*****" value={this.state.password} onChange={this.handleInput}/>
                   </div>
                 </div>
                 <div className="form-group">
-                  <button type="submit" className="btn btn-primary" disabled={this.state.btnLoading?'disbled':''} onClick={this.submit.bind(this)}>
+                  <button type="submit" className="btn btn-primary" disabled={this.state.btnLoading?'disbled':''} onClick={this.submit}>
                     {this.state.btnLoading &&
                       <SemipolarSpinner size={30} color="white"/>
                     }
@@ -134,8 +134,8 @@ class Login extends Component {
                 </div>
               </form>
               <div className="form-group justify-content-sm-left">
-                <button type="button" className="btn btn-link" onClick={this.createAcc.bind(this)}>Não tenho conta. Criar conta.</button>
-                <button type="button" className="btn btn-link" onClick={this.forgotPass.bind(this)}>Esqueci minha senha!</button>
+                <button type="button" className="btn btn-link" onClick={this.createAcc}>Não tenho conta. Criar conta.</button>
+                <button type="button" className="btn btn-link" onClick={this.forgotPass}>Esqueci minha senha!</button>
               </div>
           </div>
         }
