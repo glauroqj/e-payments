@@ -52,7 +52,7 @@ class MyAccount extends Component {
     })
   }
 
-  verifyEmail() {
+  verifyEmail = () => {
     this.setState({
       emailSended: true
     })
@@ -65,8 +65,8 @@ class MyAccount extends Component {
     });
   }
 
-  editInfo(type) {
-    console.log(type)
+  editInfo = (type) => (e) => {
+    console.log(type, e)
     if(type === 'name') {
       this.setState({
         editName: '',
@@ -82,7 +82,7 @@ class MyAccount extends Component {
     }
   }
 
-  saveInfo(type, e) {
+  saveInfo = (type) => (e) => {
     console.log('SAVE', type, e)
     e.preventDefault();
     if(type === 'name') {
@@ -127,7 +127,7 @@ class MyAccount extends Component {
     }); 
   }
 
-  updateInput(e) {
+  updateInput = (e) => {
     if(e.target.id === 'name') {
       this.setState({
         editName: e.target.value
@@ -175,21 +175,21 @@ class MyAccount extends Component {
                               (e) => {
                                     if (e.key === 'Enter') {
                                       console.log('ENTER')
-                                      this.saveInfo.bind(this, 'name')
+                                      this.saveInfo('name')
                                     }
                                 }
                             }
                           >
                             <div className="input-group myAccount_box_template animated fadeIn">
-                              <input type="text" id="name" className="form-control" value={this.state.editName} onChange={this.updateInput.bind(this)}/>
-                              <div class="input-group-append">
-                                <button class="btn btn-outline-success btn-xs save" type="submit" id="name" onClick={this.saveInfo.bind(this, 'name')}><i className="fa fa-check"/></button>
+                              <input type="text" id="name" className="form-control" value={this.state.editName} onChange={this.updateInput}/>
+                              <div className="input-group-append">
+                                <button className="btn btn-outline-success btn-xs save" type="submit" id="name" onClick={this.saveInfo('name')}><i className="fa fa-check"/></button>
                               </div>
                             </div>
                           </form>
                         }
                         {!this.state.showTemplateName &&
-                          <button className="btn btn-warning btn-xs edit" id="name" onClick={this.editInfo.bind(this, 'name')}><i className="fa fa-user-edit"></i></button>
+                          <button className="btn btn-warning btn-xs edit" id="name" onClick={this.editInfo('name')}><i className="fa fa-user-edit"></i></button>
                         }
                       </li>
                       {!this.state.user.emailVerified &&
@@ -202,21 +202,21 @@ class MyAccount extends Component {
                                 (e) => {
                                       if (e.key === 'Enter') {
                                         console.log('ENTER')
-                                        this.saveInfo.bind(this, 'email')
+                                        this.saveInfo('email')
                                       }
                                   }
                               }
                             >
                               <div className="input-group myAccount_box_template animated fadeIn">
-                                <input type="text" id="email" className="form-control" value={this.state.editEmail} onChange={this.updateInput.bind(this)}/>
-                                <div class="input-group-append">
-                                  <button class="btn btn-outline-success btn-xs save" type="submit" id="email" onClick={this.saveInfo.bind(this, 'email')}><i className="fa fa-check"/></button>
+                                <input type="text" id="email" className="form-control" value={this.state.editEmail} onChange={this.updateInput}/>
+                                <div className="input-group-append">
+                                  <button className="btn btn-outline-success btn-xs save" type="submit" id="email" onClick={this.saveInfo('email')}><i className="fa fa-check"/></button>
                                 </div>
                               </div>
                             </form>
                           }
                           {!this.state.showTemplateEmail &&
-                            <button className="btn btn-warning btn-xs edit" id="name" onClick={this.editInfo.bind(this, 'email')}><i className="fa fa-user-edit"></i></button>
+                            <button className="btn btn-warning btn-xs edit" id="name" onClick={this.editInfo('email')}><i className="fa fa-user-edit"></i></button>
                           }
                         </li>
                       }
@@ -229,7 +229,7 @@ class MyAccount extends Component {
                           <div>
                             <p className="text-muted">Após o e-mail verificado, não é possível altera-lo</p>
                               {!this.state.emailSended &&
-                                <button type="button" className='btn btn-outline-danger btn-sm' onClick={this.verifyEmail.bind(this)}>Não, Verificar Agora!</button>
+                                <button type="button" className='btn btn-outline-danger btn-sm' onClick={this.verifyEmail}>Não, Verificar Agora!</button>
                               }
                               {this.state.emailSended &&
                                 <button type="button" class="btn btn-link btn-sm disabled">Email enviado</button>

@@ -19,8 +19,8 @@
   width: 100%;
 }
 
-.myAccount .myAccount_box_template {
-
+.myAccount .myAccount_box_template input {
+  margin-right: 20px;
 }
 
 .myAccount .myAccount_box_edit button.edit {
