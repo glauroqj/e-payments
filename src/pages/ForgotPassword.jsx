@@ -35,7 +35,7 @@ class ForgotPassword extends Component {
     })
   }
 
-  handleInput(e) {
+  handleInput = (e) => {
     if(e.target.id === 'email') {
       this.setState({
         email: e.target.value
@@ -43,7 +43,7 @@ class ForgotPassword extends Component {
     }
   }
 
-  submit(e) {
+  submit = (e) => {
     e.preventDefault();
     let data = this.state;
     if(this.state.email === '') {
@@ -66,7 +66,7 @@ class ForgotPassword extends Component {
     .catch((error) => {
       console.warn(error)
       if(error.code === 'auth/invalid-email') {
-        toast.error('Email inexistente!')
+        toast.error('Email inválido!')
       }
       if(error.code === 'auth/user-not-found') {
         toast.error('Email não existe!')
@@ -103,11 +103,11 @@ class ForgotPassword extends Component {
                 <div className="form-group row justify-content-sm-center">
                   <label className="col-sm-2 col-form-label">Email</label>
                   <div className="col-sm-6">
-                    <input type="text" className="form-control" id="email" placeholder="email@example.com" value={this.state.email} onChange={this.handleInput.bind(this)}/>
+                    <input type="email" className="form-control" id="email" placeholder="email@example.com" value={this.state.email} onChange={this.handleInput}/>
                   </div>
                 </div>
                 <div className="form-group">
-                  <button type="submit" className="btn btn-primary" disabled={this.state.btnLoading?'disbled':''} onClick={this.submit.bind(this)}>
+                  <button type="submit" className="btn btn-primary" disabled={this.state.btnLoading?'disbled':''} onClick={this.submit}>
                     {this.state.btnLoading &&
                       <SemipolarSpinner size={30} color="white"/>
                     }

@@ -41,7 +41,7 @@ class CreateAccount extends Component {
     })
   }
 
-  handleInput(e) {
+  handleInput = (e) => {
     if(e.target.id === 'email') {
       this.setState({
         email: e.target.value
@@ -68,7 +68,7 @@ class CreateAccount extends Component {
 
   }
 
-  getInfoInstagram() {
+  getInfoInstagram = () => {
     // https://www.instagram.com/glauroqj/?__a=1
 
     if(this.state.userName === '') {
@@ -104,7 +104,7 @@ class CreateAccount extends Component {
 
   }
   
-  createAcc(e) {
+  createAcc = (e) => {
     e.preventDefault();
     let data = this.state;
     if(this.state.email === '' || this.state.password === '') {
@@ -190,19 +190,19 @@ class CreateAccount extends Component {
                   <div className="form-group row justify-content-sm-center">
                     <label className="col-sm-2 col-form-label">Email</label>
                     <div className="col-sm-6">
-                      <input type="text" className="form-control" id="email" placeholder="email@example.com" value={this.state.email} onChange={this.handleInput.bind(this)}/>
+                      <input type="text" className="form-control" id="email" placeholder="email@example.com" value={this.state.email} onChange={this.handleInput}/>
                     </div>
                   </div>
                   <div className="form-group row justify-content-sm-center">
                     <label className="col-sm-2 col-form-label">Senha</label>
                     <div className="col-sm-6">
-                      <input type="password" className="form-control" id="password" placeholder="*****" value={this.state.password} onChange={this.handleInput.bind(this)}/>
+                      <input type="password" className="form-control" id="password" placeholder="*****" value={this.state.password} onChange={this.handleInput}/>
                     </div>
                   </div>
                   <div className="form-group row justify-content-sm-center">
                     <label className="col-sm-2 col-form-label">Confirmar Senha</label>
                     <div className="col-sm-6">
-                      <input type="password" className="form-control" id="confirm_password" placeholder="*****" value={this.state.confirm_password} onChange={this.handleInput.bind(this)}/>
+                      <input type="password" className="form-control" id="confirm_password" placeholder="*****" value={this.state.confirm_password} onChange={this.handleInput}/>
                     </div>
                   </div>
                 </div>
@@ -211,10 +211,10 @@ class CreateAccount extends Component {
                   <div className="form-group row justify-content-sm-center">
                     <label className="col-sm-2 col-form-label">Instagram</label>
                     <div className="col-sm-6 input-group">
-                      <input type="text" className="form-control" id="instagram" placeholder="examplo.ola" value={this.state.userName} onChange={this.handleInput.bind(this)}/>
+                      <input type="text" className="form-control" id="instagram" placeholder="examplo.ola" value={this.state.userName} onChange={this.handleInput}/>
                     </div>
                     <div className="col-sm-2">
-                      <button className="btn btn-outline-success" type="button" disabled={this.state.btnLoadingInstagram?'disbled':''} onClick={this.getInfoInstagram.bind(this)}>
+                      <button className="btn btn-outline-success" type="button" disabled={this.state.btnLoadingInstagram?'disbled':''} onClick={this.getInfoInstagram}>
                         {this.state.btnLoadingInstagram &&
                           <SemipolarSpinner size={20} color={'#4CAF50'}/>
                         }
@@ -244,7 +244,7 @@ class CreateAccount extends Component {
               </div>
 
               <div className="form-group">
-                <button type="button" className="btn btn-success" disabled={this.state.btnLoading?'disbled':''} onClick={this.createAcc.bind(this)}>
+                <button type="button" className="btn btn-success" disabled={this.state.btnLoading?'disbled':''} onClick={this.createAcc}>
                   {this.state.btnLoading &&
                     <SemipolarSpinner size={30} color="white"/>
                   }
