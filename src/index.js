@@ -11,12 +11,7 @@ import './assets/vendor/template.css';
 import './assets/vendor/animate.css';
 import './assets/main.css';
 
-console.log(process.env)
-if(process.env === 'development') {
-  firebase.initializeApp(config);
-} else {
-  firebase.initializeApp(`$AUTH`);
-}
+firebase.initializeApp(config);
 
 ReactDOM.render(
   <BrowserRouter>
