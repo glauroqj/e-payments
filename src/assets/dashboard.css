@@ -9,3 +9,7 @@
 .dashboard .dashboard_values {
   
 }
+
+.dashboard a.nav-link:hover {
+  cursor: pointer;
+}

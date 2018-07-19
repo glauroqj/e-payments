@@ -19,7 +19,8 @@ class Dashboard extends Component {
       valueSelected: '0',
       valueCustom: '',
       idSession: '',
-      radio: ''
+      radio: '',
+      paymentOptionAba: 'credit-card'
     }
   }
 
@@ -83,6 +84,13 @@ class Dashboard extends Component {
         radio: e.target.id
       })
     }
+  }
+
+  togglePaymentOptionAba = (e) => {
+    console.log(e.target)
+    this.setState({
+      paymentOptionAba: e.target.id
+    });
   }
 
   saveOptionRadio = () => {
@@ -163,23 +171,23 @@ class Dashboard extends Component {
 
               </div>
 
-              <ul className="nav nav-tabs">
+              <ul className="nav nav-pills nav-fill">
                 <li className="nav-item">
-                  <a className="nav-link active show" data-toggle="tab" href="#home">
-                    <i className="fa fa-credit-card"></i> Cartão de Crédito
+                  <a className={this.state.paymentOptionAba === 'credit-card'?'nav-link active show':'nav-link'} id="credit-card" onClick={this.togglePaymentOptionAba}>
+                    Cartão de Crédito
                   </a>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" data-toggle="tab" href="#profile">
-                     <i className="fa fa-money-bill"></i> Boleto
+                  <a className={this.state.paymentOptionAba === 'billet'?'nav-link active show':'nav-link'} id="billet" onClick={this.togglePaymentOptionAba}>
+                    Boleto
                   </a>
                 </li>
               </ul>
               <div id="myTabContent" className="tab-content box-payment">
-                <div className="tab-pane fade active show">
+                <div className={this.state.paymentOptionAba === 'credit-card'?'tab-pane fade active show':'tab-pane'}>
                   <CreditCard />  
                 </div>
-                <div className="tab-pane fade">
+                <div className={this.state.paymentOptionAba === 'billet'?'tab-pane fade active show':'tab-pane'}>
                   <p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit.</p>
                 </div>
               </div>

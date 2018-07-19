@@ -23,7 +23,7 @@ class CreditCard extends Component {
       <div className="box-payment_creditcard">
         <div className="row-fluid">
           <div className="form-horizontal">
-            <div className="form-group">
+            <div className="form-group row">
               <div id="bandeiras" className="col-sm-7 col-sm-offset-2">
               </div>
             </div>
@@ -55,52 +55,43 @@ class CreditCard extends Component {
 
             </div>
             
-            <div className="form-group col-sm-12">
-              <div className="col-sm-5 col-sm-offset-4" id="check">
-                <div className="checkbox">
-                  <input type="checkbox" name="check-titular" id="check-titular" />
-                  <label htmlFor="check-titular">
-                    Eu sou o títular do cartão
-                  </label>
+            <div className="form-group row">
+              <div className="col-sm-5">
+                <div className="custom-control custom-checkbox">
+                  <input type="checkbox" id="check-titular" name="customRadio" className="custom-control-input"/>
+                  <label className="custom-control-label" htmlFor="check-titular">Eu sou o títular do cartão</label>
                 </div>
               </div>
             </div>
 
-            <div className="form-group col-sm-12 titular">
-              <label className="col-sm-4 control-label" htmlFor="data-nascimento">Data de Nascimento:</label>
-              <div className="col-sm-8">
+            <div className="form-group row titular">
+
+              <div className="col-sm-4">
+                <label className="control-label" htmlFor="data-nascimento">Data de Nascimento:</label>
                 <input className="form-control" type="text" id="data-nascimento" name="data-nascimento" placeholder="Ex: 07/03/1808" value="" />
               </div>
-            </div>
-
-            <div className="form-group col-sm-12 titular">
-              <label className="col-sm-4 control-label" htmlFor="cpf">CPF:</label>
-              <div className="col-sm-8">
+              <div className="col-sm-4">
+                <label className="control-label" htmlFor="cpf">CPF:</label>
                 <input className="form-control" type="text" id="cpf" name="cpf" placeholder="Ex: 222.222.222-22" value="" />
               </div>
-            </div>
-
-            <div className="form-group col-sm-12 titular">
-              <label className="col-sm-4 control-label" htmlFor="telefone">Telefone:</label>
-              <div className="col-sm-8">
+              <div className="col-sm-4">
+                <label className="control-label" htmlFor="telefone">Telefone:</label>
                 <input className="form-control" type="text" id="telefone" name="telefone" placeholder="Ex: (11) 9 8765-4321" value="" />
               </div>
+
             </div>
             
-            <div className="alert alert-info alert-info-installments fade col-sm-12">Carregando...</div>
-            
-            <div className="form-group col-sm-12 vhide">
-              <label className="col-sm-4 control-label" htmlFor="parcelas">Parcelas:</label>
+            <div className="form-group row">
               <div className="col-sm-8">
+                <label className="control-label" htmlFor="parcelas">Parcelas:</label>
                 <select className="form-control" id="parcelas" name="parcelas"></select>
               </div>
             </div>
             
-            <div className="form-group col-sm-12 vhide">
-              <div className="col-sm-5 col-sm-offset-4">
-                <button type="button" id="button-confirm" className="btn btn-primary" data-loading-text="Aguarde...">
-                  <i className="fa fa-credit-card-alt"></i> 
-                  Pagar
+            <div className="form-group row">
+              <div className="col-sm-12">
+                <button type="button" id="button-confirm" className="btn btn-block btn-success">
+                  Doar
                 </button>
               </div>
             </div>
