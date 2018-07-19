@@ -12,7 +12,7 @@ class Navbar extends Component {
     return this.props.exit()
   }
 
-  menu() {
+  menu = () => {
     this.setState({
       showMenu: !this.state.showMenu
     })
@@ -22,7 +22,7 @@ class Navbar extends Component {
     return (
       <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
         <a className="navbar-brand" href="/dashboard">E-Pagamentos</a>
-        <button className="navbar-toggler" type="button" onClick={this.menu.bind(this)}>
+        <button className="navbar-toggler" type="button" onClick={this.menu}>
           <span className="navbar-toggler-icon"></span>
         </button>
 
