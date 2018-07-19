@@ -4,6 +4,7 @@ import * as firebase from 'firebase';
 import { ToastContainer, toast } from 'react-toastify';
 import {verify} from '../components/modules/verifyLogin'
 import Navbar from '../components/Navbar';
+import CreditCard from '../components/CreditCard';
 import Loader from '../components/Loader';
 
 import '../assets/dashboard.css'
@@ -17,7 +18,8 @@ class Dashboard extends Component {
       donate: ['10', '15', '20', '30', '40', '50'],
       valueSelected: '0',
       valueCustom: '',
-      idSession: ''
+      idSession: '',
+      radio: ''
     }
   }
 
@@ -28,7 +30,8 @@ class Dashboard extends Component {
       /* redirect to dashboard */
       this.setState({
         user: user,
-        loading: false
+        loading: false,
+        database: firebase.database()
       });
       return false;
     })
@@ -36,6 +39,7 @@ class Dashboard extends Component {
       console.log('Not Loged: ')
       this.props.history.push('/login');
     });
+
   }
 
   exit = () => {
@@ -73,6 +77,31 @@ class Dashboard extends Component {
         valueCustom: ''
       });
     }
+
+    if(e.target.type === 'radio') {
+      this.setState({
+        radio: e.target.id
+      })
+    }
+  }
+
+  saveOptionRadio = () => {
+    /* after donation is done, save on database preferences */
+    this.state.database.ref('users/' + this.state.user.uid).set({
+      radio: this.state.radio
+    })
+    .then(() => {
+      console.log('Saved')
+    })
+
+    /* get informations */
+    setTimeout(() => {
+      this.state.database.ref('users/' + this.state.user.uid).once('value')
+      .then((snapshot) => {
+        console.log('Get infos: ', snapshot.val())
+      })
+    }, 5000);
+
   }
 
   render() {
@@ -119,6 +148,19 @@ class Dashboard extends Component {
                     </div>
                   </li>
                 </ul>
+
+                <div className="form-group">
+                  <h6>Escolha uma das opções:</h6>
+                  <div className="custom-control custom-radio">
+                    <input type="radio" id="option1" name="customRadio" className="custom-control-input" onChange={this.updateValue} checked={this.state.radio === 'option1'?'checked':''}/>
+                    <label className="custom-control-label" htmlFor="option1">Quero apadrinhar um aluno</label>
+                  </div>
+                  <div className="custom-control custom-radio">
+                    <input type="radio" id="option2" name="customRadio" className="custom-control-input" onChange={this.updateValue} checked={this.state.radio === 'option2'?'checked':''}/>
+                    <label className="custom-control-label" htmlFor="option2">Quero ajudar a instituição</label>
+                  </div>
+                </div>
+
               </div>
 
               <ul className="nav nav-tabs">
@@ -133,20 +175,12 @@ class Dashboard extends Component {
                   </a>
                 </li>
               </ul>
-              <div id="myTabContent" className="tab-content">
-                <div className="tab-pane fade active show" id="home">
-                  <form action="https://pagseguro.uol.com.br/checkout/v2/donation.html" method="post">
-                    <input type="hidden" name="currency" value="BRL" />
-                    <input type="hidden" name="receiverEmail" value="glauro.juliani@hotmail.com" />
-                    <input type="hidden" name="iot" value="button" />
-                    <input type="image" src="https://stc.pagseguro.uol.com.br/public/img/botoes/doacoes/205x30-doar.gif" name="submit" alt="Pague com PagSeguro - é rápido, grátis e seguro!" />
-                  </form>
+              <div id="myTabContent" className="tab-content box-payment">
+                <div className="tab-pane fade active show">
+                  <CreditCard />  
                 </div>
-                <div className="tab-pane fade" id="profile">
+                <div className="tab-pane fade">
                   <p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit.</p>
-                </div>
-                <div className="tab-pane fade" id="dropdown1">
-                  <p>Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone skateboard locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid 8-bit cred pitchfork.</p>
                 </div>
               </div>
             </div>
