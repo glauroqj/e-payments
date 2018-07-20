@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-// import { SemipolarSpinner } from 'react-epic-spinners'
+import { SemipolarSpinner } from 'react-epic-spinners'
 import * as firebase from 'firebase';
 import { ToastContainer, toast } from 'react-toastify';
 import {verify} from '../components/modules/verifyLogin'
@@ -31,8 +31,7 @@ class Dashboard extends Component {
       /* redirect to dashboard */
       this.setState({
         user: user,
-        loading: false,
-        database: firebase.database()
+        loading: false
       });
       return false;
     })
@@ -94,7 +93,7 @@ class Dashboard extends Component {
 
   saveOptionRadio = () => {
     /* after donation is done, save on database preferences */
-    this.state.database.ref('users/' + this.state.user.uid).set({
+    firebase.database().ref('users/' + this.state.user.uid).set({
       radio: this.state.radio
     })
     .then(() => {
@@ -103,7 +102,7 @@ class Dashboard extends Component {
 
     /* get informations */
     setTimeout(() => {
-      this.state.database.ref('users/' + this.state.user.uid).once('value')
+      firebase.database().ref('users/' + this.state.user.uid).once('value')
       .then((snapshot) => {
         console.log('Get infos: ', snapshot.val())
       })
