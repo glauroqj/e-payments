@@ -6,6 +6,8 @@ import {verify} from '../components/modules/verifyLogin'
 import Navbar from '../components/Navbar';
 import CreditCard from '../components/CreditCard';
 import Loader from '../components/Loader';
+import Footer from '../components/Footer';
+import CurrencyFormat from 'react-currency-format';
 
 import '../assets/dashboard.css'
 
@@ -15,8 +17,8 @@ class Dashboard extends Component {
     this.state = {
       loading: true,
       link: '/dashboard',
-      donate: ['10', '15', '20', '30', '40', '50'],
-      valueSelected: '0',
+      donate: ['10,00', '15,00', '20,00', '30,00', '40,00', '50,00'],
+      valueSelected: '',
       valueCustom: '',
       idSession: '',
       radio: 'option1',
@@ -53,24 +55,27 @@ class Dashboard extends Component {
     })
   }
 
+  customUpdateValue = (e) => {
+    console.log(e)
+    console.log('Float: ', e.floatValue)    
+
+    if(e.floatValue === 0) {
+      toast.error('O valor mínimo para doação é de R$ 1');
+      this.setState({
+        valueSelected: '',
+        valueCustom: ''
+      });
+      return false;
+    }
+
+    this.setState({
+      valueSelected: e.formattedValue,
+      valueCustom: e.formattedValue
+    });
+
+  }
+
   updateValue = (e) => {
-    if(e.target.type === 'number' && e.target.value < 150) {
-      this.setState({
-        valueSelected: e.target.value,
-        valueCustom: e.target.value
-      });
-      return false;
-    }
-
-    if(e.target.type === 'number' && e.target.value > 150) {
-      toast.error('Valor máximo para doação é de R$ 150');
-      this.setState({
-        valueSelected: '150',
-        valueCustom: '150'
-      });
-      return false;
-    }
-
     if(e.target.type === 'button') {
       this.setState({
         valueSelected: e.target.value,
@@ -146,7 +151,18 @@ class Dashboard extends Component {
                         <div className="input-group-prepend">
                           <span className="input-group-text">R$</span>
                         </div>
-                        <input type="number" placeholder="Doar outro valor" className="form-control" value={this.state.valueCustom} onChange={this.updateValue}/>
+                        {/* <input type="number" placeholder="Doar outro valor" className="form-control" value={this.state.valueCustom} onChange={this.updateValue}/> */}
+                        <CurrencyFormat
+                          className="form-control"
+                          thousandSeparator={'.'}
+                          decimalSeparator={','}
+                          decimalScale={2}
+                          fixedDecimalScale={true}
+                          placeholder={'Doar outro valor'}
+                          value={this.state.valueCustom}
+                          allowNegative={false}
+                          onValueChange={this.customUpdateValue}
+                        />
                       </div>
                     </div>
                   </li>
@@ -190,7 +206,7 @@ class Dashboard extends Component {
                 </div>
               </div>
             </div>
-
+            <Footer/>
           </div>
         }
         {/* end loading */}
