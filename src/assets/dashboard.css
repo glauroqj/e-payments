@@ -9,6 +9,15 @@
 .dashboard .dashboard_values {
   
 }
+.dashboard .dashboard_values .list-inline-item button {
+  font-size: 1.5em;
+}
+.dashboard .dashboard_values .dashboard_values_custom input {
+  font-size: 1.8em;
+}
+.dashboard .dashboard_values .dashboard_values_custom .input-group-prepend span {
+  font-size: 1.2em;
+}
 
 .dashboard a.nav-link:hover {
   cursor: pointer;
@@ -19,6 +28,7 @@
 }
 .dashboard .box-payment_title .nav-item {
   background-color: #f5f5f5;
+  font-size: 1.5em;
 }
 .dashboard .custom-control label:hover {
   cursor: pointer;

@@ -140,16 +140,13 @@ class Dashboard extends Component {
                       </React.Fragment>
                     )
                   })}
-                  <li className="list-inline-item">
+                  <li className="list-inline-item dashboard_values_custom">
                     <div className="form-group">
-                      <label className="control-label">Outro valor</label>
-                      <div className="form-group">
-                        <div className="input-group mb-3">
-                          <div className="input-group-prepend">
-                            <span className="input-group-text">R$</span>
-                          </div>
-                          <input type="number" className="form-control" value={this.state.valueCustom} onChange={this.updateValue}/>
+                      <div className="input-group">
+                        <div className="input-group-prepend">
+                          <span className="input-group-text">R$</span>
                         </div>
+                        <input type="number" placeholder="Doar outro valor" className="form-control" value={this.state.valueCustom} onChange={this.updateValue}/>
                       </div>
                     </div>
                   </li>
