@@ -169,7 +169,7 @@ class CreateAccount extends Component {
     return (
       <div className="createAcc container">
         {this.state.loading &&
-          <Loader text="Carregando Criar Conta" color="#686de0"/>
+          <Loader text="Carregando Criar Conta" color="#3e5472"/>
         }
         {!this.state.loading &&
           <div>

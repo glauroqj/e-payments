@@ -119,7 +119,7 @@ class Dashboard extends Component {
     return (
       <div className="dashboard">
         {this.state.loading &&
-          <Loader text="Carregando Dashboard" color="#686de0"/>
+          <Loader text="Carregando Dashboard" color="#3e5472"/>
         }
         {!this.state.loading &&
           <div>

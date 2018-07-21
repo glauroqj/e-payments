@@ -83,7 +83,7 @@ class ForgotPassword extends Component {
     return (
       <div className="forgotPassword container">
         {(this.state.loading && !this.state.emailSended) &&
-          <Loader text="Carregando Resetar Senha" color="#686de0"/>
+          <Loader text="Carregando Resetar Senha" color="#3e5472"/>
         }
         {(!this.state.loading && !this.state.emailSended) &&
           <div>

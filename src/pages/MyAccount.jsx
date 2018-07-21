@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import * as firebase from 'firebase';
+import * as moment from 'moment';
+import 'moment/locale/pt-br';
 import { ToastContainer, toast } from 'react-toastify';
 import {verify} from '../components/modules/verifyLogin'
 
@@ -144,16 +146,13 @@ class MyAccount extends Component {
     return (
       <div className="myAccount">
         {this.state.loading &&
-          <Loader text="Carregando Minha Conta" color="#686de0"/>
+          <Loader text="Carregando Minha Conta" color="#3e5472"/>
         }
         {!this.state.loading &&
           <div>
             <ToastContainer autoClose={5000} hideProgressBar={true} position="top-right"/>
             <Navbar exit={this.exit} link={this.state.link} user={this.state.user}/>
             <div className="container">
-              <div className="myAccount_title">
-                <h2>Configure sua conta</h2>
-              </div>
               <div className="myAccount_box row">
                 <div className="col-sm-4">
                   <div className="card mb-3">
@@ -239,7 +238,7 @@ class MyAccount extends Component {
                       </li>
                     </ul>
                     <div className="card-footer text-muted">
-                      {this.state.user.metadata.creationTime}
+                      {moment(this.state.user.metadata.creationTime).format('LLLL')}
                     </div>
                   </div>
                 </div>
