@@ -18,6 +18,22 @@
 .dashboard .dashboard_values .dashboard_values_custom .input-group-prepend span {
   font-size: 1.2em;
 }
+.dashboard .dashboard_values .options-choice {
+  margin: 25px 0px;
+}
+.dashboard .dashboard_values .options-choice .list-inline-item {
+  font-size: 1.2em;
+  -webkit-transition: all 0.5s ease-out;
+	-moz-transition: all 0.5s ease-out;
+	-o-transition: all 0.5s ease-out;
+	transition: all 0.5s ease-out;
+}
+.dashboard .dashboard_values .options-choice .list-inline-item > .active {
+  font-weight: 600;
+}
+.dashboard .dashboard_values .options-choice .list-inline-item label {
+
+}
 
 .dashboard a.nav-link:hover {
   cursor: pointer;

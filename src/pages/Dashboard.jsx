@@ -126,10 +126,6 @@ class Dashboard extends Component {
             <ToastContainer autoClose={5000} hideProgressBar={true} position="top-right"/>
             <Navbar exit={this.exit} link={this.state.link} user={this.state.user}/>
             <div className="container">
-              <div className="dashboard_title">
-                <h2>Doando agora você ajudar muitas pessoas!</h2>
-              </div>
-
               <div className="dashboard_values">
                 <h3>R$ {this.state.valueSelected}</h3>
                 <ul className="list-inline">
@@ -168,16 +164,26 @@ class Dashboard extends Component {
                   </li>
                 </ul>
 
-                <div className="form-group">
-                  <h6>Escolha uma das opções:</h6>
-                  <div className="custom-control custom-radio">
-                    <input type="radio" id="option1" name="customRadio" className="custom-control-input" onChange={this.updateValue} checked={this.state.radio === 'option1'?'checked':''}/>
-                    <label className="custom-control-label" htmlFor="option1">Quero apadrinhar um aluno</label>
-                  </div>
-                  <div className="custom-control custom-radio">
-                    <input type="radio" id="option2" name="customRadio" className="custom-control-input" onChange={this.updateValue} checked={this.state.radio === 'option2'?'checked':''}/>
-                    <label className="custom-control-label" htmlFor="option2">Quero ajudar a instituição</label>
-                  </div>
+                <div className="options-choice">
+                  <h4>Escolha uma das opções:</h4>
+                  <ul className="list-inline">
+                    <li className="list-inline-item">
+                      <div className={this.state.radio === 'option1'?'custom-control custom-radio active':'custom-control custom-radio'}>
+                        <input type="radio" id="option1" name="customRadio" className="custom-control-input" onChange={this.updateValue} checked={this.state.radio === 'option1'?'checked':''}/>
+                        <label className="custom-control-label" htmlFor="option1">
+                          <i className="fas fa-user-graduate"/> Quero apadrinhar um aluno
+                        </label>
+                      </div>
+                    </li>
+                    <li className="list-inline-item">
+                      <div className={this.state.radio === 'option2'?'custom-control custom-radio active':'custom-control custom-radio'}>
+                        <input type="radio" id="option2" name="customRadio" className="custom-control-input" onChange={this.updateValue} checked={this.state.radio === 'option2'?'checked':''}/>
+                        <label className="custom-control-label" htmlFor="option2">
+                          <i className="fas fa-university"/> Quero ajudar a instituição
+                        </label>
+                      </div>
+                    </li>
+                  </ul>
                 </div>
 
               </div>

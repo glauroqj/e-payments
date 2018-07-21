@@ -25,6 +25,11 @@ describe('Navbar component', () => {
     let component = mount(<Navbar link={link} user={user}/>);
     expect(component.props().link).to.equal('/dashboard');
   });
+  it('Click on exit button', () => {
+    let exitCallback = jest.fn();
+    let component = shallow(<Navbar exit={exitCallback} link={link} user={user}/>);
+    component.instance().exit();
+  });
   it('Click on menu button', () => {
     let component = mount(<Navbar link={link} user={user}/>);
     expect(component.find('button').simulate('click'))
