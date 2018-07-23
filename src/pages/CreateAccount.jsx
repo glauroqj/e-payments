@@ -5,6 +5,7 @@ import { SemipolarSpinner } from 'react-epic-spinners'
 import { ToastContainer, toast } from 'react-toastify';
 import {verify} from '../components/modules/verifyLogin'
 import Loader from '../components/Loader';
+import Logo from '../components/Logo';
 
 import 'react-toastify/dist/ReactToastify.css';
 import '../assets/createAcc.css'
@@ -172,8 +173,9 @@ class CreateAccount extends Component {
           <Loader text="Carregando Criar Conta" color="#3e5472"/>
         }
         {!this.state.loading &&
-          <div>
+          <div className="animated fadeIn">
             <ToastContainer autoClose={5000} hideProgressBar={true} position="top-right"/>
+            <Logo />
             <h5 className="createAcc_title">Criar Conta!</h5>
             <form action="" className="createAcc_form"
                 onKeyDown={
@@ -244,6 +246,7 @@ class CreateAccount extends Component {
               </div>
 
               <div className="form-group">
+                <a href="/login" className="btn btn-link">Voltar</a>
                 <button type="button" className="btn btn-success" disabled={this.state.btnLoading?'disbled':''} onClick={this.createAcc}>
                   {this.state.btnLoading &&
                     <SemipolarSpinner size={30} color="white"/>

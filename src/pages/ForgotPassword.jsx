@@ -4,6 +4,7 @@ import { SemipolarSpinner } from 'react-epic-spinners'
 import { ToastContainer, toast } from 'react-toastify';
 import {verify} from '../components/modules/verifyLogin'
 import Loader from '../components/Loader';
+import Logo from '../components/Logo';
 
 import '../assets/forgot-password.css'
 
@@ -81,13 +82,14 @@ class ForgotPassword extends Component {
 
   render() {
     return (
-      <div className="forgotPassword container">
+      <div className="forgotPassword container animated fadeIn">
         {(this.state.loading && !this.state.emailSended) &&
           <Loader text="Carregando Resetar Senha" color="#3e5472"/>
         }
         {(!this.state.loading && !this.state.emailSended) &&
-          <div>
+          <div className="animated fadeIn">
             <ToastContainer autoClose={5000} hideProgressBar={true} position="top-right"/>
+            <Logo />
             <h5 className="forgotPassword_title">Esqueci minha senha!</h5>
             <h6>Forneça seu e-mail válido, para resetar sua senha.</h6>
               <form action="" className="forgotPassword_form"
@@ -107,6 +109,7 @@ class ForgotPassword extends Component {
                   </div>
                 </div>
                 <div className="form-group">
+                  <a href="/login" className="btn btn-link">Voltar</a>
                   <button type="submit" className="btn btn-primary" disabled={this.state.btnLoading?'disbled':''} onClick={this.submit}>
                     {this.state.btnLoading &&
                       <SemipolarSpinner size={30} color="white"/>
