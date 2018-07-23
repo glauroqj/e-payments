@@ -4,6 +4,7 @@ import { SemipolarSpinner } from 'react-epic-spinners'
 import { ToastContainer, toast } from 'react-toastify';
 import {verify} from '../components/modules/verifyLogin'
 import Loader from '../components/Loader';
+import Logo from '../components/Logo'
 
 import '../assets/login.css'
 
@@ -96,11 +97,12 @@ class Login extends Component {
     return (
       <div className="login container">
         {this.state.loading &&
-          <Loader text="Carregando Login" color="#686de0"/>
+          <Loader text="Carregando Login" color="#3e5472"/>
         }
         {!this.state.loading &&
-          <div>
+          <div className="animated fadeIn">
             <ToastContainer autoClose={5000} hideProgressBar={true} position="top-right"/>
+            <Logo />
             <h5 className="login_title">Faça Login!</h5>
               <form action="" className="login_form"
                     onKeyDown={
@@ -112,31 +114,31 @@ class Login extends Component {
                       }
                     }
               >
-                <div className="form-group row justify-content-sm-center">
-                  <label className="col-sm-2 col-form-label">Email</label>
-                  <div className="col-sm-6">
-                    <input type="text" className="form-control" id="email" placeholder="email@example.com" value={this.state.email} onChange={this.handleInput}/>
-                  </div>
+              <div className="form-group row justify-content-sm-center">
+                <label className="col-sm-2 col-form-label">Email</label>
+                <div className="col-sm-6">
+                  <input type="text" className="form-control" id="email" placeholder="email@example.com" value={this.state.email} onChange={this.handleInput}/>
                 </div>
-                <div className="form-group row justify-content-sm-center">
-                  <label className="col-sm-2 col-form-label">Senha</label>
-                  <div className="col-sm-6">
-                    <input type="password" className="form-control" id="password" placeholder="*****" value={this.state.password} onChange={this.handleInput}/>
-                  </div>
-                </div>
-                <div className="form-group">
-                  <button type="submit" className="btn btn-primary" disabled={this.state.btnLoading?'disbled':''} onClick={this.submit}>
-                    {this.state.btnLoading &&
-                      <SemipolarSpinner size={30} color="white"/>
-                    }
-                    <div>{this.state.btnText}</div>
-                  </button>
-                </div>
-              </form>
-              <div className="form-group justify-content-sm-left">
-                <button type="button" className="btn btn-link" onClick={this.createAcc}>Não tenho conta. Criar conta.</button>
-                <button type="button" className="btn btn-link" onClick={this.forgotPass}>Esqueci minha senha!</button>
               </div>
+              <div className="form-group row justify-content-sm-center">
+                <label className="col-sm-2 col-form-label">Senha</label>
+                <div className="col-sm-6">
+                  <input type="password" className="form-control" id="password" placeholder="*****" value={this.state.password} onChange={this.handleInput}/>
+                </div>
+              </div>
+              <div className="form-group">
+                <button type="submit" className="btn btn-primary" disabled={this.state.btnLoading?'disbled':''} onClick={this.submit}>
+                  {this.state.btnLoading &&
+                    <SemipolarSpinner size={30} color="white"/>
+                  }
+                  <div>{this.state.btnText}</div>
+                </button>
+              </div>
+            </form>
+            <div className="form-group justify-content-sm-left">
+              <button type="button" className="btn btn-link" onClick={this.createAcc}>Não tenho conta. Criar conta.</button>
+              <button type="button" className="btn btn-link" onClick={this.forgotPass}>Esqueci minha senha!</button>
+            </div>
           </div>
         }
       </div>

@@ -119,10 +119,10 @@ class Dashboard extends Component {
     return (
       <div className="dashboard">
         {this.state.loading &&
-          <Loader text="Carregando Dashboard" color="#686de0"/>
+          <Loader text="Carregando Dashboard" color="#3e5472"/>
         }
         {!this.state.loading &&
-          <div>
+          <div className="animated fadeIn">
             <ToastContainer autoClose={5000} hideProgressBar={true} position="top-right"/>
             <Navbar exit={this.exit} link={this.state.link} user={this.state.user}/>
             <div className="container">

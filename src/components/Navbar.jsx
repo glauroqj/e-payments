@@ -20,8 +20,8 @@ class Navbar extends Component {
 
   render() {
     return (
-      <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
-        <a className="navbar-brand" href="/dashboard">Equale Pagamentos</a>
+      <nav className="navbar navbar-expand-lg navbar-dark">
+        <a className="navbar-brand" href="/dashboard">Equale Doações</a>
         <button className="navbar-toggler" type="button" onClick={this.menu}>
           <span className="navbar-toggler-icon"></span>
         </button>
@@ -33,7 +33,7 @@ class Navbar extends Component {
                 <div className="name">{this.props.user.displayName}</div>
             </li>
             <li className={this.props.link === '/dashboard'?'nav-item active':'nav-item'}>
-              <a className="nav-link" href="/dashboard">Doações</a>
+              <a className="nav-link" href="/dashboard">Quero Doar</a>
             </li>
             <li className={this.props.link === '/my-account'?'nav-item active':'nav-item'}>
               <a className="nav-link" href="/my-account">Minha Conta</a>
