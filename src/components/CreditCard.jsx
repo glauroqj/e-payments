@@ -33,14 +33,13 @@ class CreditCard extends Component {
 
   validate = (e) => {
     console.log(e)
-    let inputs = document.querySelectorAll('input')
-    let array = [];
+    let inputs = document.querySelectorAll('input');
+    let obj = {};
     for (let i = 0; i < inputs.length; i++ ) {
       if(this.state.requiredField.indexOf(inputs[i].name) > -1 && inputs[i].value === '') {
-        console.log(inputs[i])
-        array.push(inputs[i].name)
+        obj[inputs[i].name] = inputs[i].name
         this.setState({
-          errorBag: array
+          errorBag: obj
         })
       }
     }
