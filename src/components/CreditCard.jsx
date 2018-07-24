@@ -67,12 +67,12 @@ class CreditCard extends Component {
                     </div>
                   </div>
 
-                  <div className="form-group row has-danger">
+                  <div className={this.state.errorBag['name']?'form-group row has-danger':'form-group row'}>
                     <div className="col-sm-6">
                       <label className="control-label" htmlFor="nome">Seu nome como aparece no cartão:</label>
                       <input className="form-control is-invalid" type="text" id="nome" name="name" placeholder="Ex: Valdeir Santana" onChange={this.updateValue} />
-                      {this.errorBag &&
-                        <div class="invalid-feedback">Campo Obrigatório</div>
+                      {this.state.errorBag['name'] &&
+                        <div className="invalid-feedback">Campo Obrigatório</div>
                       }
                     </div>
                   </div>
