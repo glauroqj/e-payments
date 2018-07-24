@@ -34,7 +34,8 @@ input[type=number]:focus, [type=text].form-control:focus,
  }
 
  .navbar .profile {
-	 height: 45px;
+	 height: auto;
+	 position: relative;
  }
 
 .navbar .profile a {
@@ -42,14 +43,19 @@ input[type=number]:focus, [type=text].form-control:focus,
 }
 .navbar .profile .photo {
 	padding: 0px;
-	margin-bottom: -15px;
 }
 .navbar .profile .photo img {
 	width: 25%;
   border-radius: 50%;
 }
+.navbar .profile .photo + .name {
+	position: absolute;
+  right: 0;
+  left: 0;
+  padding: 0px;
+}
 .navbar .profile .name {
-	color: #fff;
+	color: var(--green);
 	font-weight: 900;
 }
 
