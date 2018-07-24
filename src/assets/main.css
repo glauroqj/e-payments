@@ -33,17 +33,24 @@ input[type=number]:focus, [type=text].form-control:focus,
 	cursor: pointer;
  }
 
-.navbar .profile {
+ .navbar .profile {
+	 height: 45px;
+ }
+
+.navbar .profile a {
 	text-align: center;
 }
-
-.navbar .profile img {
+.navbar .profile .photo {
+	padding: 0px;
+	margin-bottom: -15px;
+}
+.navbar .profile .photo img {
 	width: 25%;
   border-radius: 50%;
 }
 .navbar .profile .name {
 	color: #fff;
-	font-size: 12px;
+	font-weight: 900;
 }
 
 .logo {

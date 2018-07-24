@@ -121,7 +121,7 @@ class ForgotPassword extends Component {
           </div>
         }
         {this.state.emailSended && 
-          <h2>Email enviado! Em poucos instantes verifique sem e-mail para resetar sua senha!</h2>
+          <h2>Email enviado! Em poucos instantes verifique seu e-mail para resetar sua senha!</h2>
         }
       </div>
     );
