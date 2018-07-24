@@ -43,6 +43,11 @@ class Dashboard extends Component {
     });
 
   }
+  getInitialState() {
+    return {
+      
+    };
+  }
 
   exit = () => {
     console.log('Deslogar')
@@ -205,7 +210,7 @@ class Dashboard extends Component {
 
               <div id="myTabContent" className="tab-content box-payment">
                 <div className={this.state.paymentOptionAba === 'credit-card'?'tab-pane animated fadeIn active show':'tab-pane'}>
-                  <CreditCard />  
+                  <CreditCard totalValue={this.state.valueSelected != ''?this.state.valueSelected:this.state.valueCustom}/>  
                 </div>
                 <div className={this.state.paymentOptionAba === 'billet'?'tab-pane animated fadeIn active show':'tab-pane'}>
                   <p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit.</p>
