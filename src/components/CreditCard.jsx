@@ -20,14 +20,18 @@ class CreditCard extends Component {
   }
 
   updateValue = (e) => {
-    console.log(e.target.name)
-    // if(e.target.value === 'name') {
-    //   this.setState({
-    //     cardCredit: {
-    //       name: e.target.name
-    //     }
-    //   })
-    // }
+    let cardCredit = this.state.cardCredit;
+    if(e.target.name === 'name') {
+      cardCredit.name = e.target.value;
+      this.setState({cardCredit});
+      return false;
+    }
+
+    if(e.target.name === 'cardNumber') {
+      cardCredit.cardNumber = e.target.value;
+      this.setState({cardCredit});
+      return false;
+    }
 
   }
 
@@ -67,11 +71,11 @@ class CreditCard extends Component {
                     </div>
                   </div>
 
-                  <div className={this.state.errorBag['name']?'form-group row has-danger':'form-group row'}>
+                  <div className={this.state.errorBag['name'] && this.state.cardCredit.name === '' ?'form-group row has-danger':'form-group row'}>
                     <div className="col-sm-6">
                       <label className="control-label" htmlFor="nome">Seu nome como aparece no cartão:</label>
-                      <input className="form-control is-invalid" type="text" id="nome" name="name" placeholder="Ex: Valdeir Santana" onChange={this.updateValue} />
-                      {this.state.errorBag['name'] &&
+                      <input className={this.state.errorBag['name'] && this.state.cardCredit.name === '' ?'form-control is-invalid':'form-control'} type="text" id="nome" name="name" placeholder="Ex: Valdeir Santana" onChange={this.updateValue} />
+                      {(this.state.errorBag['name'] && this.state.cardCredit.name === '') &&
                         <div className="invalid-feedback">Campo Obrigatório</div>
                       }
                     </div>
@@ -79,9 +83,12 @@ class CreditCard extends Component {
                   
                   <div className="form-group row">
 
-                    <div className="col-sm-6">
+                    <div className={this.state.errorBag['cardNumber'] && this.state.cardCredit.cardNumber === '' ?'col-sm-6 has-danger':'col-sm-6'}>
                       <label className="control-label" htmlFor="numero-cartao">Número do cartão:</label>
-                      <input className="form-control" type="text" id="numero-cartao" name="cardNumber" />
+                      <input className={this.state.errorBag['cardNumber'] && this.state.cardCredit.cardNumber === '' ?'form-control is-invalid':'form-control'} type="text" id="numero-cartao" name="cardNumber" onChange={this.updateValue} />
+                      {(this.state.errorBag['cardNumber'] && this.state.cardCredit.cardNumber === '') &&
+                        <div className="invalid-feedback">Campo Obrigatório</div>
+                      }
                     </div>
 
                     <div className="col-sm-3">
