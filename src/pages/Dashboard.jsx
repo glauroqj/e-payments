@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { SemipolarSpinner } from 'react-epic-spinners'
+// import { SemipolarSpinner } from 'react-epic-spinners'
 import * as firebase from 'firebase';
 import { ToastContainer, toast } from 'react-toastify';
 import {verify} from '../components/modules/verifyLogin'
@@ -152,7 +152,6 @@ class Dashboard extends Component {
                         <div className="input-group-prepend">
                           <span className="input-group-text">R$</span>
                         </div>
-                        {/* <input type="number" placeholder="Doar outro valor" className="form-control" value={this.state.valueCustom} onChange={this.updateValue}/> */}
                         <CurrencyFormat
                           className="form-control"
                           thousandSeparator={'.'}

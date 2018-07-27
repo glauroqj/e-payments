@@ -158,7 +158,7 @@ class MyAccount extends Component {
                   <div className="card mb-3">
                     <h3 className="card-header">Dados da Conta</h3>
                     {this.state.user.photoURL &&
-                      <img className="img-responsive" src={this.state.user.photoURL} alt="Profile Photo"/>
+                      <img className="img-responsive" src={this.state.user.photoURL} alt=""/>
                     }
                     <ul className="list-group list-group-flush">
                       <li className="list-group-item">
