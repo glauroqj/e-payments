@@ -1,6 +1,5 @@
 {
   "projects": {
-    "default": "doacoes-equale",
-    "doacoes-equale": "doacoes-equale"
+    "default": "doacoes-equale"
   }
 }
