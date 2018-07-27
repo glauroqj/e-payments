@@ -5,8 +5,6 @@ jobs:
       - image: node:10.5.0
     working_directory: ~/e-payments
     steps:
-      - run: apt-get update
-      - run: apt-get install -y sudo
       - checkout
       - run: npm install firebase-tools
       - run: npm install
