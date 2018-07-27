@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "e-payments-5149a"
+    "default": "doacoes-equale",
+    "doacoes-equale": "doacoes-equale"
   }
 }

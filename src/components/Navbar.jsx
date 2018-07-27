@@ -29,8 +29,14 @@ class Navbar extends Component {
         <div className={this.state.showMenu?'collapse navbar-collapse show animated fadeIn':'collapse navbar-collapse'}>
           <ul className="navbar-nav ml-auto">
             <li className="nav-item profile">
-                <img src={this.props.user.photoURL} alt=""/>
-                <div className="name">{this.props.user.displayName}</div>
+              {this.props.user.photoURL &&
+                <a className="nav-link photo">
+                    <img src={this.props.user.photoURL} alt=""/>
+                </a>
+              }
+              <a className="nav-link name">
+                {this.props.user.displayName}
+              </a>
             </li>
             <li className={this.props.link === '/dashboard'?'nav-item active':'nav-item'}>
               <a className="nav-link" href="/dashboard">Quero Doar</a>

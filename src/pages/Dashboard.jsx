@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { SemipolarSpinner } from 'react-epic-spinners'
+// import { SemipolarSpinner } from 'react-epic-spinners'
 import * as firebase from 'firebase';
 import { ToastContainer, toast } from 'react-toastify';
 import {verify} from '../components/modules/verifyLogin'
@@ -42,6 +42,11 @@ class Dashboard extends Component {
       this.props.history.push('/login');
     });
 
+  }
+  getInitialState() {
+    return {
+      
+    };
   }
 
   exit = () => {
@@ -147,7 +152,6 @@ class Dashboard extends Component {
                         <div className="input-group-prepend">
                           <span className="input-group-text">R$</span>
                         </div>
-                        {/* <input type="number" placeholder="Doar outro valor" className="form-control" value={this.state.valueCustom} onChange={this.updateValue}/> */}
                         <CurrencyFormat
                           className="form-control"
                           thousandSeparator={'.'}
@@ -205,7 +209,7 @@ class Dashboard extends Component {
 
               <div id="myTabContent" className="tab-content box-payment">
                 <div className={this.state.paymentOptionAba === 'credit-card'?'tab-pane animated fadeIn active show':'tab-pane'}>
-                  <CreditCard />  
+                  <CreditCard totalValue={this.state.valueSelected !== ''?this.state.valueSelected:this.state.valueCustom}/>  
                 </div>
                 <div className={this.state.paymentOptionAba === 'billet'?'tab-pane animated fadeIn active show':'tab-pane'}>
                   <p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit.</p>

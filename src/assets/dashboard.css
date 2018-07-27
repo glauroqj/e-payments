@@ -49,3 +49,22 @@
 .dashboard .custom-control label:hover {
   cursor: pointer;
 }
+
+.dashboard .btn-donation {
+  font-size: 2.0em;
+}
+.dashboard .btn-donation span {
+  font-weight: 900;
+  padding-left: 10px;
+}
+
+/* credit card component */
+
+.box-payment_creditcard {
+
+}
+
+.box-payment_creditcard .form-group .control-label {
+  font-weight: 500;
+  font-size: 1.2rem;
+}
