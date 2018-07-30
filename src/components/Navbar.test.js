@@ -36,6 +36,10 @@ describe('Navbar component', () => {
   });
   it('Quantity menu options', () => {
     let component = shallow(<Navbar link={link} user={user}/>);
-    expect(component.find('a.nav-link')).to.have.length(3)
+    expect(component.find('a.nav-link')).to.have.length(5)
+  });
+  it('Show menu', () => {
+    let component = shallow(<Navbar link={link} user={user}/>);
+    component.instance().menu();
   });
 });
