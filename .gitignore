@@ -4,10 +4,12 @@
 /node_modules
 
 # production
-build/asset-manifest.json
-build/static/js/*.js.map
+
+/build/static/js/*.js.map
+/build/asset-manifest.json
 
 /src/auth.js
+
 
 # coverage
 .coveralls.yml
