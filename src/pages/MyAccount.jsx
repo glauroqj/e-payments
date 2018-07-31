@@ -7,6 +7,7 @@ import {verify} from '../components/modules/verifyLogin'
 
 import Navbar from '../components/Navbar';
 import Loader from '../components/Loader';
+import UpdateInformation from '../components/modules/updateInformation';
 
 import '../assets/my-account.css'
 
@@ -44,7 +45,6 @@ class MyAccount extends Component {
   }
 
   exit = () => {
-    console.log('Deslogar')
     firebase.auth().signOut()
     .then((success) => {
       this.props.history.push('/login');
@@ -68,25 +68,28 @@ class MyAccount extends Component {
   }
 
   editInfo = (type) => (e) => {
-    console.log(type, e)
     if(type === 'name') {
       this.setState({
         editName: '',
-        showTemplateName: true
+        showTemplateName: this.state.showTemplateName?false:true
       });
       return false;
     }
     if(type === 'email') {
       this.setState({
         editEmail: '',
-        showTemplateEmail: true
+        showTemplateEmail: this.state.showTemplateEmail?false:true
       });
     }
   }
 
   saveInfo = (type) => (e) => {
-    console.log('SAVE', type, e)
     e.preventDefault();
+    if(!this.validate()) {
+      console.log( 'ALGO ERRADO' )
+      return false;
+    }
+
     if(type === 'name') {
       this.state.user.updateProfile({
         displayName: this.state.editName,
@@ -112,6 +115,41 @@ class MyAccount extends Component {
       })
       .catch((error) => {});
     }
+  }
+
+  validate() {
+    let verifyEmail = /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}/igm;
+    if(this.state.editName === '' && this.state.showTemplateName) {
+      toast.error('O nome não pode ficar vazio!')
+      return false;
+    }
+    if(this.state.editName === this.state.user.displayName) {
+      toast.error('O nome é identico ao atual!')
+      this.setState({
+        editName: ''
+      });
+      return false;
+    }
+    if(this.state.editEmail === '' && this.state.showTemplateEmail) {
+      toast.error('O e-mail não pode ficar vazio!')
+      return false;
+    }
+    if(this.state.editEmail === this.state.user.email) {
+      toast.error('O e-mail é identico ao atual!')
+      this.setState({
+        editEmail: ''
+      });
+      return false;
+    }
+    if(!verifyEmail.test(this.state.editEmail) && this.state.showTemplateEmail) {
+      toast.error('E-mail inválido!')
+      this.setState({
+        editEmail: ''
+      });
+      return false;
+    }
+
+    return true;
   }
 
   reloadState() {
@@ -169,23 +207,14 @@ class MyAccount extends Component {
                         <h5 className="card-title">Nome</h5>
                         <h6 className="card-subtitle text-muted">{this.state.user.displayName}</h6>
                         {this.state.showTemplateName &&
-                          <form action=""
-                            onKeyDown={
-                              (e) => {
-                                    if (e.key === 'Enter') {
-                                      console.log('ENTER')
-                                      this.saveInfo('name')
-                                    }
-                                }
-                            }
-                          >
-                            <div className="input-group myAccount_box_template animated fadeIn">
-                              <input type="text" id="name" className="form-control" value={this.state.editName} onChange={this.updateInput}/>
-                              <div className="input-group-append">
-                                <button className="btn btn-outline-success btn-xs save" type="submit" id="name" onClick={this.saveInfo('name')}><i className="fa fa-check"/></button>
-                              </div>
-                            </div>
-                          </form>
+                          <UpdateInformation 
+                            fieldName={'name'}
+                            type={'text'}
+                            updateInput={this.updateInput}
+                            save={this.saveInfo}
+                            cancel={this.editInfo}
+                            value={this.state.editName}
+                          />
                         }
                         {!this.state.showTemplateName &&
                           <button className="btn btn-warning btn-xs edit" id="name" onClick={this.editInfo('name')}><i className="fa fa-user-edit"></i></button>
@@ -196,23 +225,14 @@ class MyAccount extends Component {
                           <h5 className="card-title">Email</h5>
                           <h6 className="card-subtitle text-muted">{this.state.user.email}</h6>
                           {this.state.showTemplateEmail &&
-                            <form action=""
-                              onKeyDown={
-                                (e) => {
-                                      if (e.key === 'Enter') {
-                                        console.log('ENTER')
-                                        this.saveInfo('email')
-                                      }
-                                  }
-                              }
-                            >
-                              <div className="input-group myAccount_box_template animated fadeIn">
-                                <input type="text" id="email" className="form-control" value={this.state.editEmail} onChange={this.updateInput}/>
-                                <div className="input-group-append">
-                                  <button className="btn btn-outline-success btn-xs save" type="submit" id="email" onClick={this.saveInfo('email')}><i className="fa fa-check"/></button>
-                                </div>
-                              </div>
-                            </form>
+                            <UpdateInformation 
+                              fieldName={'email'}
+                              type={'email'}
+                              updateInput={this.updateInput}
+                              save={this.saveInfo}
+                              cancel={this.editInfo}
+                              value={this.state.editEmail}
+                            />
                           }
                           {!this.state.showTemplateEmail &&
                             <button className="btn btn-warning btn-xs edit" id="name" onClick={this.editInfo('email')}><i className="fa fa-user-edit"></i></button>
