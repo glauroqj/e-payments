@@ -106,8 +106,16 @@ class CreateAccount extends Component {
   }
   
   createAcc = (e) => {
+    let verifyEmail = /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}/igm;
     e.preventDefault();
     let data = this.state;
+    if( !verifyEmail.test(this.state.email) ) {
+      toast.error('E-mail inválido!')
+      this.setState({
+        email: ''
+      })
+      return false;
+    }
     if(this.state.email === '' || this.state.password === '') {
       toast.error('Campos vazios')
       return false;
@@ -116,6 +124,7 @@ class CreateAccount extends Component {
       toast.error('As senhas precisam ser identicas')
       return false;
     }
+
     this.setState({
       btnLoading: true,
       btnText: 'Criando Conta...'

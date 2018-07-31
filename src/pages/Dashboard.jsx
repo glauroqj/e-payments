@@ -44,11 +44,6 @@ class Dashboard extends Component {
     });
 
   }
-  getInitialState() {
-    return {
-      
-    };
-  }
 
   exit = () => {
     console.log('Deslogar')
@@ -158,6 +153,7 @@ class Dashboard extends Component {
                           thousandSeparator={'.'}
                           decimalSeparator={','}
                           decimalScale={2}
+                          type={'tel'}
                           fixedDecimalScale={true}
                           placeholder={'Doar outro valor'}
                           value={this.state.valueCustom}

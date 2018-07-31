@@ -20,7 +20,7 @@
 }
 
 .myAccount .myAccount_box_template input {
-  margin-right: 20px;
+  margin-right: 60px;
 }
 
 .myAccount .myAccount_box_edit button.edit {
@@ -31,10 +31,24 @@
   top: 10px;
 }
 
-.myAccount .myAccount_box_edit button.save {
+.myAccount .myAccount_box_template button.save {
   padding: 5px;
+  font-size: 12px;
+  position: absolute;
+  right: 30px;
+  bottom: 10px;
+}
+.myAccount .myAccount_box_template button.cancel {
+  padding: 5px 7px;
   font-size: 12px;
   position: absolute;
   right: 0;
   bottom: 10px;
+}
+.myAccount .myAccount_box_template .btn-loading {
+  margin-left: -60px;
+  height: 0px;
+}
+.myAccount .myAccount_box_template .btn-loading:hover {
+  cursor: wait;
 }
