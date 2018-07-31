@@ -23,7 +23,8 @@ class MyAccount extends Component {
       showTemplateEmail: false,
       editName: '',
       editEmail: '',
-      emailSended: false
+      emailSended: false,
+      btnChangeLoading: false
     }
   }
 
@@ -87,8 +88,18 @@ class MyAccount extends Component {
     e.preventDefault();
     if(!this.validate()) {
       console.log( 'ALGO ERRADO' )
+      this.setState({
+        editName: '',
+        editName: '',
+        showTemplateEmail: false,
+        showTemplateName: false,
+        btnChangeLoading: false
+      });
       return false;
     }
+    this.setState({
+      btnChangeLoading: true
+    });
 
     if(type === 'name') {
       this.state.user.updateProfile({
@@ -97,9 +108,10 @@ class MyAccount extends Component {
       .then(() => {
         toast.success('Nome alterado com sucesso!');
         this.setState({
-          showTemplateName: false
+          showTemplateName: false,
+          btnChangeLoading: false
         });
-        this.reloadState()
+        this.reloadState();
       })
       .catch((error) => {});
       return false;
@@ -109,11 +121,14 @@ class MyAccount extends Component {
       .then(() => {
         toast.success('E-mail alterado com sucesso!');
         this.setState({
-          showTemplateEmail: false
+          showTemplateEmail: false,
+          btnChangeLoading: false
         });
         this.reloadState()
       })
-      .catch((error) => {});
+      .catch((error) => {
+        console.log(error)
+      });
     }
   }
 
@@ -123,7 +138,7 @@ class MyAccount extends Component {
       toast.error('O nome não pode ficar vazio!')
       return false;
     }
-    if(this.state.editName === this.state.user.displayName) {
+    if(this.state.editName === this.state.user.displayName && this.state.showTemplateName) {
       toast.error('O nome é identico ao atual!')
       this.setState({
         editName: ''
@@ -134,7 +149,7 @@ class MyAccount extends Component {
       toast.error('O e-mail não pode ficar vazio!')
       return false;
     }
-    if(this.state.editEmail === this.state.user.email) {
+    if(this.state.editEmail === this.state.user.email & this.state.showTemplateEmail) {
       toast.error('O e-mail é identico ao atual!')
       this.setState({
         editEmail: ''
@@ -214,6 +229,7 @@ class MyAccount extends Component {
                             save={this.saveInfo}
                             cancel={this.editInfo}
                             value={this.state.editName}
+                            loading={this.state.btnChangeLoading}
                           />
                         }
                         {!this.state.showTemplateName &&
@@ -232,6 +248,7 @@ class MyAccount extends Component {
                               save={this.saveInfo}
                               cancel={this.editInfo}
                               value={this.state.editEmail}
+                              loading={this.state.btnChangeLoading}
                             />
                           }
                           {!this.state.showTemplateEmail &&

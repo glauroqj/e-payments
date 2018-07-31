@@ -45,3 +45,10 @@
   right: 0;
   bottom: 10px;
 }
+.myAccount .myAccount_box_template .btn-loading {
+  margin-left: -60px;
+  height: 0px;
+}
+.myAccount .myAccount_box_template .btn-loading:hover {
+  cursor: wait;
+}
