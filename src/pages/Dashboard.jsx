@@ -5,6 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import {verify} from '../components/modules/verifyLogin'
 import Navbar from '../components/Navbar';
 import CreditCard from '../components/CreditCard';
+import Billet from '../components/Billet';
 import Loader from '../components/Loader';
 import Footer from '../components/Footer';
 import CurrencyFormat from 'react-currency-format';
@@ -212,7 +213,7 @@ class Dashboard extends Component {
                   <CreditCard totalValue={this.state.valueSelected !== ''?this.state.valueSelected:this.state.valueCustom}/>  
                 </div>
                 <div className={this.state.paymentOptionAba === 'billet'?'tab-pane animated fadeIn active show':'tab-pane'}>
-                  <p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit.</p>
+                  <Billet totalValue={this.state.valueSelected !== ''?this.state.valueSelected:this.state.valueCustom}/>
                 </div>
               </div>
             </div>
