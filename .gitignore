@@ -5,6 +5,7 @@
 
 # production
 /build/static/js/*.js.map
+/build/asset-manifest.json
 
 /src/auth.js
 
