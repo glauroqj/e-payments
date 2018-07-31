@@ -4,14 +4,14 @@
 /node_modules
 
 # production
-/build/static/js/*.js.map
-/build/asset-manifest.json
+build/static/js/*.js.map
+build/asset-manifest.json
 
-/src/auth.js
+src/auth.js
 
 # coverage
 .coveralls.yml
-/coverage
+coverage
 
 # misc
 .DS_Store
