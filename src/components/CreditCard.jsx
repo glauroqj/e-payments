@@ -129,7 +129,7 @@ class CreditCard extends Component {
                   
                   <div className="form-group row">
 
-                    <div className={(this.state.errorBag['cardNumber'] && this.state.cardCredit.cardNumber === '') || (this.state.errorBag.invalidCardNumber && this.state.cardCredit.cardNumber.length < 16) ?'col-sm-6 has-danger':'col-sm-6'}>
+                    <div className={(this.state.errorBag['cardNumber'] && this.state.cardCredit.cardNumber === '') || (this.state.errorBag.invalidCardNumber && this.state.cardCredit.cardNumber.length < 16) ?'col-sm-4 has-danger':'col-sm-4'}>
                       <label className="control-label" htmlFor="numero-cartao">Número do cartão</label>
                       <CurrencyFormat
                         className={(this.state.errorBag['cardNumber'] && this.state.cardCredit.cardNumber === '') || (this.state.errorBag.invalidCardNumber && this.state.cardCredit.cardNumber.length < 16) ?'form-control is-invalid':'form-control'}
@@ -149,7 +149,7 @@ class CreditCard extends Component {
                       }                    
                     </div>
 
-                    <div className={this.state.errorBag['validateDate'] && this.state.cardCredit.validateDate === '' ?'col-sm-3 has-danger':'col-sm-3'}>
+                    <div className={this.state.errorBag['validateDate'] && this.state.cardCredit.validateDate === '' ?'col-sm-4 has-danger':'col-sm-4'}>
                       <label className="control-label" htmlFor="validade">Validade</label>
                       <CurrencyFormat
                         className={this.state.errorBag['validateDate'] && this.state.cardCredit.validateDate === '' ?'form-control is-invalid':'form-control'}
@@ -166,7 +166,7 @@ class CreditCard extends Component {
                       }
                     </div>
 
-                    <div className="col-sm-3">
+                    <div className="col-sm-4">
                       <label className="control-label" htmlFor="cvv">Código de Segurança</label>
                       <CurrencyFormat
                         className={this.state.errorBag['cvv'] && this.state.cardCredit.cvv === '' ?'form-control is-invalid':'form-control'}

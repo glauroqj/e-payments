@@ -21,6 +21,7 @@ describe('Navbar component', () => {
     let component = mount(<Navbar user={user}/>);
     expect(component.props().user).to.equal(user);
   });
+
   it('Pass props link', () => {
     let component = mount(<Navbar link={link} user={user}/>);
     expect(component.props().link).to.equal('/dashboard');
@@ -41,5 +42,9 @@ describe('Navbar component', () => {
   it('Show menu', () => {
     let component = shallow(<Navbar link={link} user={user}/>);
     component.instance().menu();
+  });
+  it('Verify all texts', () => {
+    let component = shallow(<Navbar link={link} user={user}/>);
+    expect( component.text()).to.equal('Equale DoaçõesGlauroQuero DoarMinha ContaSair');
   });
 });
