@@ -189,7 +189,7 @@ class Dashboard extends Component {
 
               </div>
               
-              <div className="box-payment_title">
+              <div className="box-toggle-tab">
                 <ul className="nav nav-pills nav-fill">
                   <li className="nav-item">
                     <a className={this.state.paymentOptionAba === 'credit-card'?'nav-link active show':'nav-link'} id="credit-card" onClick={this.togglePaymentOptionAba}>
@@ -204,7 +204,7 @@ class Dashboard extends Component {
                 </ul>
               </div>
 
-              <div id="myTabContent" className="tab-content box-payment">
+              <div className="tab-content box-toggle-tab-content">
                 <div className={this.state.paymentOptionAba === 'credit-card'?'tab-pane animated fadeIn active show':'tab-pane'}>
                   <CreditCard totalValue={this.state.valueSelected !== ''?this.state.valueSelected:this.state.valueCustom}/>  
                 </div>

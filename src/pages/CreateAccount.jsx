@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import * as firebase from 'firebase';
 import axios from 'axios';
-import { SemipolarSpinner } from 'react-epic-spinners'
 import { ToastContainer, toast } from 'react-toastify';
 import {verify} from '../components/modules/verifyLogin'
 import Loader from '../components/Loader';
 import Logo from '../components/Logo';
+import Cpf from '../components/Cpf';
 
 import 'react-toastify/dist/ReactToastify.css';
 import '../assets/createAcc.css'
@@ -22,6 +22,7 @@ class CreateAccount extends Component {
       btnLoading: false,
       btnLoadingInstagram: false,
       btnText: 'Criar Conta',
+      optionTab: 'cpf',
       loading: true
     }
   }
@@ -175,6 +176,12 @@ class CreateAccount extends Component {
     });
   }
 
+  toggleTabOption = (e) => {
+    this.setState({
+      optionTab: e.target.id
+    });
+  }
+
   render() {
     return (
       <div className="createAcc container">
@@ -186,7 +193,34 @@ class CreateAccount extends Component {
             <ToastContainer autoClose={5000} hideProgressBar={true} position="top-right"/>
             <Logo />
             <h5 className="createAcc_title">Criar Conta!</h5>
-            <form action="" className="createAcc_form"
+
+            <div className="box-toggle-tab">
+              <ul className="nav nav-pills nav-fill">
+                <li className="nav-item">
+                  <a className={this.state.optionTab === 'cpf'?'nav-link active show':'nav-link'} id="cpf" onClick={this.toggleTabOption}>
+                    CPF
+                  </a>
+                </li>
+                <li className="nav-item">
+                  <a className={this.state.optionTab === 'cnpj'?'nav-link active show':'nav-link'} id="cnpj" onClick={this.toggleTabOption}>
+                    CNPJ
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            <div className="tab-content box-toggle-tab-content">
+              <div className={this.state.optionTab === 'cpf'?'tab-pane animated fadeIn active show':'tab-pane'}>
+                <Cpf />
+                {/* <CreditCard totalValue={this.state.valueSelected !== ''?this.state.valueSelected:this.state.valueCustom}/>   */}
+              </div>
+              <div className={this.state.optionTab === 'cnpj'?'tab-pane animated fadeIn active show':'tab-pane'}>
+                cnpj
+                {/* <Billet totalValue={this.state.valueSelected !== ''?this.state.valueSelected:this.state.valueCustom}/> */}
+              </div>
+            </div>
+
+            {/* <form action="" className="createAcc_form"
                 onKeyDown={
                   (e) => {
                     if (e.key === 'Enter') {
@@ -236,7 +270,6 @@ class CreateAccount extends Component {
                     </div>
                   </div>
 
-                  {/* tempalte if search is success */}
                   {this.state.instagram &&
                     <div className="col-sm-12 createAcc_instagram animated fadeIn">
                       <div>Verifique se o perfil encontrado corresponde ao seu!</div>
@@ -263,7 +296,8 @@ class CreateAccount extends Component {
                   <div>{this.state.btnText}</div>
                 </button>
               </div>
-            </form>
+            </form> */}
+            
           </div>
         } 
         {/* end no loading */}
