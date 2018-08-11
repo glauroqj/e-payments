@@ -24,3 +24,7 @@
 .createAcc_instagram .name {
 
 }
+.createAcc .semipolar-spinner {
+  margin: 0 auto;
+  text-align: center;
+}

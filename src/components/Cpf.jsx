@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import * as firebase from 'firebase';
-import axios from 'axios';
-import { ToastContainer, toast } from 'react-toastify';
+// import axios from 'axios';
+import { toast } from 'react-toastify';
 import CurrencyFormat from 'react-currency-format';
 import { SemipolarSpinner } from 'react-epic-spinners';
 
@@ -84,42 +84,39 @@ class Cpf extends Component {
 
   submit = (e) => {
     this.validate();
-    let state = this.state;
     let errorBag = Object.keys(this.state.errorBag);
     if(errorBag.length > 0) {
       return false;
     }
-    console.log( 'EMIT DATAS ', errorBag.length)
+    this.createAcc(e);
   }
 
   createAcc = (e) => {
     e.preventDefault();
-    let state = this.state;
+    let form = this.state.form;
     this.setState({
       btnText: 'Criando Conta...',
       btnLoading: true
     });
-    
-    firebase.auth().createUserWithEmailAndPassword(state.email, state.password)
+
+    firebase.auth().createUserWithEmailAndPassword(form.email, form.password)
     .then((success) => {
       let userNew = firebase.auth().currentUser;
       console.log('NEW USER: ', userNew)
       // update on profile
       userNew.updateProfile({
         // photoURL: this.state.instagram.profile_pic_url,
-        displayName: this.state.name
+        displayName: form.name
       });
-
+      delete form.password;
+      delete form.password_confirm;
       firebase.database().ref('users/' + userNew.uid).set({
-        information: this.state.form
+        information: form
       })
-      .then(() => {
-        console.log('Saved')
-      })
-
-      // setTimeout(() => {
-      //   this.props.history.push('/dashboard');
-      // }, 750);
+      .then((success) => {
+        console.log('Saved: ');
+        window.location = '/dashboard'
+      });
 
     })
     .catch((error) => {
@@ -134,10 +131,19 @@ class Cpf extends Component {
         toast.error('Email já utilizado.')
       }
       toast.error('Não foi possível completar seu cadastro no momento :(')
-      this.setState({
+
+      form = {
+        name: '',
         email: '',
         password: '',
-        confirm_password: '',
+        password_confirm: '',
+        telephone: '',
+        job: '',
+        address: '',
+        dateBirth: ''
+      }
+      this.setState({
+        form,
         btnText: 'Criar Conta',
         btnLoading: false
       });
@@ -164,7 +170,7 @@ class Cpf extends Component {
                   <div className="form-group row">
                     <div className={'col-sm-4 '+(this.state.errorBag['name'] && this.state.form.name === '' ? 'has-danger' : '')}>
                       <label className="control-label" htmlFor="nome">Nome (primeiro e último)</label>
-                      <input className={"form-control "+(this.state.errorBag['name'] && this.state.form.name === '' ?'is-invalid':'')} type="text" id="name" name="name" placeholder="Ex: Valdeir Santana" onChange={this.updateValue('name')} />
+                      <input className={"form-control "+(this.state.errorBag['name'] && this.state.form.name === '' ?'is-invalid':'')} type="text" id="name" name="name" placeholder="Ex: Valdeir Santana" value={this.state.form.name} onChange={this.updateValue('name')} />
                       {(this.state.errorBag['name'] && this.state.form.name === '') &&
                         <div className="invalid-feedback">Campo Obrigatório</div>
                       }
@@ -172,7 +178,7 @@ class Cpf extends Component {
 
                     <div className={'col-sm-4 '+(this.state.errorBag['email'] && this.state.form.email === '' ? 'has-danger' : '')}>
                       <label className="control-label" htmlFor="email">E-mail</label>
-                      <input className={"form-control "+(this.state.errorBag['email'] && this.state.form.email === '' ?'is-invalid':'')} type="email" id="email" name="email" placeholder="Ex: exemplo@gmail.com" onChange={this.updateValue('email')} />
+                      <input className={"form-control "+(this.state.errorBag['email'] && this.state.form.email === '' ?'is-invalid':'')} type="email" id="email" name="email" placeholder="Ex: exemplo@gmail.com" value={this.state.form.email} onChange={this.updateValue('email')} />
                       {(this.state.errorBag['email'] && this.state.form.email === '') &&
                         <div className="invalid-feedback">Campo Obrigatório</div>
                       }
@@ -188,6 +194,7 @@ class Cpf extends Component {
                         mask={''}
                         id={'telephone'}
                         name={'telephone'}
+                        value={this.state.form.telephone}
                         onValueChange={this.updateValue('telephone')}
                       />
                       {(this.state.errorBag['telephone'] && this.state.form.telephone === '') &&
@@ -239,7 +246,7 @@ class Cpf extends Component {
                   
                   <div className="form-group row mt-5">
                     <div className="col-sm-12">
-                      <button type="button" id="button-confirm" className="btn btn-block btn-success btn-donation" onClick={this.submit}>
+                      <button type="button" id="button-confirm" className={"btn btn-block btn-success btn-donation "+(this.state.btnLoading?'disabled':'')} disabled={this.state.btnLoading} onClick={this.submit}>
                         {this.state.btnLoading &&
                           <SemipolarSpinner size={30} color="white"/>
                         }
