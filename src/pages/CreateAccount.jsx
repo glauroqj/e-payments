@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import * as firebase from 'firebase';
-import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import {verify} from '../components/modules/verifyLogin'
 import Loader from '../components/Loader';
@@ -14,11 +12,14 @@ class CreateAccount extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      name: '',
       email: '',
       password: '',
-      confirm_password: '',
-      userName: '',
-      instagram: '',
+      password_confirm: '',
+      telephone: '',
+      job: '',
+      address: '',
+      dateBirth: '',
       btnLoading: false,
       btnLoadingInstagram: false,
       btnText: 'Criar Conta',
@@ -43,138 +44,41 @@ class CreateAccount extends Component {
     })
   }
 
-  handleInput = (e) => {
-    if(e.target.id === 'email') {
-      this.setState({
-        email: e.target.value
-      })
-    }
+  // getInfoInstagram = () => {
+  //   // https://www.instagram.com/glauroqj/?__a=1
 
-    if(e.target.id === 'password') {
-      this.setState({
-        password: e.target.value
-      })
-    }
+  //   if(this.state.userName === '') {
+  //     toast.error('Campo Instagram vazio');
+  //     return false;
+  //   }
 
-    if(e.target.id === 'confirm_password') {
-      this.setState({
-        confirm_password: e.target.value
-      })
-    }
+  //   this.setState({
+  //     btnTextInstagram: 'Buscando...',
+  //     btnLoadingInstagram: true
+  //   })
 
-    if(e.target.id === 'instagram') {
-      this.setState({
-        userName: e.target.value
-      })
-    }
+  //   axios({
+  //     method:'get',
+  //     url:'https://apinsta.herokuapp.com/u/'+ this.state.userName,
+  //     responseType:'json'
+  //   })
+  //   .then((response) => {
+  //     console.log(response.data.graphql.user)
+  //     this.setState({
+  //       instagram: response.data.graphql.user,
+  //       btnLoadingInstagram: false
+  //     })
+  //   })
+  //   .catch((error) => {
+  //     toast.error('Usuário inexistente');
+  //     this.setState({
+  //       userName: '',
+  //       btnLoadingInstagram: false
+  //     })
+  //     console.log('ERROR: ',error)
+  //   })
 
-  }
-
-  getInfoInstagram = () => {
-    // https://www.instagram.com/glauroqj/?__a=1
-
-    if(this.state.userName === '') {
-      toast.error('Campo Instagram vazio');
-      return false;
-    }
-
-    this.setState({
-      btnTextInstagram: 'Buscando...',
-      btnLoadingInstagram: true
-    })
-
-    axios({
-      method:'get',
-      url:'https://apinsta.herokuapp.com/u/'+ this.state.userName,
-      responseType:'json'
-    })
-    .then((response) => {
-      console.log(response.data.graphql.user)
-      this.setState({
-        instagram: response.data.graphql.user,
-        btnLoadingInstagram: false
-      })
-    })
-    .catch((error) => {
-      toast.error('Usuário inexistente');
-      this.setState({
-        userName: '',
-        btnLoadingInstagram: false
-      })
-      console.log('ERROR: ',error)
-    })
-
-  }
-  
-  createAcc = (e) => {
-    let verifyEmail = /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}/igm;
-    e.preventDefault();
-    let data = this.state;
-    if( !verifyEmail.test(this.state.email) ) {
-      toast.error('E-mail inválido!')
-      this.setState({
-        email: ''
-      })
-      return false;
-    }
-    if(this.state.email === '' || this.state.password === '') {
-      toast.error('Campos vazios')
-      return false;
-    }
-    if(this.state.password !== this.state.confirm_password) {
-      toast.error('As senhas precisam ser identicas')
-      return false;
-    }
-
-    this.setState({
-      btnLoading: true,
-      btnText: 'Criando Conta...'
-    });
-
-    // window.location.href = '/dashboard'
-    // this.props.history.push('/dashboard');
-    
-    firebase.auth().createUserWithEmailAndPassword(data.email, data.password)
-    .then((success) => {
-      console.log(success)
-      let userNew = firebase.auth().currentUser;
-      // update on profile
-      if(data.instagram === '') {
-        this.props.history.push('/dashboard');
-        return false;
-      }
-
-      if(data.instagram) {
-        userNew.updateProfile({
-          photoURL: this.state.instagram.profile_pic_url,
-          displayName: this.state.instagram.full_name
-        });
-        setTimeout(() => {
-          this.props.history.push('/dashboard');
-        }, 750);
-      }
-    })
-    .catch((error) => {
-      console.warn(error)
-      if(error.code === 'auth/invalid-email') {
-        toast.error('Email inexistente!')
-      }
-      if(error.code === 'auth/weak-password') {
-        toast.error('Senha muito fraca! Mínimo de 6 caracteres')
-      }
-      if(error.code === 'auth/email-already-in-use') {
-        toast.error('Email já utilizado.')
-      }
-      toast.error('Não foi possível completar seu cadastro no momento :(')
-      this.setState({
-        email: '',
-        password: '',
-        confirm_password: '',
-        btnText: 'Criar Conta',
-        btnLoading: false
-      });
-    });
-  }
+  // }
 
   toggleTabOption = (e) => {
     this.setState({
