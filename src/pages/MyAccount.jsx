@@ -90,7 +90,6 @@ class MyAccount extends Component {
       console.log( 'ALGO ERRADO' )
       this.setState({
         editName: '',
-        editName: '',
         showTemplateEmail: false,
         showTemplateName: false,
         btnChangeLoading: false

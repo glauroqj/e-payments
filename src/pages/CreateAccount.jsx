@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import {verify} from '../components/modules/verifyLogin'
 import Loader from '../components/Loader';
 import Logo from '../components/Logo';
@@ -107,7 +107,7 @@ class CreateAccount extends Component {
                 </li>
                 <li className="nav-item">
                   <a className={this.state.optionTab === 'cnpj'?'nav-link active show':'nav-link'} id="cnpj" onClick={this.toggleTabOption}>
-                    CNPJ
+                    CNPJ (em breve)
                   </a>
                 </li>
               </ul>
@@ -119,7 +119,7 @@ class CreateAccount extends Component {
                 {/* <CreditCard totalValue={this.state.valueSelected !== ''?this.state.valueSelected:this.state.valueCustom}/>   */}
               </div>
               <div className={this.state.optionTab === 'cnpj'?'tab-pane animated fadeIn active show':'tab-pane'}>
-                cnpj
+                em construção
                 {/* <Billet totalValue={this.state.valueSelected !== ''?this.state.valueSelected:this.state.valueCustom}/> */}
               </div>
             </div>
