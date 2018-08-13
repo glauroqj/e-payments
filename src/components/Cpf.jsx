@@ -73,7 +73,7 @@ class Cpf extends Component {
 
     /* invalid email */
     if(!verifyEmail.test(this.state.form.email)) {
-      errorBag.password = 'email';
+      errorBag.email = 'email';
       this.setState({errorBag});
     }
     if(verifyEmail.test(this.state.form.email)) {
@@ -110,7 +110,7 @@ class Cpf extends Component {
       });
       delete form.password;
       delete form.password_confirm;
-      firebase.database().ref('users/' + userNew.uid).set({
+      firebase.database().ref('users/cpf/' + userNew.uid).set({
         information: form
       })
       .then((success) => {
@@ -176,11 +176,14 @@ class Cpf extends Component {
                       }
                     </div>
 
-                    <div className={'col-sm-4 '+(this.state.errorBag['email'] && this.state.form.email === '' ? 'has-danger' : '')}>
+                    <div className={'col-sm-4 '+((this.state.errorBag['email'] && this.state.form.email === '') || (this.state.errorBag['email']) ? 'has-danger' : '')}>
                       <label className="control-label" htmlFor="email">E-mail</label>
-                      <input className={"form-control "+(this.state.errorBag['email'] && this.state.form.email === '' ?'is-invalid':'')} type="email" id="email" name="email" placeholder="Ex: exemplo@gmail.com" value={this.state.form.email} onChange={this.updateValue('email')} />
+                      <input className={"form-control "+((this.state.errorBag['email'] && this.state.form.email === '') || (this.state.errorBag['email']) ?'is-invalid':'')} type="email" id="email" name="email" placeholder="Ex: exemplo@gmail.com" value={this.state.form.email} onChange={this.updateValue('email')} />
                       {(this.state.errorBag['email'] && this.state.form.email === '') &&
                         <div className="invalid-feedback">Campo Obrigatório</div>
+                      }
+                      {(this.state.errorBag['email']) &&
+                        <div className="invalid-feedback">E-mail inválido</div>
                       }
                     </div>
 
