@@ -13,52 +13,38 @@ class CreditCard extends Component {
         cvv: '',
         dateBirth: '',
         cpf: '',
-        phone: ''
+        telephone: ''
       },
       requiredField: ['name', 'cardNumber', 'validateDate', 'cvv', 'dateBirth', 'cpf', 'phone'],
       errorBag: {}
     }
   }
 
-  updateValue = (e) => {
-    let cardCredit = this.state.cardCredit;
+  // updateValue = (type) => (e) => {
+  //   let state = this.state.form;
+    // let options = ['telephone', 'dateBirth']
     
-    if(e.target.name === 'name') {
-      cardCredit.name = e.target.value;
+    // if(options.indexOf(type) > -1) {
+    //   state[type] = e.formattedValue;
+    //   this.setState({state});
+    //   return false;
+    // }
+
+    // state[e.target.name] = e.target.value;
+    // this.setState({state});
+  // }
+
+  updateValue = (type) => (e) => {
+    let cardCredit = this.state.cardCredit;
+    let options = ['cardNumber', 'phone', 'cpf', 'dateBirth', 'cvv', 'validateDate']
+
+    if(options.indexOf(type) > -1) {
+      cardCredit[type] = e.formattedValue;
       this.setState({cardCredit});
       return false;
     }
-
-  }
-
-  updateCardNumber = (e) => {
-    let cardCredit = this.state.cardCredit;
-    cardCredit.cardNumber = e.value;
-    this.setState({cardCredit});
-  }
-  updateValidateDate = (e) => {
-    let cardCredit = this.state.cardCredit;
-    cardCredit.validateDate = e.value;
-    this.setState({cardCredit});
-  }
-  updateCvv = (e) => {
-    let cardCredit = this.state.cardCredit;
-    cardCredit.cvv = e.value;
-    this.setState({cardCredit});
-  }
-  updateDateBirth = (e) => {
-    let cardCredit = this.state.cardCredit;
-    cardCredit.dateBirth = e.value;
-    this.setState({cardCredit});
-  }
-  updateCpf = (e) => {
-    let cardCredit = this.state.cardCredit;
-    cardCredit.cpf = e.value;
-    this.setState({cardCredit});
-  }
-  updatePhone = (e) => {
-    let cardCredit = this.state.cardCredit;
-    cardCredit.phone = e.value;
+    
+    cardCredit[type] = e.target.value;
     this.setState({cardCredit});
   }
 
@@ -120,7 +106,7 @@ class CreditCard extends Component {
                   <div className={this.state.errorBag['name'] && this.state.cardCredit.name === '' ?'form-group row has-danger':'form-group row'}>
                     <div className="col-sm-6">
                       <label className="control-label" htmlFor="nome">Seu nome como aparece no cartão</label>
-                      <input className={this.state.errorBag['name'] && this.state.cardCredit.name === '' ?'form-control is-invalid':'form-control'} type="text" id="nome" name="name" placeholder="Ex: Valdeir Santana" onChange={this.updateValue} />
+                      <input className={this.state.errorBag['name'] && this.state.cardCredit.name === '' ?'form-control is-invalid':'form-control'} type="text" id="nome" name="name" value={this.state.cardCredit.name} placeholder="Ex: Valdeir Santana" onChange={this.updateValue('name')} />
                       {(this.state.errorBag['name'] && this.state.cardCredit.name === '') &&
                         <div className="invalid-feedback">Campo Obrigatório</div>
                       }
@@ -139,7 +125,8 @@ class CreditCard extends Component {
                         name="cardNumber"
                         format={'#### #### #### ####'}
                         mask={'_'}
-                        onValueChange={this.updateCardNumber}
+                        value={this.state.cardCredit.cardNumber}
+                        onValueChange={this.updateValue('cardNumber')}
                       />
                       {(this.state.errorBag['cardNumber'] && this.state.cardCredit.cardNumber === '') &&
                         <div className="invalid-feedback">Campo Obrigatório</div>
@@ -159,7 +146,8 @@ class CreditCard extends Component {
                         name="validateDate"
                         format={'##/####'}
                         mask={''}
-                        onValueChange={this.updateValidateDate}
+                        value={this.state.cardCredit.validateDate}
+                        onValueChange={this.updateValue('validateDate')}
                       />
                       {(this.state.errorBag['validateDate'] && this.state.cardCredit.validateDate === '') &&
                         <div className="invalid-feedback">Campo Obrigatório</div>
@@ -176,7 +164,8 @@ class CreditCard extends Component {
                         name="cvv"
                         format={'####'}
                         mask={''}
-                        // onValueChange={this.updateCardNumber}
+                        value={this.state.cardCredit.cvv}
+                        onValueChange={this.updateValue('cvv')}
                       />
                     </div>
 
@@ -194,7 +183,8 @@ class CreditCard extends Component {
                         name="dateBirth"
                         format={'##/##/####'}
                         mask={''}
-                        // onValueChange={this.updateCardNumber}
+                        value={this.state.cardCredit.dateBirth}
+                        onValueChange={this.updateValue('dateBirth')}
                       />
                     </div>
                     <div className="col-sm-4">
@@ -207,20 +197,22 @@ class CreditCard extends Component {
                         name="cpf"
                         format={'###.###.###-##'}
                         mask={''}
-                        // onValueChange={this.updateCardNumber}
+                        value={this.state.cardCredit.cpf}
+                        onValueChange={this.updateValue('cpf')}
                       />
                     </div>
                     <div className="col-sm-4">
-                      <label className="control-label" htmlFor="phone">Telefone</label>
+                      <label className="control-label" htmlFor="telephone">Telefone</label>
                       <CurrencyFormat
-                        className={this.state.errorBag['phone'] && this.state.cardCredit.phone === '' ?'form-control is-invalid':'form-control'}
+                        className={this.state.errorBag['telephone'] && this.state.cardCredit.telephone === '' ?'form-control is-invalid':'form-control'}
                         placeholder={'(11) 9 8765-4321'}
                         allowNegative={false}
                         id="phone" 
                         name="phone"
                         format={'(##) # ####-####'}
                         mask={''}
-                        // onValueChange={this.updateCardNumber}
+                        value={this.state.cardCredit.telephone}
+                        onValueChange={this.updateValue('telephone')}
                       />
                     </div>
 
