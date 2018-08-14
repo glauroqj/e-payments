@@ -23,7 +23,10 @@ class Dashboard extends Component {
       valueCustom: '',
       idSession: '',
       radio: 'option1',
-      paymentOptionAba: 'credit-card'
+      paymentOptionAba: 'credit-card',
+      form: {
+
+      }
     }
   }
 
@@ -56,39 +59,30 @@ class Dashboard extends Component {
     })
   }
 
-  customUpdateValue = (e) => {
-    console.log(e)
-    console.log('Float: ', e.floatValue)    
+  updateValue = (type) => (e) => {
+    let state = this.state;
+    if(type === 'custom') {
+      if(e.floatValue === 0) {
+        toast.error('O valor mínimo para doação é de R$ 1');
+        state.valueSelected = '';
+        state.valueCustom = '';
+      }
 
-    if(e.floatValue === 0) {
-      toast.error('O valor mínimo para doação é de R$ 1');
-      this.setState({
-        valueSelected: '',
-        valueCustom: ''
-      });
-      return false;
+      state.valueSelected = e.formattedValue;
+      state.valueCustom = e.formattedValue;
     }
 
-    this.setState({
-      valueSelected: e.formattedValue,
-      valueCustom: e.formattedValue
-    });
-
-  }
-
-  updateValue = (e) => {
-    if(e.target.type === 'button') {
-      this.setState({
-        valueSelected: e.target.value,
-        valueCustom: ''
-      });
+    if(type === 'button') {
+      state.valueSelected = e.target.value;
+      state.valueCustom = '';
     }
 
-    if(e.target.type === 'radio') {
-      this.setState({
-        radio: e.target.id
-      })
+    if(type === 'radio') {
+      state.radio = e.target.id
     }
+
+    this.setState({state})
+
   }
 
   togglePaymentOptionAba = (e) => {
@@ -97,24 +91,24 @@ class Dashboard extends Component {
     });
   }
 
-  saveOptionRadio = () => {
-    /* after donation is done, save on database preferences */
-    firebase.database().ref('users/' + this.state.user.uid).set({
-      radio: this.state.radio
-    })
-    .then(() => {
-      console.log('Saved')
-    })
+  // saveOptionRadio = () => {
+  //   /* after donation is done, save on database preferences */
+  //   firebase.database().ref('users/' + this.state.user.uid).set({
+  //     radio: this.state.radio
+  //   })
+  //   .then(() => {
+  //     console.log('Saved')
+  //   })
 
-    /* get informations */
-    setTimeout(() => {
-      firebase.database().ref('users/' + this.state.user.uid).once('value')
-      .then((snapshot) => {
-        console.log('Get infos: ', snapshot.val())
-      })
-    }, 5000);
+  //   /* get informations */
+  //   setTimeout(() => {
+  //     firebase.database().ref('users/' + this.state.user.uid).once('value')
+  //     .then((snapshot) => {
+  //       console.log('Get infos: ', snapshot.val())
+  //     })
+  //   }, 5000);
 
-  }
+  // }
 
   render() {
     return (
@@ -136,7 +130,7 @@ class Dashboard extends Component {
                         <li className="list-inline-item">
                           <button type="button" 
                             className={this.state.valueSelected === key?'btn btn-lg btn-outline-success active':'btn btn-outline-success'} 
-                            onClick={this.updateValue} value={key}>R$ {key}
+                            onClick={this.updateValue('button')} value={key}>R$ {key}
                           </button>
                         </li>
                       </React.Fragment>
@@ -158,7 +152,7 @@ class Dashboard extends Component {
                           placeholder={'Doar outro valor'}
                           value={this.state.valueCustom}
                           allowNegative={false}
-                          onValueChange={this.customUpdateValue}
+                          onValueChange={this.updateValue('custom')}
                         />
                       </div>
                     </div>
@@ -170,7 +164,7 @@ class Dashboard extends Component {
                   <ul className="list-inline">
                     <li className="list-inline-item">
                       <div className={this.state.radio === 'option1'?'custom-control custom-radio active':'custom-control custom-radio'}>
-                        <input type="radio" id="option1" name="customRadio" className="custom-control-input" onChange={this.updateValue} checked={this.state.radio === 'option1'?'checked':''}/>
+                        <input type="radio" id="option1" name="customRadio" className="custom-control-input" onChange={this.updateValue('radio')} checked={this.state.radio === 'option1'?'checked':''}/>
                         <label className="custom-control-label" htmlFor="option1">
                           <i className="fas fa-user-graduate"/> Quero apadrinhar um aluno
                         </label>
@@ -178,7 +172,7 @@ class Dashboard extends Component {
                     </li>
                     <li className="list-inline-item">
                       <div className={this.state.radio === 'option2'?'custom-control custom-radio active':'custom-control custom-radio'}>
-                        <input type="radio" id="option2" name="customRadio" className="custom-control-input" onChange={this.updateValue} checked={this.state.radio === 'option2'?'checked':''}/>
+                        <input type="radio" id="option2" name="customRadio" className="custom-control-input" onChange={this.updateValue('radio')} checked={this.state.radio === 'option2'?'checked':''}/>
                         <label className="custom-control-label" htmlFor="option2">
                           <i className="fas fa-university"/> Quero ajudar a instituição
                         </label>
@@ -206,10 +200,14 @@ class Dashboard extends Component {
 
               <div className="tab-content box-toggle-tab-content">
                 <div className={this.state.paymentOptionAba === 'credit-card'?'tab-pane animated fadeIn active show':'tab-pane'}>
-                  <CreditCard totalValue={this.state.valueSelected !== ''?this.state.valueSelected:this.state.valueCustom}/>  
+                  {this.state.paymentOptionAba === 'credit-card' &&
+                    <CreditCard totalValue={this.state.valueSelected !== ''?this.state.valueSelected:this.state.valueCustom}/>  
+                  }
                 </div>
                 <div className={this.state.paymentOptionAba === 'billet'?'tab-pane animated fadeIn active show':'tab-pane'}>
-                  <Billet totalValue={this.state.valueSelected !== ''?this.state.valueSelected:this.state.valueCustom}/>
+                  {this.state.paymentOptionAba === 'billet' &&
+                    <Billet totalValue={this.state.valueSelected !== ''?this.state.valueSelected:this.state.valueCustom}/>
+                  }
                 </div>
               </div>
             </div>
