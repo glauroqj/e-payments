@@ -4,6 +4,7 @@ import {verify} from '../components/modules/verifyLogin'
 import Loader from '../components/Loader';
 import Logo from '../components/Logo';
 import Cpf from '../components/Cpf';
+import Cnpj from '../components/Cnpj';
 
 import 'react-toastify/dist/ReactToastify.css';
 import '../assets/createAcc.css'
@@ -23,7 +24,7 @@ class CreateAccount extends Component {
       btnLoading: false,
       btnLoadingInstagram: false,
       btnText: 'Criar Conta',
-      optionTab: 'cpf',
+      optionTab: 'cnpj',
       loading: true
     }
   }
@@ -107,7 +108,7 @@ class CreateAccount extends Component {
                 </li>
                 <li className="nav-item">
                   <a className={this.state.optionTab === 'cnpj'?'nav-link active show':'nav-link'} id="cnpj" onClick={this.toggleTabOption}>
-                    CNPJ (em breve)
+                    CNPJ
                   </a>
                 </li>
               </ul>
@@ -115,92 +116,16 @@ class CreateAccount extends Component {
 
             <div className="tab-content box-toggle-tab-content">
               <div className={this.state.optionTab === 'cpf'?'tab-pane animated fadeIn active show':'tab-pane'}>
-                <Cpf />
-                {/* <CreditCard totalValue={this.state.valueSelected !== ''?this.state.valueSelected:this.state.valueCustom}/>   */}
+                {this.state.optionTab === 'cpf' &&
+                  <Cpf />
+                }
               </div>
               <div className={this.state.optionTab === 'cnpj'?'tab-pane animated fadeIn active show':'tab-pane'}>
-                em construção
-                {/* <Billet totalValue={this.state.valueSelected !== ''?this.state.valueSelected:this.state.valueCustom}/> */}
+                {this.state.optionTab === 'cnpj' &&
+                  <Cnpj />
+                }
               </div>
             </div>
-
-            {/* <form action="" className="createAcc_form"
-                onKeyDown={
-                  (e) => {
-                    if (e.key === 'Enter') {
-                        e.preventDefault();
-                        this.createAcc(e)
-                    }
-                  }
-                }
-            >
-              <div className="row">
-                <div className="col-sm">
-                  <div className="form-group row justify-content-sm-center">
-                    <label className="col-sm-2 col-form-label">Email</label>
-                    <div className="col-sm-6">
-                      <input type="text" className="form-control" id="email" placeholder="email@example.com" value={this.state.email} onChange={this.handleInput}/>
-                    </div>
-                  </div>
-                  <div className="form-group row justify-content-sm-center">
-                    <label className="col-sm-2 col-form-label">Senha</label>
-                    <div className="col-sm-6">
-                      <input type="password" className="form-control" id="password" placeholder="*****" value={this.state.password} onChange={this.handleInput}/>
-                    </div>
-                  </div>
-                  <div className="form-group row justify-content-sm-center">
-                    <label className="col-sm-2 col-form-label">Confirmar Senha</label>
-                    <div className="col-sm-6">
-                      <input type="password" className="form-control" id="confirm_password" placeholder="*****" value={this.state.confirm_password} onChange={this.handleInput}/>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="col-sm">
-                  <div className="form-group row justify-content-sm-center">
-                    <label className="col-sm-2 col-form-label">Instagram</label>
-                    <div className="col-sm-6 input-group">
-                      <input type="text" className="form-control" id="instagram" placeholder="examplo.ola" value={this.state.userName} onChange={this.handleInput}/>
-                    </div>
-                    <div className="col-sm-2">
-                      <button className="btn btn-outline-success" type="button" disabled={this.state.btnLoadingInstagram?'disbled':''} onClick={this.getInfoInstagram}>
-                        {this.state.btnLoadingInstagram &&
-                          <SemipolarSpinner size={20} color={'#4CAF50'}/>
-                        }
-                        {!this.state.btnLoadingInstagram &&
-                          <div>Buscar</div>
-                        }
-                      </button>
-                    </div>
-                  </div>
-
-                  {this.state.instagram &&
-                    <div className="col-sm-12 createAcc_instagram animated fadeIn">
-                      <div>Verifique se o perfil encontrado corresponde ao seu!</div>
-                      <ul className="list-group">
-                        <li className="list-group-item">
-                          <div><b>Imagem de perfil</b></div>
-                          <img src={this.state.instagram.profile_pic_url_hd} alt=""/>
-                        </li>
-                        <li className="list-group-item name"><span><b>Nome: </b></span>{this.state.instagram.full_name}</li>
-                        <li className="list-group-item name"><span><b>Biografia: </b></span>{this.state.instagram.biography}</li>
-                      </ul>
-                    </div>
-                  }
-
-                </div> 
-              </div>
-
-              <div className="form-group">
-                <a href="/login" className="btn btn-link">Voltar</a>
-                <button type="button" className="btn btn-success" disabled={this.state.btnLoading?'disbled':''} onClick={this.createAcc}>
-                  {this.state.btnLoading &&
-                    <SemipolarSpinner size={30} color="white"/>
-                  }
-                  <div>{this.state.btnText}</div>
-                </button>
-              </div>
-            </form> */}
             
           </div>
         } 

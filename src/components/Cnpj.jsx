@@ -11,15 +11,16 @@ class Cpf extends Component {
     this.state = {
       form: {
         name: '',
+        name_president: '',
+        name_donator: '',
         email: '',
         password: '',
         password_confirm: '',
         telephone: '',
-        job: '',
         address: '',
-        dateBirth: '',
+        metier: ''
       },
-      requiredField: ['name', 'password', 'password_confirm', 'email', 'address', 'telephone'],
+      requiredField: ['name', 'name_donator', 'password', 'password_confirm', 'email', 'address', 'telephone'],
       errorBag: {},
       btnText: 'Criar Conta',
       btnLoading: false
@@ -110,7 +111,7 @@ class Cpf extends Component {
       });
       delete form.password;
       delete form.password_confirm;
-      firebase.database().ref('users/cpf/' + userNew.uid).set({
+      firebase.database().ref('users/cnpj/' + userNew.uid).set({
         information: form
       })
       .then((success) => {
@@ -134,13 +135,13 @@ class Cpf extends Component {
 
       form = {
         name: '',
+        name_president: '',
+        name_donator: '',
         email: '',
         password: '',
         password_confirm: '',
         telephone: '',
-        job: '',
-        address: '',
-        dateBirth: ''
+        address: ''
       }
       this.setState({
         form,
@@ -168,13 +169,31 @@ class Cpf extends Component {
               <div className="row-fluid">
                 <div className="form-horizontal">
                   <div className="form-group row">
+
                     <div className={'col-sm-4 '+(this.state.errorBag['name'] && this.state.form.name === '' ? 'has-danger' : '')}>
-                      <label className="control-label" htmlFor="nome">Nome (primeiro e último)</label>
-                      <input className={"form-control "+(this.state.errorBag['name'] && this.state.form.name === '' ?'is-invalid':'')} type="text" id="name" name="name" placeholder="Ex: Valdeir Santana" value={this.state.form.name} onChange={this.updateValue('name')} />
+                      <label className="control-label" htmlFor="nome">Nome da empresa</label>
+                      <input className={"form-control "+(this.state.errorBag['name'] && this.state.form.name === '' ?'is-invalid':'')} type="text" id="name" name="name" placeholder="Ex: Equale" value={this.state.form.name} onChange={this.updateValue('name')} />
                       {(this.state.errorBag['name'] && this.state.form.name === '') &&
                         <div className="invalid-feedback">Campo Obrigatório</div>
                       }
                     </div>
+
+                    <div className={'col-sm-4 '+(this.state.errorBag['name_donator'] && this.state.form.name_donator === '' ? 'has-danger' : '')}>
+                      <label className="control-label" htmlFor="nome">Nome da empresa</label>
+                      <input className={"form-control "+(this.state.errorBag['name_donator'] && this.state.form.name_donator === '' ?'is-invalid':'')} type="text" id="name_donator" name="name_donator" placeholder="Ex: Valdeir Santana" value={this.state.form.name_donator} onChange={this.updateValue('name_donator')} />
+                      {(this.state.errorBag['name_donator'] && this.state.form.name_donator === '') &&
+                        <div className="invalid-feedback">Campo Obrigatório</div>
+                      }
+                    </div>
+
+                    <div className="col-sm-4">
+                      <label className="control-label" htmlFor="name_president">Nome do presidente da empresa</label>
+                      <input className="form-control" type="text" id="name_president" name="name_president" placeholder="Ex: Valdeir Santana" value={this.state.form.name_president} onChange={this.updateValue('name_president')} />
+                    </div>
+
+                  </div>
+
+                  <div className="form-group row">
 
                     <div className={'col-sm-4 '+((this.state.errorBag['email'] && this.state.form.email === '') || (this.state.errorBag['email']) ? 'has-danger' : '')}>
                       <label className="control-label" htmlFor="email">E-mail</label>
@@ -205,6 +224,11 @@ class Cpf extends Component {
                       }
                     </div>
 
+                    <div className="col-sm-4">
+                      <label className="control-label" htmlFor="metier">Área de atuação da empresa</label>
+                      <input className="form-control" type="text" name="metier" id="metier" placeholder="Consultoria, saúde, educação..." value={this.state.form.metier} onChange={this.updateValue('metier')}/>
+                    </div>
+
                   </div>
 
                   <div className="form-group row">
@@ -230,20 +254,15 @@ class Cpf extends Component {
                       }
                     </div>
 
-                    <div className="col-sm-4">
-                      <label className="control-label" htmlFor="job">Profissão</label>
-                      <input className="form-control" type="text" name="job" id="job" placeholder="Professor, empresário, médico..." value={this.state.form.job} onChange={this.updateValue('job')}/>
-                    </div>
-
                   </div>
 
                   <div className="form-group row">
                     <div className={"col-sm-12 "+(this.state.errorBag['address'] && this.state.form.address === '' ? 'has-danger' : '')}>
-                        <label className="control-label" htmlFor="adress">Endereço (nome da rua, número, bairro, cidade e estado)</label>
-                        <input className={'form-control '+(this.state.errorBag['address'] && this.state.form.address === '' ?'is-invalid':'')} type="text" name="address" id="address" placeholder="Ex: Rua Nossa Senhora do Carmo, 1571, São Pedro, Belo Horizonte-MG" value={this.state.form.address} onChange={this.updateValue('address')}/>
-                        {(this.state.errorBag['address'] && this.state.form.address === '') &&
-                          <div className="invalid-feedback">Campo Obrigatório</div>
-                        }
+                      <label className="control-label" htmlFor="adress">Endereço (nome da rua, número, bairro, cidade e estado)</label>
+                      <input className={'form-control '+(this.state.errorBag['address'] && this.state.form.address === '' ?'is-invalid':'')} type="text" name="address" id="address" placeholder="Ex: Rua Nossa Senhora do Carmo, 1571, São Pedro, Belo Horizonte-MG" value={this.state.form.address} onChange={this.updateValue('address')}/>
+                      {(this.state.errorBag['address'] && this.state.form.address === '') &&
+                        <div className="invalid-feedback">Campo Obrigatório</div>
+                      }
                     </div>
                   </div>
                   
