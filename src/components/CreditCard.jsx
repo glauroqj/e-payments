@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import CurrencyFormat from 'react-currency-format';
+import * as moment from 'moment';
 
 class CreditCard extends Component {
   constructor(props) {
@@ -74,6 +75,14 @@ class CreditCard extends Component {
       this.setState({errorBag});
     }
 
+    if(!moment(this.state.cardCredit.dateBirth, 'DD/MM/YYYY',true).isValid()) {
+      errorBag.dateBirth = 'dateBirth';
+      this.setState({errorBag});
+    }
+    if(moment(this.state.cardCredit.dateBirth, 'DD/MM/YYYY',true).isValid()) {
+      delete errorBag.dateBirth;
+      this.setState({errorBag}); 
+    }
 
   }
 
@@ -103,8 +112,8 @@ class CreditCard extends Component {
                     </div>
                   </div>
 
-                  <div className={this.state.errorBag['name'] && this.state.cardCredit.name === '' ?'form-group row has-danger':'form-group row'}>
-                    <div className="col-sm-6">
+                  <div className="form-group row">
+                    <div className={'col-sm-6 '+((this.state.errorBag['name'] && this.state.cardCredit.name === '') || (this.state.errorBag['name']) ? 'has-danger' : '')}>
                       <label className="control-label" htmlFor="nome">Seu nome como aparece no cartão</label>
                       <input className={this.state.errorBag['name'] && this.state.cardCredit.name === '' ?'form-control is-invalid':'form-control'} type="text" id="nome" name="name" value={this.state.cardCredit.name} placeholder="Ex: Valdeir Santana" onChange={this.updateValue('name')} />
                       {(this.state.errorBag['name'] && this.state.cardCredit.name === '') &&
@@ -114,11 +123,11 @@ class CreditCard extends Component {
                   </div>
                   
                   <div className="form-group row">
-
-                    <div className={(this.state.errorBag['cardNumber'] && this.state.cardCredit.cardNumber === '') || (this.state.errorBag.invalidCardNumber && this.state.cardCredit.cardNumber.length < 16) ?'col-sm-4 has-danger':'col-sm-4'}>
+                    
+                    <div className={'col-sm-4 '+((this.state.errorBag['cardNumber'] && this.state.cardCredit.cardNumber === '') || (this.state.errorBag.invalidCardNumber && this.state.cardCredit.cardNumber.length < 16) ? 'has-danger' : '')}>
                       <label className="control-label" htmlFor="numero-cartao">Número do cartão</label>
                       <CurrencyFormat
-                        className={(this.state.errorBag['cardNumber'] && this.state.cardCredit.cardNumber === '') || (this.state.errorBag.invalidCardNumber && this.state.cardCredit.cardNumber.length < 16) ?'form-control is-invalid':'form-control'}
+                        className={'form-control '+((this.state.errorBag['cardNumber'] && this.state.cardCredit.cardNumber === '') || (this.state.errorBag.invalidCardNumber && this.state.cardCredit.cardNumber.length < 16) ?'is-invalid':'')}
                         placeholder={'#### #### #### ####'}
                         allowNegative={false}
                         id="numero-cartao" 
@@ -135,11 +144,11 @@ class CreditCard extends Component {
                         <div className="invalid-feedback">Número do cartão inválido</div>
                       }                    
                     </div>
-
-                    <div className={this.state.errorBag['validateDate'] && this.state.cardCredit.validateDate === '' ?'col-sm-4 has-danger':'col-sm-4'}>
+                    
+                    <div className={'col-sm-4 '+(this.state.errorBag['validateDate'] && this.state.cardCredit.validateDate === '' ? 'has-danger' : '')}>
                       <label className="control-label" htmlFor="validade">Validade</label>
                       <CurrencyFormat
-                        className={this.state.errorBag['validateDate'] && this.state.cardCredit.validateDate === '' ?'form-control is-invalid':'form-control'}
+                        className={'form-control '+(this.state.errorBag['validateDate'] && this.state.cardCredit.validateDate === '' ?'is-invalid':'')}
                         placeholder={'12/2015'}
                         allowNegative={false}
                         id="validateDate" 
@@ -157,7 +166,7 @@ class CreditCard extends Component {
                     <div className="col-sm-4">
                       <label className="control-label" htmlFor="cvv">Código de Segurança</label>
                       <CurrencyFormat
-                        className={this.state.errorBag['cvv'] && this.state.cardCredit.cvv === '' ?'form-control is-invalid':'form-control'}
+                        className={'form-control '+(this.state.errorBag['cvv'] && this.state.cardCredit.cvv !== '' ?'is-invalid':'')}
                         placeholder={'123 ou 1234'}
                         allowNegative={false}
                         id="cvv" 
@@ -173,10 +182,10 @@ class CreditCard extends Component {
 
                   <div className="form-group row titular">
 
-                    <div className="col-sm-4">
+                    <div className={'col-sm-4 '+(this.state.errorBag['dateBirth'] && this.state.cardCredit.dateBirth !== '' ? 'has-danger' : '')}>
                       <label className="control-label" htmlFor="data-nascimento">Data de Nascimento</label>
                       <CurrencyFormat
-                        className={this.state.errorBag['dateBirth'] && this.state.cardCredit.dateBirth === '' ?'form-control is-invalid':'form-control'}
+                        className={'form-control '+(this.state.errorBag['dateBirth'] && this.state.cardCredit.dateBirth !== '' ?'is-invalid':'')}
                         placeholder={'07/03/1980'}
                         allowNegative={false}
                         id="dateBirth" 
@@ -186,11 +195,14 @@ class CreditCard extends Component {
                         value={this.state.cardCredit.dateBirth}
                         onValueChange={this.updateValue('dateBirth')}
                       />
+                      {(this.state.errorBag['dateBirth'] && this.state.cardCredit.cardCredit === '') &&
+                        <div className="invalid-feedback">Data inválida</div>
+                      }
                     </div>
                     <div className="col-sm-4">
                       <label className="control-label" htmlFor="cpf">CPF</label>
                       <CurrencyFormat
-                        className={this.state.errorBag['cpf'] && this.state.cardCredit.cpf === '' ?'form-control is-invalid':'form-control'}
+                        className={'form-control '+(this.state.errorBag['cpf'] && this.state.cardCredit.cpf !== '' ?'is-invalid':'')}
                         placeholder={'222.222.222-22'}
                         allowNegative={false}
                         id="cpf" 
@@ -204,7 +216,7 @@ class CreditCard extends Component {
                     <div className="col-sm-4">
                       <label className="control-label" htmlFor="telephone">Telefone</label>
                       <CurrencyFormat
-                        className={this.state.errorBag['telephone'] && this.state.cardCredit.telephone === '' ?'form-control is-invalid':'form-control'}
+                        className={'form-control '+(this.state.errorBag['telephone'] && this.state.cardCredit.telephone !== '' ?'is-invalid':'')}
                         placeholder={'(11) 9 8765-4321'}
                         allowNegative={false}
                         id="phone" 
