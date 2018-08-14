@@ -24,7 +24,7 @@ class CreateAccount extends Component {
       btnLoading: false,
       btnLoadingInstagram: false,
       btnText: 'Criar Conta',
-      optionTab: 'cnpj',
+      optionTab: 'cpf',
       loading: true
     }
   }

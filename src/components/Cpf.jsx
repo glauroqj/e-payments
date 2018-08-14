@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import * as firebase from 'firebase';
 // import axios from 'axios';
+import * as moment from 'moment';
 import { toast } from 'react-toastify';
 import CurrencyFormat from 'react-currency-format';
 import { SemipolarSpinner } from 'react-epic-spinners';
@@ -28,9 +29,9 @@ class Cpf extends Component {
 
   updateValue = (type) => (e) => {
     let state = this.state.form;
-    let options = ['telephone']
+    let options = ['telephone', 'dateBirth']
     
-    if(type.indexOf(options) > -1) {
+    if(options.indexOf(type) > -1) {
       state[type] = e.formattedValue;
       this.setState({state});
       return false;
@@ -78,6 +79,15 @@ class Cpf extends Component {
     }
     if(verifyEmail.test(this.state.form.email)) {
       delete errorBag.email;
+      this.setState({errorBag}); 
+    }
+    /* date birth */
+    if(!moment(this.state.form.dateBirth, 'DD/MM/YYYY',true).isValid()) {
+      errorBag.dateBirth = 'dateBirth';
+      this.setState({errorBag});
+    }
+    if(moment(this.state.form.dateBirth, 'DD/MM/YYYY',true).isValid()) {
+      delete errorBag.dateBirth;
       this.setState({errorBag}); 
     }
   }
@@ -238,7 +248,25 @@ class Cpf extends Component {
                   </div>
 
                   <div className="form-group row">
-                    <div className={"col-sm-12 "+(this.state.errorBag['address'] && this.state.form.address === '' ? 'has-danger' : '')}>
+                    <div className={'col-sm-4 '+(this.state.errorBag['dateBirth'] && this.state.form.dateBirth !== '' ? 'has-danger' : '')}>
+                      <label className="control-label" htmlFor="dateBirth">Data de Nascimento</label>
+                      <CurrencyFormat
+                        className={'form-control '+(this.state.errorBag['dateBirth'] && this.state.form.dateBirth !== '' ?'is-invalid':'')}
+                        placeholder={'10/11/1980'}
+                        allowNegative={false}
+                        format={'##/##/####'}
+                        mask={''}
+                        id={'dateBirth'}
+                        name={'dateBirth'}
+                        value={this.state.form.dateBirth}
+                        onValueChange={this.updateValue('dateBirth')}
+                      />
+                      {(this.state.errorBag['dateBirth'] && this.state.form.dateBirth !== '') &&
+                        <div className="invalid-feedback">Data inválida</div>
+                      }
+                    </div>
+
+                    <div className={"col-sm-8 "+(this.state.errorBag['address'] && this.state.form.address === '' ? 'has-danger' : '')}>
                         <label className="control-label" htmlFor="adress">Endereço (nome da rua, número, bairro, cidade e estado)</label>
                         <input className={'form-control '+(this.state.errorBag['address'] && this.state.form.address === '' ?'is-invalid':'')} type="text" name="address" id="address" placeholder="Ex: Rua Nossa Senhora do Carmo, 1571, São Pedro, Belo Horizonte-MG" value={this.state.form.address} onChange={this.updateValue('address')}/>
                         {(this.state.errorBag['address'] && this.state.form.address === '') &&

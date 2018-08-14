@@ -31,7 +31,7 @@ class Cpf extends Component {
     let state = this.state.form;
     let options = ['telephone']
     
-    if(type.indexOf(options) > -1) {
+    if(options.indexOf(type) > -1) {
       state[type] = e.formattedValue;
       this.setState({state});
       return false;
