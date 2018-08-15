@@ -179,7 +179,7 @@ class Cpf extends Component {
                     </div>
 
                     <div className={'col-sm-4 '+(this.state.errorBag['name_donator'] && this.state.form.name_donator === '' ? 'has-danger' : '')}>
-                      <label className="control-label" htmlFor="nome">Nome da empresa</label>
+                      <label className="control-label" htmlFor="nome">Nome do doador/responsável</label>
                       <input className={"form-control "+(this.state.errorBag['name_donator'] && this.state.form.name_donator === '' ?'is-invalid':'')} type="text" id="name_donator" name="name_donator" placeholder="Ex: Valdeir Santana" value={this.state.form.name_donator} onChange={this.updateValue('name_donator')} />
                       {(this.state.errorBag['name_donator'] && this.state.form.name_donator === '') &&
                         <div className="invalid-feedback">Campo Obrigatório</div>
