@@ -69,19 +69,16 @@ class MyAccount extends Component {
   }
 
   editInfo = (type) => (e) => {
-    if(type === 'name') {
-      this.setState({
-        editName: '',
-        showTemplateName: this.state.showTemplateName?false:true
-      });
-      return false;
+    let state = this.state
+    if (type === 'name') {
+      state.editName = '';
+      state.showTemplateName = this.state.showTemplateName?false:true;
     }
-    if(type === 'email') {
-      this.setState({
-        editEmail: '',
-        showTemplateEmail: this.state.showTemplateEmail?false:true
-      });
+    if (type === 'email') {
+      state.editEmail = '',
+      state.showTemplateEmail = this.state.showTemplateEmail?false:true
     }
+    this.setState({state})
   }
 
   saveInfo = (type) => (e) => {
@@ -181,17 +178,10 @@ class MyAccount extends Component {
     }); 
   }
 
-  updateInput = (e) => {
-    if(e.target.id === 'name') {
-      this.setState({
-        editName: e.target.value
-      })
-    }
-    if(e.target.id === 'email') {
-      this.setState({
-        editEmail: e.target.value
-      })
-    }
+  updateInput = (type) => (e) => {
+    let state = this.state;
+    state[type] = e.target.value;
+    this.setState({state});
   }
 
   render() {
@@ -224,7 +214,7 @@ class MyAccount extends Component {
                           <UpdateInformation 
                             fieldName={'name'}
                             type={'text'}
-                            updateInput={this.updateInput}
+                            updateInput={this.updateInput('editName')}
                             save={this.saveInfo}
                             cancel={this.editInfo}
                             value={this.state.editName}
@@ -243,7 +233,7 @@ class MyAccount extends Component {
                             <UpdateInformation 
                               fieldName={'email'}
                               type={'email'}
-                              updateInput={this.updateInput}
+                              updateInput={this.updateInput('editEmail')}
                               save={this.saveInfo}
                               cancel={this.editInfo}
                               value={this.state.editEmail}
