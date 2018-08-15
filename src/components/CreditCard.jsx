@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import CurrencyFormat from 'react-currency-format';
 import * as moment from 'moment';
+import {verifyCpf} from './modules/verifyCpf';
 
 class CreditCard extends Component {
   constructor(props) {
@@ -96,6 +97,15 @@ class CreditCard extends Component {
     if(moment(this.state.cardCredit.validateDate, 'MM/YYYY',true).isValid()) {
       delete errorBag.invalidValidateDate;
       this.setState({errorBag}); 
+    }
+
+    if(!verifyCpf(this.state.cardCredit.cpf)) {
+      errorBag.invalidCpf = 'invalidCpf';
+      this.setState({errorBag});
+    }
+    if(verifyCpf(this.state.cardCredit.cpf)) {
+      delete errorBag.invalidCpf
+      this.setState({errorBag});
     }
 
   }
@@ -219,19 +229,25 @@ class CreditCard extends Component {
                         <div className="invalid-feedback">Data inválida</div>
                       }
                     </div>
-                    <div className="col-sm-4">
+                    <div className={'col-sm-4 '+((this.state.errorBag['cpf'] && this.state.cardCredit.cpf === '') || (this.state.errorBag['invalidCpf'] && this.state.cardCredit.cpf !== '') ? 'has-danger' : '')}>
                       <label className="control-label" htmlFor="cpf">CPF</label>
                       <CurrencyFormat
-                        className={'form-control '+(this.state.errorBag['cpf'] && this.state.cardCredit.cpf !== '' ?'is-invalid':'')}
+                        className={'form-control '+((this.state.errorBag['cpf'] && this.state.cardCredit.cpf === '') || (this.state.errorBag['invalidCpf'] && this.state.cardCredit.cpf !== '') ?'is-invalid':'')}
                         placeholder={'222.222.222-22'}
                         allowNegative={false}
                         id="cpf" 
                         name="cpf"
                         format={'###.###.###-##'}
-                        mask={''}
+                        // mask={''}
                         value={this.state.cardCredit.cpf}
                         onValueChange={this.updateValue('cpf')}
                       />
+                      {(this.state.errorBag['cpf'] && this.state.cardCredit.cpf === '') &&
+                        <div className="invalid-feedback">Campo Obrigatório</div>
+                      }
+                      {(this.state.errorBag['invalidCpf'] && this.state.cardCredit.cpf !== '') &&
+                        <div className="invalid-feedback">CPF inválido</div>
+                      }
                     </div>
                     <div className="col-sm-4">
                       <label className="control-label" htmlFor="telephone">Telefone</label>
