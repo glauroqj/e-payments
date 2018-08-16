@@ -58,6 +58,7 @@ class MyAccount extends Component {
     getDataUser(user.uid)
     .then((response) => {
       user.information = response;
+      console.log(response)
       this.setState({
         user,
         loading: false
@@ -226,10 +227,6 @@ class MyAccount extends Component {
                       <img className="img-responsive" src={this.state.user.photoURL} alt=""/>
                     }
                     <ul className="list-group list-group-flush">
-                      <li className="list-group-item">
-                        <h5 className="card-title">Status</h5>
-                        <h6 className="card-subtitle text-muted">Doador</h6>
-                      </li>
                       <li className="list-group-item myAccount_box_edit">
                         <h5 className="card-title">Nome</h5>
                         <h6 className="card-subtitle text-muted">{this.state.user.displayName}</h6>
@@ -277,7 +274,7 @@ class MyAccount extends Component {
                           <div>
                             <p className="text-muted">Após o e-mail verificado, não é possível altera-lo</p>
                               {!this.state.emailSended &&
-                                <button type="button" className='btn btn-outline-danger btn-sm' onClick={this.verifyEmail}>Não, Verificar Agora!</button>
+                                <button type="button" className='btn btn-outline-danger btn-sm' onClick={this.verifyEmail}>Verificar E-mail Agora!</button>
                               }
                               {this.state.emailSended &&
                                 <button type="button" class="btn btn-link btn-sm disabled">Email enviado</button>
@@ -285,10 +282,34 @@ class MyAccount extends Component {
                           </div>
                         }
                       </li>
+                      <li className="list-group-item">
+                        <h5 className="card-title">Status</h5>
+                        <h6 className="card-subtitle text-muted">Doador</h6>
+                      </li>
+                      <li className="list-group-item">
+                        <h5 className="card-title">Profissão</h5>
+                        <h6 className="card-subtitle text-muted">{this.state.user.information.job}</h6>
+                      </li>
+                      <li className="list-group-item">
+                        <h5 className="card-title">Data de Nascimento</h5>
+                        <h6 className="card-subtitle text-muted">{this.state.user.information.dateBirth}</h6>
+                      </li>
                     </ul>
                     <div className="card-footer text-muted">
                       {moment(this.state.user.metadata.creationTime).format('LLLL')}
                     </div>
+                  </div>
+                </div>
+
+                <div className="col-sm-6">
+                  <div className="card mb-3">
+                    <h3 className="card-header">Endereço</h3>
+                    <ul className="list-group list-group-flush">
+                      <li className="list-group-item">
+                        <h5 className="card-title">Rua</h5>
+                        <h6 className="card-subtitle text-muted">{this.state.user.information.address}</h6>
+                      </li>
+                    </ul>
                   </div>
                 </div>
 
