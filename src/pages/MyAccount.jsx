@@ -3,7 +3,7 @@ import * as firebase from 'firebase';
 import * as moment from 'moment';
 import 'moment/locale/pt-br';
 import { ToastContainer, toast } from 'react-toastify';
-import {verify} from '../components/modules/verifyLogin'
+import {verify, getDataUser} from '../components/modules/verifyLogin'
 
 import Navbar from '../components/Navbar';
 import Loader from '../components/Loader';
@@ -17,7 +17,7 @@ class MyAccount extends Component {
     this.state = {
       loading: true,
       showMenu: false,
-      user: '',
+      user: {},
       link: '/my-account',
       template: {
         showTemplateName: false,
@@ -33,20 +33,39 @@ class MyAccount extends Component {
   }
 
   componentWillMount() {
+    let user = this.state.user;
     /* verify if user is logged */
-    verify().then((user) => {
-      console.log('LOGED: ', user)
+    verify().then((response) => {
+      user = response;
       /* redirect to dashboard */
       this.setState({
-        user: user,
-        loading: false
-      });
-      return false;
+        user
+      },
+        () => {
+          this.dataUser()
+        }
+      )
     })
     .catch((error) => {
       console.log('Not Loged: ')
       this.props.history.push('/login');
-    }); 
+    });
+
+  }
+
+  dataUser() {
+    let user = this.state.user;
+    getDataUser(user.uid)
+    .then((response) => {
+      user.information = response;
+      this.setState({
+        user,
+        loading: false
+      })
+    })
+    .catch((error) => {
+      console.warn('Error on getUserData')
+    })
   }
 
   exit = () => {
