@@ -117,16 +117,18 @@ class Cpf extends Component {
       userNew.updateProfile({
         // photoURL: this.state.instagram.profile_pic_url,
         displayName: form.name
-      });
-      delete form.password;
-      delete form.password_confirm;
-      firebase.database().ref('users/cpf/' + userNew.uid).set({
-        information: form
       })
-      .then((success) => {
-        console.log('Saved: ');
-        window.location = '/dashboard'
-      });
+      .then(() => {
+        delete form.password;
+        delete form.password_confirm;
+        firebase.database().ref('users/cpf/' + userNew.uid).set({
+          information: form
+        })
+        .then((success) => {
+          console.log('Saved: ');
+          window.location = '/dashboard'
+        });
+      })
 
     })
     .catch((error) => {

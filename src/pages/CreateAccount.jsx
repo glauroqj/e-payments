@@ -13,14 +13,6 @@ class CreateAccount extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: '',
-      email: '',
-      password: '',
-      password_confirm: '',
-      telephone: '',
-      job: '',
-      address: '',
-      dateBirth: '',
       btnLoading: false,
       btnLoadingInstagram: false,
       btnText: 'Criar Conta',
