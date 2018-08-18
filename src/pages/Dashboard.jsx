@@ -122,7 +122,7 @@ class Dashboard extends Component {
             <Navbar exit={this.exit} link={this.state.link} user={this.state.user}/>
             <div className="container">
               <div className="dashboard_values">
-                <h3>R$ {this.state.valueSelected}</h3>
+                <h1>R$ {this.state.valueSelected}</h1>
                 <ul className="list-inline">
                   {this.state.donate.map((key, i) => {
                     return (

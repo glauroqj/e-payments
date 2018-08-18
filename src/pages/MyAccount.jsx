@@ -294,6 +294,10 @@ class MyAccount extends Component {
                         <h5 className="card-title">Data de Nascimento</h5>
                         <h6 className="card-subtitle text-muted">{this.state.user.information.dateBirth}</h6>
                       </li>
+                      <li className="list-group-item">
+                        <h5 className="card-title">Tipo de Conta</h5>
+                        <h6 className="card-subtitle text-muted uppercase">{this.state.user.information.accountType}</h6>
+                      </li>
                     </ul>
                     <div className="card-footer text-muted">
                       {moment(this.state.user.metadata.creationTime).format('LLLL')}
