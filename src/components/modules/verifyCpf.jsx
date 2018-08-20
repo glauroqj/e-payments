@@ -1,4 +1,5 @@
 function verifyCpf(cpf) {
+  console.log(cpf)
   cpf = cpf.replace(/[.-]/g,'');
   let sum;
   let rest;
