@@ -15,10 +15,9 @@ export function verify() {
 
 export function getDataUser(id) {
   return new Promise((resolve, reject) => {
-
     firebase.database().ref('users/cpf/'+id).once('value')
     .then((snapshot) => {
-      if(snapshot) {
+      if(snapshot.val()) {
         let data = snapshot.val().information;
         data.accountType = 'cpf'
         resolve(data)
@@ -30,7 +29,7 @@ export function getDataUser(id) {
 
     firebase.database().ref('users/cnpj/'+id).once('value')
     .then((snapshot) => {
-      if(snapshot) {
+      if(snapshot.val()) {
         let data = snapshot.val().information;
         data.accountType = 'cnpj'
         resolve(data)

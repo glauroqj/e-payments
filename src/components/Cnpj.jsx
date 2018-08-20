@@ -102,7 +102,6 @@ class Cpf extends Component {
 
     firebase.auth().createUserWithEmailAndPassword(form.email, form.password)
     .then((success) => {
-      debugger
       let userNew = firebase.auth().currentUser;
       console.log('NEW USER: ', userNew)
       // update on profile

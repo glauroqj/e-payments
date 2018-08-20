@@ -33,9 +33,9 @@ class MyAccount extends Component {
   }
 
   componentWillMount() {
-    let user = this.state.user;
     /* verify if user is logged */
     verify().then((response) => {
+      let user = this.state.user;
       user = response;
       /* redirect to dashboard */
       this.setState({
@@ -286,14 +286,18 @@ class MyAccount extends Component {
                         <h5 className="card-title">Status</h5>
                         <h6 className="card-subtitle text-muted">Doador</h6>
                       </li>
-                      <li className="list-group-item">
-                        <h5 className="card-title">Profissão</h5>
-                        <h6 className="card-subtitle text-muted">{this.state.user.information.job}</h6>
-                      </li>
-                      <li className="list-group-item">
-                        <h5 className="card-title">Data de Nascimento</h5>
-                        <h6 className="card-subtitle text-muted">{this.state.user.information.dateBirth}</h6>
-                      </li>
+                      {this.state.user.information.accountType === 'cpf' &&
+                        <React.Fragment>
+                          <li className="list-group-item">
+                            <h5 className="card-title">Profissão</h5>
+                            <h6 className="card-subtitle text-muted">{this.state.user.information.job}</h6>
+                          </li>
+                          <li className="list-group-item">
+                            <h5 className="card-title">Data de Nascimento</h5>
+                            <h6 className="card-subtitle text-muted">{this.state.user.information.dateBirth}</h6>
+                          </li>
+                        </React.Fragment>
+                      }
                       <li className="list-group-item">
                         <h5 className="card-title">Tipo de Conta</h5>
                         <h6 className="card-subtitle text-muted uppercase">{this.state.user.information.accountType}</h6>
