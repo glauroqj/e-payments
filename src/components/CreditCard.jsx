@@ -38,8 +38,7 @@ class CreditCard extends Component {
 
   updateValue = (type) => (e) => {
     let cardCredit = this.state.cardCredit;
-    let options = ['phone', 'cpf', 'dateBirth', 'cvv', 'validateDate']
-
+    let options = ['telephone', 'cpf', 'dateBirth', 'cvv', 'validateDate']
     if(options.indexOf(type) > -1) {
       cardCredit[type] = e.formattedValue;
       this.setState({cardCredit});
@@ -255,8 +254,8 @@ class CreditCard extends Component {
                         className={'form-control '+(this.state.errorBag['telephone'] && this.state.cardCredit.telephone !== '' ?'is-invalid':'')}
                         placeholder={'(11) 9 8765-4321'}
                         allowNegative={false}
-                        id="phone" 
-                        name="phone"
+                        id="telephone" 
+                        name="telephone"
                         format={'(##) # ####-####'}
                         mask={''}
                         value={this.state.cardCredit.telephone}
