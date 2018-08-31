@@ -35,6 +35,9 @@ class Navbar extends Component {
                 </a>
               }
               <a className="nav-link name">
+                {this.props.link === '/admin' &&
+                  <span className="mr-1 badge badge-dark">ADM</span>
+                }
                 {this.props.user.displayName}
               </a>
             </li>
