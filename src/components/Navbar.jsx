@@ -41,6 +41,11 @@ class Navbar extends Component {
                 {this.props.user.displayName}
               </a>
             </li>
+            {this.props.link === '/admin' &&
+              <li className={this.props.link === '/admin'?'nav-item active':'nav-item'}>
+                <a className="nav-link" href="/admin">Dashboard</a>
+              </li>
+            }
             <li className={this.props.link === '/dashboard'?'nav-item active':'nav-item'}>
               <a className="nav-link" href="/dashboard">Quero Doar</a>
             </li>
