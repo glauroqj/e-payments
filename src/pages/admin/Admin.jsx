@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 // import { SemipolarSpinner } from 'react-epic-spinners'
 import * as firebase from 'firebase';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify'
 import {verify} from '../../components/modules/verifyLogin'
-import Navbar from '../../components/Navbar';
-import Loader from '../../components/Loader';
-import Footer from '../../components/Footer';
+import Navbar from '../../components/Navbar'
+import SideMenu from '../../components/admin/SideMenu'
+import Loader from '../../components/Loader'
+import Footer from '../../components/Footer'
 
 import '../../assets/admin.css'
 
@@ -15,6 +16,7 @@ class Admin extends Component {
     this.state = {
       loading: true,
       link: '/admin',
+      menuOptions: ['Resumo','Cadastrar Administrador'],
       user: '',
       cpfUsers: '',
       cnpjUsers: ''
@@ -105,14 +107,21 @@ class Admin extends Component {
     return (
       <div className="dashboard">
         {this.state.loading &&
-          <Loader text="Carregando Administrador" color="#3e5472"/>
+          <Loader text="Carregando Painel de Controle" color="#3e5472"/>
         }
         {!this.state.loading &&
           <div className="animated fadeIn">
             <ToastContainer autoClose={5000} hideProgressBar={true} position="top-right"/>
             <Navbar exit={this.exit} link={this.state.link} user={this.state.user}/>
             <div className="container">
-              ADMIN
+              <div className="row">
+                <div className="col-sm-4">
+                  <SideMenu menu={this.state.menuOptions}/>
+                </div>
+                <div className="col-sm-8">
+                  WINDOW
+                </div>
+              </div>
             </div>
             <Footer/>
           </div>

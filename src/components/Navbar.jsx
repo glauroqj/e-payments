@@ -43,7 +43,7 @@ class Navbar extends Component {
             </li>
             {this.props.link === '/admin' &&
               <li className={this.props.link === '/admin'?'nav-item active':'nav-item'}>
-                <a className="nav-link" href="/admin">Dashboard</a>
+                <a className="nav-link" href="/admin">Painel de Controle</a>
               </li>
             }
             <li className={this.props.link === '/dashboard'?'nav-item active':'nav-item'}>
