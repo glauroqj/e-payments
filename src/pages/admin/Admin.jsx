@@ -16,7 +16,7 @@ class Admin extends Component {
     this.state = {
       loading: true,
       link: '/admin',
-      menuOptions: [{name: 'Resumo', link: 'summary'},{name: 'Cadastrar Administrador', link: 'add-admin'}],
+      menuOptions: [{name: 'Resumo', link: 'summary'},{name: 'Gerenciar Administrador', link: 'add-admin'}],
       user: '',
       cpfUsers: '',
       cnpjUsers: '',
