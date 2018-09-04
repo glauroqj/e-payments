@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-// import { SemipolarSpinner } from 'react-epic-spinners'
 import * as firebase from 'firebase';
 import { ToastContainer, toast } from 'react-toastify'
 import {verify} from '../../components/modules/verifyLogin'
@@ -27,7 +26,7 @@ class Admin extends Component {
   componentWillMount() {
     /* verify if user is logged */
     verify().then((user) => {
-      console.log('LOGED: ', user)
+      // console.log('LOGED: ', user)
       /* redirect to dashboard */
       this.setState({
         user: user
@@ -39,7 +38,7 @@ class Admin extends Component {
       return false;
     })
     .catch((error) => {
-      console.log('Not Loged: ')
+      // console.log('Not Loged: ')
       this.props.history.push('/login')
     });
 
@@ -51,8 +50,9 @@ class Admin extends Component {
     .then((snapshot) => {
       if(snapshot.val()) {
         let data = snapshot.val();
-        // console.log('VALIDAR EMAIL: ',data ,' EMAIL USER: ', state.user.email)
-        if(data.indexOf(state.user.email) === 0) {
+        console.log('VALIDAR EMAIL: ',data ,' EMAIL USER: ', state.user.email)
+        console.log( data.indexOf(state.user.email) )
+        if(data.indexOf(state.user.email) > 0) {
           /* valid */
           this.setState({
             loading: false
@@ -68,7 +68,7 @@ class Admin extends Component {
   }
 
   exit = () => {
-    console.log('Deslogar')
+    // console.log('Deslogar')
     firebase.auth().signOut()
     .then((success) => {
       this.props.history.push('/login');
