@@ -18,6 +18,9 @@ input[type=number]:focus, [type=text].form-control:focus,
 .uppercase {
 	text-transform: uppercase;
 }
+.hide {
+	display: none;
+}
 .loading {
 	text-align: center;
 	margin-top: 15%;
