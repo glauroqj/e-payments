@@ -7,6 +7,7 @@ import Navbar from '../components/Navbar';
 import CreditCard from '../components/CreditCard';
 import Billet from '../components/Billet';
 import Loader from '../components/Loader';
+import Maintenance from '../components/Maintenance'
 import Footer from '../components/Footer';
 import CurrencyFormat from 'react-currency-format';
 
@@ -24,16 +25,15 @@ class Dashboard extends Component {
       idSession: '',
       radio: 'option1',
       paymentOptionAba: 'credit-card',
-      form: {
-
-      }
+      form: {},
+      maintenance: true
     }
   }
 
   componentWillMount() {
     /* verify if user is logged */
     verify().then((user) => {
-      console.log('LOGED: ', user)
+      // console.log('LOGED: ', user)
       /* redirect to dashboard */
       this.setState({
         user: user,
@@ -42,14 +42,14 @@ class Dashboard extends Component {
       return false;
     })
     .catch((error) => {
-      console.log('Not Loged: ')
+      // console.log('Not Loged: ')
       this.props.history.push('/login');
     });
 
   }
 
   exit = () => {
-    console.log('Deslogar')
+    // console.log('Deslogar')
     firebase.auth().signOut()
     .then((success) => {
       this.props.history.push('/login');
@@ -120,7 +120,12 @@ class Dashboard extends Component {
           <div className="animated fadeIn">
             <ToastContainer autoClose={5000} hideProgressBar={true} position="top-right"/>
             <Navbar exit={this.exit} link={this.state.link} user={this.state.user}/>
-            <div className="container">
+            
+            {this.state.maintenance &&
+              <Maintenance />
+            }
+
+            <div className={'container ' + (this.state.maintenance === true?'hide':'')}>
               <div className="dashboard_values">
                 <h1>R$ {this.state.valueSelected}</h1>
                 <ul className="list-inline">
@@ -211,6 +216,7 @@ class Dashboard extends Component {
                 </div>
               </div>
             </div>
+
             <Footer/>
           </div>
         }
