@@ -16,10 +16,11 @@ class Admin extends Component {
     this.state = {
       loading: true,
       link: '/admin',
-      menuOptions: ['Resumo','Cadastrar Administrador'],
+      menuOptions: [{name: 'Resumo', link: 'summary'},{name: 'Cadastrar Administrador', link: 'add-admin'}],
       user: '',
       cpfUsers: '',
-      cnpjUsers: ''
+      cnpjUsers: '',
+      tab: 'summary'
     }
   }
 
@@ -77,35 +78,20 @@ class Admin extends Component {
     })
   }
 
-  updateValue = (type) => (e) => {
+  updateValue = (value) => (e) => {
     let state = this.state;
-    if(type === 'custom') {
-      if(e.floatValue === 0) {
-        toast.error('O valor mínimo para doação é de R$ 1');
-        state.valueSelected = '';
-        state.valueCustom = '';
-      }
-
-      state.valueSelected = e.formattedValue;
-      state.valueCustom = e.formattedValue;
-    }
-
-    if(type === 'button') {
-      state.valueSelected = e.target.value;
-      state.valueCustom = '';
-    }
-
-    if(type === 'radio') {
-      state.radio = e.target.id
-    }
-
     this.setState({state})
+  }
 
+  clickSideMenu = (value, e) => {
+    let tab = this.state.tab
+    tab = value
+    this.setState({tab})
   }
 
   render() {
     return (
-      <div className="dashboard">
+      <div className="admin">
         {this.state.loading &&
           <Loader text="Carregando Painel de Controle" color="#3e5472"/>
         }
@@ -116,10 +102,15 @@ class Admin extends Component {
             <div className="container">
               <div className="row">
                 <div className="col-sm-4">
-                  <SideMenu menu={this.state.menuOptions}/>
+                  <SideMenu menu={this.state.menuOptions} clickSideMenu={this.clickSideMenu}/>
                 </div>
                 <div className="col-sm-8">
-                  WINDOW
+                  {this.state.tab === 'summary' &&
+                    <p>SUMMARY</p>
+                  }
+                  {this.state.tab === 'add-admin' &&
+                    <p>ADD-ADMIN</p>
+                  }
                 </div>
               </div>
             </div>

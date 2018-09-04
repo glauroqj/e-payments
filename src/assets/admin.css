@@ -1,3 +1,11 @@
 .admin {
   
 }
+
+/* side menu */
+.admin .side-menu .list-group a:hover {
+  cursor: pointer;
+}
+.admin .side-menu .list-group a.active {
+  color: #ffffff;
+}

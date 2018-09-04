@@ -4,8 +4,15 @@ class SideMenu extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      
+      active: this.props.menu[0].link
     }
+  }
+
+  handleClick = (type) => (e) => {
+    this.setState({
+      active: type
+    })
+    return this.props.clickSideMenu(type, e)
   }
 
   render() {
@@ -14,17 +21,12 @@ class SideMenu extends Component {
         <div className="list-group">
           {this.props.menu.map((key, i) => {
             return (
-              <React.Fragment key={key}>
-                <a className="list-group-item list-group-item-action">{key}</a>
+              <React.Fragment key={i}>
+                <a className={'list-group-item list-group-item-action '+ (key.link === this.state.active?'active':'')} onClick={this.handleClick(key.link, 'tab')}>{key.name}</a>
               </React.Fragment>
             )
             })
           }
-          {/* <a href="#" class="list-group-item list-group-item-action active">Cras justo odio</a>
-          <a href="#" class="list-group-item list-group-item-action">Dapibus ac facilisis in
-          </a>
-          <a href="#" class="list-group-item list-group-item-action disabled">Morbi leo risus
-          </a> */}
         </div>
       </div>
     );
