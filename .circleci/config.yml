@@ -1,13 +1,3 @@
-aliases:
-  - &restore-cache
-    keys:
-      - dependencies-{{ .Branch }}-{{ checksum "package-lock.json" }}-v1.0
-
-  - &save-cache
-    paths:
-      - node_modules
-    key: dependencies-{{ .Branch }}-{{ checksum "package-lock.json" }}-v1.0
-
 version: 2
 jobs:
   build:
