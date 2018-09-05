@@ -55,7 +55,7 @@ class Admin extends Component {
       if(snapshot.val()) {
         let data = snapshot.val();
         // console.log('VALIDAR EMAIL: ',data ,' EMAIL USER: ', state.user.email)
-        if(data.indexOf(state.user.email) > 0) {
+        if(data.indexOf(state.user.email) != -1) {
           /* valid */
           this.setState({
             loading: false
