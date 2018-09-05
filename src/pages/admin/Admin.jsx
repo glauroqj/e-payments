@@ -4,6 +4,8 @@ import { ToastContainer, toast } from 'react-toastify'
 import {verify} from '../../components/modules/verifyLogin'
 import Navbar from '../../components/Navbar'
 import SideMenu from '../../components/admin/SideMenu'
+import Summary from '../../components/admin/Summary'
+import Configure from '../../components/admin/Configure'
 import Loader from '../../components/Loader'
 import Footer from '../../components/Footer'
 
@@ -19,7 +21,9 @@ class Admin extends Component {
       user: '',
       cpfUsers: '',
       cnpjUsers: '',
-      tab: 'summary'
+      tab: '',
+      summaryLoading: true,
+      configureLoading: true
     }
   }
 
@@ -50,13 +54,16 @@ class Admin extends Component {
     .then((snapshot) => {
       if(snapshot.val()) {
         let data = snapshot.val();
-        console.log('VALIDAR EMAIL: ',data ,' EMAIL USER: ', state.user.email)
-        console.log( data.indexOf(state.user.email) )
+        // console.log('VALIDAR EMAIL: ',data ,' EMAIL USER: ', state.user.email)
         if(data.indexOf(state.user.email) > 0) {
           /* valid */
           this.setState({
             loading: false
-          })
+          },
+            () => {
+              this.getInfo()
+            }
+          )
           return false
         }
         this.props.history.push('/create');
@@ -65,6 +72,37 @@ class Admin extends Component {
     .catch((error) => {
       console.log(error)
     });
+  }
+
+  getInfo() {
+    /* cpf */
+    firebase.database().ref('users/cpf').once('value')
+    .then((snapshot) => {
+      let data = snapshot.val()
+      if(data) {
+        this.setState({
+          cpfUsers: data,
+          summaryLoading: false,
+          tab: 'summary'
+        })
+      }
+    })
+    .catch((error) => {})
+
+    /* cnpj */
+    firebase.database().ref('users/cnpj').once('value')
+    .then((snapshot) => {
+      let data = snapshot.val()
+      if(data){
+        this.setState({
+          cnpjUsers: data,
+          summaryLoading: false,
+          tab: 'summary'
+        })
+      }
+    })
+    .catch((error) => {})
+    
   }
 
   exit = () => {
@@ -106,10 +144,10 @@ class Admin extends Component {
                 </div>
                 <div className="col-sm-8">
                   {this.state.tab === 'summary' &&
-                    <p>SUMMARY</p>
+                    <Summary loading={this.state.summaryLoading} cpf={this.state.cpfUsers} cnpj={this.state.cnpjUsers}/>
                   }
                   {this.state.tab === 'add-admin' &&
-                    <p>ADD-ADMIN</p>
+                    <Configure />
                   }
                 </div>
               </div>
