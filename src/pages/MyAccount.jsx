@@ -58,7 +58,6 @@ class MyAccount extends Component {
     getDataUser(user.uid)
     .then((response) => {
       user.information = response;
-      console.log(response)
       this.setState({
         user,
         loading: false
@@ -286,7 +285,7 @@ class MyAccount extends Component {
                         <h5 className="card-title">Status</h5>
                         <h6 className="card-subtitle text-muted">Doador</h6>
                       </li>
-                      {this.state.user.information.accountType === 'cpf' &&
+                      {this.state.user.information.accountType === 'CPF' &&
                         <React.Fragment>
                           <li className="list-group-item">
                             <h5 className="card-title">Profissão</h5>

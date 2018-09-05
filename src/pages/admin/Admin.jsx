@@ -7,7 +7,6 @@ import SideMenu from '../../components/admin/SideMenu'
 import Summary from '../../components/admin/Summary'
 import Configure from '../../components/admin/Configure'
 import Loader from '../../components/Loader'
-import Footer from '../../components/Footer'
 
 import '../../assets/admin.css'
 
@@ -18,12 +17,15 @@ class Admin extends Component {
       loading: true,
       link: '/admin',
       menuOptions: [{name: 'Resumo', link: 'summary'},{name: 'Gerenciar Administrador', link: 'add-admin'}],
-      user: '',
+      adminUsers: '',
       cpfUsers: '',
       cnpjUsers: '',
       tab: '',
+      emailAdmin: '',
       summaryLoading: true,
-      configureLoading: true
+      configureLoading: true,
+      btnLoading: false,
+      btnText: 'adicionar novo'
     }
   }
 
@@ -76,33 +78,22 @@ class Admin extends Component {
 
   getInfo() {
     /* cpf */
-    firebase.database().ref('users/cpf').once('value')
+    firebase.database().ref('/').once('value')
     .then((snapshot) => {
       let data = snapshot.val()
       if(data) {
         this.setState({
-          cpfUsers: data,
+          cpfUsers: data.users.cpf,
+          cnpjUsers: data.users.cnpj,
+          adminUsers: data.admin.value,
           summaryLoading: false,
+          configureLoading: false,
           tab: 'summary'
         })
       }
     })
     .catch((error) => {})
 
-    /* cnpj */
-    firebase.database().ref('users/cnpj').once('value')
-    .then((snapshot) => {
-      let data = snapshot.val()
-      if(data){
-        this.setState({
-          cnpjUsers: data,
-          summaryLoading: false,
-          tab: 'summary'
-        })
-      }
-    })
-    .catch((error) => {})
-    
   }
 
   exit = () => {
@@ -116,15 +107,55 @@ class Admin extends Component {
     })
   }
 
-  updateValue = (value) => (e) => {
-    let state = this.state;
-    this.setState({state})
-  }
-
   clickSideMenu = (value, e) => {
     let tab = this.state.tab
     tab = value
     this.setState({tab})
+  }
+
+  removeAdmin = (index, e) => {
+    let newArray = this.state.adminUsers
+    let name = newArray[index]
+    newArray.splice(index, 1)
+    this.setState({
+      adminUsers: newArray
+    },
+      () => {
+        firebase.database().ref('admin/value').set(newArray)
+        .then((success) => {
+          toast.success(`Administrador removido: ${name}`)
+        })
+      }
+    )
+  }
+
+  addAdmin = (e) => {
+    let email = this.state.emailAdmin
+    let newArray = this.state.adminUsers
+    newArray.push(email)
+    this.setState({
+      adminUsers: newArray,
+      btnLoading: true,
+      btnText: 'salvando...'
+    },
+      () => {
+        firebase.database().ref('admin/value').set(newArray)
+        .then((success) => {
+          this.setState({
+            btnLoading: false,
+            btnText: 'Adicionar novo',
+            emailAdmin: ''
+          })
+          toast.success(`Administrador adicionado: ${email}`)
+        })
+      }
+    )
+  }
+
+  updateValue = (name, e) => {
+    let state = this.state;
+    state[name] = e.target.value
+    this.setState({})
   }
 
   render() {
@@ -147,12 +178,20 @@ class Admin extends Component {
                     <Summary loading={this.state.summaryLoading} cpf={this.state.cpfUsers} cnpj={this.state.cnpjUsers}/>
                   }
                   {this.state.tab === 'add-admin' &&
-                    <Configure />
+                    <Configure 
+                      loading={this.state.configureLoading} 
+                      admins={this.state.adminUsers} 
+                      removeAdmin={this.removeAdmin} 
+                      inputChange={this.updateValue}
+                      email={this.state.emailAdmin}
+                      submit={this.addAdmin}
+                      btnLoading={this.state.btnLoading}
+                      btnText={this.state.btnText}
+                    />
                   }
                 </div>
               </div>
             </div>
-            <Footer/>
           </div>
         }
         {/* end loading */}

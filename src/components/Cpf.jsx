@@ -82,7 +82,7 @@ class Cpf extends Component {
       this.setState({errorBag}); 
     }
     /* date birth */
-    if(!moment(this.state.form.dateBirth, 'DD/MM/YYYY',true).isValid()) {
+    if(!moment(this.state.form.dateBirth, 'DD/MM/YYYY',true).isValid() && this.state.form.dateBirth !== '') {
       errorBag.dateBirth = 'dateBirth';
       this.setState({errorBag});
     }
