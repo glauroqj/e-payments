@@ -18,20 +18,19 @@ export function getDataUser(id) {
     firebase.database().ref('users/').once('value')
     .then((snapshot) => {
       let data = snapshot.val()
-      console.log(data.cpf)
       let cpf = Object.keys(data.cpf)
       let cnpj = Object.keys(data.cnpj)
 
       // console.log('CPF: ', cpf.indexOf(id))
       if( cpf.indexOf(id) !== -1 ) {
-        console.log(data.cpf[id].information)
+        // console.log(data.cpf[id].information)
         data.cpf[id].information.accountType = 'CPF'
         resolve(data.cpf[id].information)
       }
       
       // console.log('CNPJ: ', cnpj.indexOf(id))
       if( cnpj.indexOf(id) !== -1 ) {
-        console.log(data.cnpj[id])
+        // console.log(data.cnpj[id])
         data.cnpj[id].information.accountType = 'CNPJ'
         resolve(data.cnpj[id].information)
       }
