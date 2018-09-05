@@ -15,25 +15,27 @@ export function verify() {
 
 export function getDataUser(id) {
   return new Promise((resolve, reject) => {
-    firebase.database().ref('users/cpf/'+id).once('value')
+    firebase.database().ref('users/').once('value')
     .then((snapshot) => {
-      if(snapshot.val()) {
-        let data = snapshot.val().information;
-        data.accountType = 'cpf'
-        resolve(data)
-      }
-    })
-    .catch((error) => {
-      reject(error)
-    });
+      let data = snapshot.val()
+      console.log(data.cpf)
+      let cpf = Object.keys(data.cpf)
+      let cnpj = Object.keys(data.cnpj)
 
-    firebase.database().ref('users/cnpj/'+id).once('value')
-    .then((snapshot) => {
-      if(snapshot.val()) {
-        let data = snapshot.val().information;
-        data.accountType = 'cnpj'
-        resolve(data)
+      // console.log('CPF: ', cpf.indexOf(id))
+      if( cpf.indexOf(id) !== -1 ) {
+        console.log(data.cpf[id].information)
+        data.cpf[id].information.accountType = 'CPF'
+        resolve(data.cpf[id].information)
       }
+      
+      // console.log('CNPJ: ', cnpj.indexOf(id))
+      if( cnpj.indexOf(id) !== -1 ) {
+        console.log(data.cnpj[id])
+        data.cnpj[id].information.accountType = 'CNPJ'
+        resolve(data.cnpj[id].information)
+      }
+
     })
     .catch((error) => {
       reject(error)
