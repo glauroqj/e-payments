@@ -18,7 +18,7 @@ class Admin extends Component {
       loading: true,
       link: '/admin',
       menuOptions: [{name: 'Resumo', link: 'summary'},{name: 'Gerenciar Administrador', link: 'add-admin'}],
-      user: '',
+      adminUsers: '',
       cpfUsers: '',
       cnpjUsers: '',
       tab: '',
@@ -55,7 +55,7 @@ class Admin extends Component {
       if(snapshot.val()) {
         let data = snapshot.val();
         // console.log('VALIDAR EMAIL: ',data ,' EMAIL USER: ', state.user.email)
-        if(data.indexOf(state.user.email) != -1) {
+        if(data.indexOf(state.user.email) !== -1) {
           /* valid */
           this.setState({
             loading: false
@@ -76,12 +76,14 @@ class Admin extends Component {
 
   getInfo() {
     /* cpf */
-    firebase.database().ref('users/cpf').once('value')
+    firebase.database().ref('/').once('value')
     .then((snapshot) => {
       let data = snapshot.val()
       if(data) {
         this.setState({
-          cpfUsers: data,
+          cpfUsers: data.users.cpf,
+          cnpjUsers: data.users.cnpj,
+          adminUsers: data.admin.value,
           summaryLoading: false,
           tab: 'summary'
         })
@@ -89,20 +91,6 @@ class Admin extends Component {
     })
     .catch((error) => {})
 
-    /* cnpj */
-    firebase.database().ref('users/cnpj').once('value')
-    .then((snapshot) => {
-      let data = snapshot.val()
-      if(data){
-        this.setState({
-          cnpjUsers: data,
-          summaryLoading: false,
-          tab: 'summary'
-        })
-      }
-    })
-    .catch((error) => {})
-    
   }
 
   exit = () => {
@@ -147,7 +135,7 @@ class Admin extends Component {
                     <Summary loading={this.state.summaryLoading} cpf={this.state.cpfUsers} cnpj={this.state.cnpjUsers}/>
                   }
                   {this.state.tab === 'add-admin' &&
-                    <Configure />
+                    <Configure loading={this.state.configureLoading} />
                   }
                 </div>
               </div>
