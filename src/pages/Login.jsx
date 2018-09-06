@@ -61,8 +61,8 @@ class Login extends Component {
 
   submit = (e) => {
     e.preventDefault();
-    let data = this.state;
-    if(this.state.email === '' || this.state.password === '') {
+    let state = this.state;
+    if(state.email === '' || state.password === '') {
       toast.error('Campos vazios')
       return false;
     }
@@ -71,7 +71,7 @@ class Login extends Component {
       btnText: 'Verificando acesso...'
     });
     
-    firebase.auth().signInWithEmailAndPassword(data.email, data.password)
+    firebase.auth().signInWithEmailAndPassword(state.email, state.password)
     .then((success) => {
       console.log(success)
       this.props.history.push('/dashboard');

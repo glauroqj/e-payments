@@ -28,17 +28,17 @@ class Cpf extends Component {
   }
 
   updateValue = (type) => (e) => {
-    let state = this.state.form;
+    let state = this.state
     let options = ['telephone', 'dateBirth']
     
     if(options.indexOf(type) > -1) {
-      state[type] = e.formattedValue;
-      this.setState({state});
+      state.form[type] = e.formattedValue;
+      this.setState(state)
       return false;
     }
 
-    state[e.target.name] = e.target.value;
-    this.setState({state});
+    state.form[e.target.name] = e.target.value;
+    this.setState(state)
   }
 
   validate = (e) => {
@@ -54,56 +54,56 @@ class Cpf extends Component {
       /* remove error mandatory */
       if(inputs[i].value !== '') {
         delete errorBag[inputs[i].name];
-        this.setState({errorBag});
+        this.setState({errorBag})
       }
     }
 
     /* invalid password */
     if(this.state.form.password.length <= 6) {
-      errorBag.password = 'password';
-      this.setState({errorBag});
+      errorBag.password = 'password'
+      this.setState({errorBag})
     }
     if(this.state.form.password !== this.state.form.password_confirm) {
-      errorBag.password = 'password';
-      this.setState({errorBag});
+      errorBag.password = 'password'
+      this.setState({errorBag})
     }
     if((this.state.form.password.length >= 6 && this.state.form.password === this.state.form.password_confirm && this.state.form.password !== '')) {
-      delete errorBag.password;
-      this.setState({errorBag}); 
+      delete errorBag.password
+      this.setState({errorBag})
     }
 
     /* invalid email */
     if(!verifyEmail.test(this.state.form.email)) {
-      errorBag.email = 'email';
-      this.setState({errorBag});
+      errorBag.email = 'email'
+      this.setState({errorBag})
     }
     if(verifyEmail.test(this.state.form.email)) {
-      delete errorBag.email;
-      this.setState({errorBag}); 
+      delete errorBag.email
+      this.setState({errorBag})
     }
     /* date birth */
     if(!moment(this.state.form.dateBirth, 'DD/MM/YYYY',true).isValid() && this.state.form.dateBirth !== '') {
-      errorBag.dateBirth = 'dateBirth';
-      this.setState({errorBag});
+      errorBag.dateBirth = 'dateBirth'
+      this.setState({errorBag})
     }
     if(moment(this.state.form.dateBirth, 'DD/MM/YYYY',true).isValid()) {
-      delete errorBag.dateBirth;
-      this.setState({errorBag}); 
+      delete errorBag.dateBirth
+      this.setState({errorBag})
     }
   }
 
   submit = (e) => {
-    this.validate();
+    this.validate()
     let errorBag = Object.keys(this.state.errorBag);
     if(errorBag.length > 0) {
       return false;
     }
-    this.createAcc(e);
+    this.createAcc(e)
   }
 
   createAcc = (e) => {
     e.preventDefault();
-    let form = this.state.form;
+    let form = this.state.form
     this.setState({
       btnText: 'Criando Conta...',
       btnLoading: true

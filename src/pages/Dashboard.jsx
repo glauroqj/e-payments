@@ -81,7 +81,7 @@ class Dashboard extends Component {
       state.radio = e.target.id
     }
 
-    this.setState({state})
+    this.setState(state)
 
   }
 

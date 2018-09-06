@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import CurrencyFormat from 'react-currency-format';
 import { SemipolarSpinner } from 'react-epic-spinners';
 
-class Cpf extends Component {
+class Cnpj extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -28,17 +28,17 @@ class Cpf extends Component {
   }
 
   updateValue = (type) => (e) => {
-    let state = this.state.form;
+    let state = this.state;
     let options = ['telephone']
     
     if(options.indexOf(type) > -1) {
-      state[type] = e.formattedValue;
-      this.setState({state});
+      state.form[type] = e.formattedValue;
+      this.setState(state);
       return false;
     }
 
-    state[e.target.name] = e.target.value;
-    this.setState({state});
+    state.form[e.target.name] = e.target.value;
+    this.setState(state);
   }
 
   validate = (e) => {
@@ -289,4 +289,4 @@ class Cpf extends Component {
 
 }
 
-export default Cpf;
+export default Cnpj;

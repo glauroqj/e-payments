@@ -23,7 +23,7 @@ class ForgotPassword extends Component {
   componentWillMount() {
     /* verify if user is logged */
     verify().then((user) => {
-      console.log('LOGED: ', user)
+      // console.log('LOGED: ', user)
       /* redirect to dashboard */
       this.props.history.push('/dashboard');
       return false;
@@ -36,18 +36,16 @@ class ForgotPassword extends Component {
     })
   }
 
-  handleInput = (e) => {
-    if(e.target.id === 'email') {
-      this.setState({
-        email: e.target.value
-      })
-    }
+  handleInput = (type) => (e) => {
+    let state = this.state
+    state[type] = e.target.value
+    this.setState(state)
   }
 
   submit = (e) => {
     e.preventDefault();
-    let data = this.state;
-    if(this.state.email === '') {
+    let state = this.state;
+    if(state.email === '') {
       toast.error('Campos vazios')
       return false;
     }
@@ -56,9 +54,8 @@ class ForgotPassword extends Component {
       btnText: 'Enviando email...'
     });
     
-    firebase.auth().sendPasswordResetEmail(data.email)
+    firebase.auth().sendPasswordResetEmail(state.email)
     .then((success) => {
-      console.log(success)
       this.setState({
         emailSended: true
       });
@@ -105,7 +102,7 @@ class ForgotPassword extends Component {
                 <div className="form-group row justify-content-sm-center">
                   <label className="col-sm-2 col-form-label">Email</label>
                   <div className="col-sm-6">
-                    <input type="email" className="form-control" id="email" placeholder="email@example.com" value={this.state.email} onChange={this.handleInput}/>
+                    <input type="email" className="form-control" id="email" placeholder="email@example.com" value={this.state.email} onChange={this.handleInput('email')}/>
                   </div>
                 </div>
                 <div className="form-group">

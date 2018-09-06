@@ -155,7 +155,7 @@ class Admin extends Component {
   updateValue = (name, e) => {
     let state = this.state;
     state[name] = e.target.value
-    this.setState({})
+    this.setState(state)
   }
 
   render() {

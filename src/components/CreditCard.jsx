@@ -37,22 +37,22 @@ class CreditCard extends Component {
   // }
 
   updateValue = (type) => (e) => {
-    let cardCredit = this.state.cardCredit;
+    let cardCredit = this.state.cardCredit
     let options = ['telephone', 'cpf', 'dateBirth', 'cvv', 'validateDate']
     if(options.indexOf(type) > -1) {
       cardCredit[type] = e.formattedValue;
-      this.setState({cardCredit});
+      this.setState({cardCredit})
       return false;
     }
 
     if(type === 'cardNumber') {
       cardCredit[type] = e.value;
-      this.setState({cardCredit});
+      this.setState({cardCredit})
       return false;
     }
     
-    cardCredit[type] = e.target.value;
-    this.setState({cardCredit});
+    cardCredit[type] = e.target.value
+    this.setState({cardCredit})
   }
 
   validate = (e) => {

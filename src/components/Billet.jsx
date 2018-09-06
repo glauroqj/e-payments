@@ -17,11 +17,11 @@ class Billet extends Component {
   }
 
   updateValue = (e) => {
-    let billet = this.state.billet;
+    let state = this.state;
     
     if(e.target.name === 'name') {
-      billet.name = e.target.value;
-      this.setState({billet});
+      state.billet.name = e.target.value;
+      this.setState(state);
       return false;
     }
 
