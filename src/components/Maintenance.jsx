@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 
-import maintenanceIMG from '../assets/images/maintenance.gif'
-
 class Maintenance extends Component {
   constructor(props) {
     super(props);
@@ -17,12 +15,11 @@ class Maintenance extends Component {
 
   render() {
     return (
-      <div className="container maintenance text-center">
+      <div className="container maintenance text-center animated fadeIn">
         <div className="jumbotron">
           <h1 className="display-3">Olá!</h1>
           <h4 className="">Esta é a nova plataforma para doações do Equale.</h4>
           <h4 className="mb-3">Aqui você poderá fazer suas doações diretamente, de forma segura, simples e rápida.</h4>
-          <img className="img-fluid" alt="Manutenção" title="Manutenção" src={maintenanceIMG}/>
           <hr className="my-4" />
           <p>No momento estamos trabalhando muito na plataforma, mas você já pode fazer sua doação agora mesmo no site do nosso parceiro PagSeguro.</p>
           <p>Basta clicar no botão logo abaixo e seguir estes passos</p>
