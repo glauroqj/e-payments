@@ -45,7 +45,7 @@ class Maintenance extends Component {
         <div className="jumbotron">
           <h1 className="display-5">Bem-Vinda(o)!!!</h1>
           <h5 className="mb-2">O Instituto Equale trabalha diariamente para desenvolver a educação pública e popular em Minas Gerais.</h5>
-          <h5 className="mb-2">As doações que recebemos são utilizadas para desenvolver nossos projetos <a target="new" href="http://equale.com.br/projetos-equale">Projeto Equale</a> e para a sustentação da equipe executiva do Instituto.</h5>
+          <h5 className="mb-2">As doações que recebemos são utilizadas para desenvolver nossos <a target="new" href="http://equale.com.br/projetos-equale"><b>projetos</b></a> e para a sustentação da equipe executiva do Instituto.</h5>
           <h5 className="mb-2">Aqui você poderá fazer suas doações diretamente, de forma segura, simples e rápida.</h5>
 
           <div className="box-toggle-tab mt-3">
