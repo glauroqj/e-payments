@@ -8,12 +8,14 @@ class Search extends Component {
     }
   }
 
-  // handleClick = (type) => (e) => {
-  //   this.setState({
-  //     active: type
-  //   })
-  //   return this.props.clickSideMenu(type, e)
-  // }
+  handleChange = (name) => (e) => {
+    this.props.inputChange(name, e)
+  }
+
+  submit = (e) => {
+    e.preventDefault();
+    return this.props.submit()
+  }
 
   render() {
     return (
@@ -25,35 +27,29 @@ class Search extends Component {
           </div>
         }
         {!this.props.loading &&
-          <div className="row animated fadeIn">
-            <div className="col-sm-4">
-              <div className="card bg-light mb-3">
-                <div className="card-header">Usuários CPF</div>
-                <div className="card-body">
-                  <h4 className="card-title">{this.state.cpf}</h4>
-                  {/* <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> */}
+          <div className="row animated fadeIn search">
+            <div className="col-sm-12">
+              <div className="form-group">
+                  <h3>Procurar usuário</h3>
+                  <form action="" className="search_form"
+                      onKeyDown={
+                        (e) => {
+                            if (e.key === 'Enter') {
+                                e.preventDefault();
+                                this.submit(e)
+                            }
+                        }
+                      }
+                  >
+                    <input className="form-control form-control-lg mb-3" type="text" placeholder="informe o e-mail" onChange={this.handleChange('search')} />
+                    <button type="submit" className="btn btn-md btn-success" disabled={this.props.btnLoading?'disbled':''} onClick={this.submit}>
+                      {this.props.btnLoading &&
+                        <SemipolarSpinner size={30} color="white"/>
+                      }
+                      <div>{this.props.btnText}</div>
+                    </button>
+                  </form>
                 </div>
-              </div>
-            </div>
-
-            <div className="col-sm-4">
-              <div className="card bg-light mb-3">
-                <div className="card-header">Usuários CNPJ</div>
-                <div className="card-body">
-                <h4 className="card-title">{this.state.cnpj}</h4>
-                  {/* <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> */}
-                </div>
-              </div>
-            </div>
-
-            <div className="col-sm-4">
-                <div className="card bg-light mb-3">
-                <div className="card-header">Valor Total Arrecadado</div>
-                <div className="card-body">
-                  <h4 className="card-title">Em breve...</h4>
-                  {/* <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> */}
-                </div>
-              </div>
             </div>
           </div>
         }

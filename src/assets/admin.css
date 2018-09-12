@@ -3,6 +3,9 @@
 }
 
 /* side menu */
+.admin .side-menu {
+  margin-bottom: 15px;
+}
 .admin .side-menu .list-group a:hover {
   cursor: pointer;
 }

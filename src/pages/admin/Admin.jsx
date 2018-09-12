@@ -94,6 +94,7 @@ class Admin extends Component {
           adminUsers: data.admin.value,
           summaryLoading: false,
           configureLoading: false,
+          searchLoading: false,
           // tab: 'summary'
           /* TODO HERE */
           tab: 'search'
@@ -166,6 +167,26 @@ class Admin extends Component {
     this.setState(state)
   }
 
+  search = (e) => {
+    let searchUsers = []
+    let {search, cpfUsers} = this.state
+    let keys = Object.keys(cpfUsers)
+
+    keys.map((key, i) => {
+      let item = cpfUsers[key].information
+      item.key = key
+      searchUsers.push(item)
+    })
+    this.setState({searchUsers})
+
+    searchUsers.map((key, i) => {
+      console.log(key.email, search)
+      if(key.email === search) {
+        console.log('Achei: ', key.email)
+      }
+    })
+  }
+
   render() {
     return (
       <div className="admin">
@@ -200,6 +221,10 @@ class Admin extends Component {
                   {this.state.tab === 'search' &&
                     <Search 
                       loading={this.state.searchLoading}
+                      inputChange={this.updateValue}
+                      btnLoading={this.state.btnLoading}
+                      btnText={'Procurar'}
+                      submit={this.search}
                     />
                   }
                 </div>
