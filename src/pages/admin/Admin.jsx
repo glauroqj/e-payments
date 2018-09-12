@@ -6,6 +6,7 @@ import Navbar from '../../components/Navbar'
 import SideMenu from '../../components/admin/SideMenu'
 import Summary from '../../components/admin/Summary'
 import Configure from '../../components/admin/Configure'
+import Search from '../../components/admin/Search'
 import Loader from '../../components/Loader'
 
 import '../../assets/admin.css'
@@ -16,16 +17,21 @@ class Admin extends Component {
     this.state = {
       loading: true,
       link: '/admin',
-      menuOptions: [{name: 'Resumo', link: 'summary'},{name: 'Gerenciar Administrador', link: 'add-admin'}],
+      menuOptions: [
+        {name: 'Resumo', link: 'summary'},
+        {name: 'Gerenciar Administrador', link: 'add-admin'},
+        {name: 'Buscar usuário', link: 'search'}
+      ],
       adminUsers: '',
       cpfUsers: '',
       cnpjUsers: '',
       tab: '',
       emailAdmin: '',
+      btnLoading: false,
+      btnText: 'adicionar novo',
       summaryLoading: true,
       configureLoading: true,
-      btnLoading: false,
-      btnText: 'adicionar novo'
+      searchLoading: true
     }
   }
 
@@ -88,7 +94,9 @@ class Admin extends Component {
           adminUsers: data.admin.value,
           summaryLoading: false,
           configureLoading: false,
-          tab: 'summary'
+          // tab: 'summary'
+          /* TODO HERE */
+          tab: 'search'
         })
       }
     })
@@ -171,7 +179,7 @@ class Admin extends Component {
             <div className="container">
               <div className="row">
                 <div className="col-sm-4">
-                  <SideMenu menu={this.state.menuOptions} clickSideMenu={this.clickSideMenu}/>
+                  <SideMenu menu={this.state.menuOptions} tab={this.state.tab} clickSideMenu={this.clickSideMenu}/>
                 </div>
                 <div className="col-sm-8">
                   {this.state.tab === 'summary' &&
@@ -187,6 +195,11 @@ class Admin extends Component {
                       submit={this.addAdmin}
                       btnLoading={this.state.btnLoading}
                       btnText={this.state.btnText}
+                    />
+                  }
+                  {this.state.tab === 'search' &&
+                    <Search 
+                      loading={this.state.searchLoading}
                     />
                   }
                 </div>
