@@ -21,9 +21,10 @@ class Cpf extends Component {
         address: '',
         dateBirth: '',
         cpf: '',
-        nationality: ''
+        nationality: '',
+        marital_status: 'solteira(o)'
       },
-      requiredField: ['name', 'password', 'password_confirm', 'email', 'address', 'telephone', 'cpf', 'nationality', 'job', 'dateBirth'],
+      requiredField: ['name', 'password', 'password_confirm', 'email', 'address', 'telephone', 'cpf', 'nationality', 'job', 'dateBirth', 'nationality'],
       errorBag: {},
       btnText: 'Criar Conta',
       btnLoading: false
@@ -93,11 +94,11 @@ class Cpf extends Component {
       delete errorBag.dateBirth
       this.setState({errorBag})
     }
-
+    
     if(!verifyCpf(this.state.form.cpf)) {
       errorBag.invalidCpf = 'invalidCpf'
       this.setState({errorBag})
-    }
+    }    
     if(verifyCpf(this.state.form.cpf)) {
       delete errorBag.invalidCpf
       this.setState({errorBag})
@@ -267,10 +268,10 @@ class Cpf extends Component {
                   </div>
 
                   <div className="form-group row">
-                    <div className={'col-sm-4 '+( (this.state.errorBag['dateBirth'] && this.state.form.dateBirth === '')|| (this.state.errorBag['dateBirth'] && this.state.form.dateBirth !== '') ? 'has-danger' : '')}>
+                    <div className={'col-sm-3 '+( (this.state.errorBag['dateBirth'] && this.state.form.dateBirth === '') || (this.state.errorBag['dateBirth'] && this.state.form.dateBirth !== '') ? 'has-danger' : '')}>
                       <label className="control-label" htmlFor="dateBirth">Data de Nascimento</label>
                       <CurrencyFormat
-                        className={'form-control '+( (this.state.errorBag['dateBirth'] && this.state.form.dateBirth === '')|| (this.state.errorBag['dateBirth'] && this.state.form.dateBirth !== '') ?'is-invalid':'')}
+                        className={'form-control '+( (this.state.errorBag['dateBirth'] && this.state.form.dateBirth === '') || (this.state.errorBag['dateBirth'] && this.state.form.dateBirth !== '') ?'is-invalid':'')}
                         placeholder={'10/11/1980'}
                         allowNegative={false}
                         format={'##/##/####'}
@@ -288,7 +289,7 @@ class Cpf extends Component {
                       }
                     </div>
 
-                    <div className={'col-sm-4 '+((this.state.errorBag['cpf'] && this.state.form.cpf === '') || (this.state.errorBag['invalidCpf'] && this.state.form.cpf !== '') ? 'has-danger' : '')}>
+                    <div className={'col-sm-3 '+((this.state.errorBag['cpf'] && this.state.form.cpf === '') || (this.state.errorBag['invalidCpf'] && this.state.form.cpf !== '') ? 'has-danger' : '')}>
                       <label className="control-label" htmlFor="cpf">CPF</label>
                       <CurrencyFormat
                         className={'form-control '+((this.state.errorBag['cpf'] && this.state.form.cpf === '') || (this.state.errorBag['invalidCpf'] && this.state.form.cpf !== '') ?'is-invalid':'')}
@@ -308,10 +309,23 @@ class Cpf extends Component {
                       }
                     </div>
 
-                    <div className={'col-sm-4 '+(this.state.errorBag['nationality'] && this.state.form.nationality === '' ? 'has-danger' : '')}>
+                    <div className={'col-sm-3 '+(this.state.errorBag['nationality'] && this.state.form.nationality === '' ? 'has-danger' : '')}>
                       <label className="control-label" htmlFor="nationality">Nacionalidade</label>
-                      <input className={"form-control "+(this.state.errorBag['name'] && this.state.form.nationality === '' ?'is-invalid':'')} type="text" id="nationality" name="nationality" placeholder="Ex: Brasileiro" value={this.state.form.nationality} onChange={this.updateValue('nationality')} />
+                      <input className={"form-control "+(this.state.errorBag['nationality'] && this.state.form.nationality === '' ?'is-invalid':'')} type="text" id="nationality" name="nationality" placeholder="Ex: Brasileiro" value={this.state.form.nationality} onChange={this.updateValue('nationality')} />
                       {(this.state.errorBag['nationality'] && this.state.form.nationality === '') &&
+                        <div className="invalid-feedback">Campo Obrigatório</div>
+                      }
+                    </div>
+
+                    <div className={'col-sm-3 '+(this.state.errorBag['marital_status'] && this.state.form.marital_status === '' ? 'has-danger' : '')}>
+                      <label className="control-label" htmlFor="marital_status">Estado Civil</label>
+                      <select className={"custom-select "+(this.state.errorBag['marital_status'] && this.state.form.marital_status === '' ?'is-invalid':'')} id="marital_status" name="marital_status" onChange={this.updateValue('marital_status')}>
+                        <option value="solteira(o)">Solteira(o)</option>
+                        <option value="casada(o)">Casada(o)</option>
+                        <option value="divorciada(o)">Divorciada(o)</option>
+                        <option value="viuva(o)">Viúva(o)</option>
+                      </select>
+                      {(this.state.errorBag['marital_status'] && this.state.form.marital_status === '') &&
                         <div className="invalid-feedback">Campo Obrigatório</div>
                       }
                     </div>
@@ -350,14 +364,3 @@ class Cpf extends Component {
 }
 
 export default Cpf
-
-
-// CPF:
-// - Nacionalidade
-// - CPF
-// - RG
-// - Estado Civil
-// - Profissão
-// - Email de contato
-
-// CNPJ - o que já tem mais o nº do CNPJ e um email de contato para enviarmos o recibo.

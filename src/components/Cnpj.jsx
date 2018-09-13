@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
-import * as firebase from 'firebase';
-// import axios from 'axios';
-import { toast } from 'react-toastify';
-import CurrencyFormat from 'react-currency-format';
-import { SemipolarSpinner } from 'react-epic-spinners';
+import React, { Component } from 'react'
+import * as firebase from 'firebase'
+// import axios from 'axios'
+import { toast } from 'react-toastify'
+import CurrencyFormat from 'react-currency-format'
+import { SemipolarSpinner } from 'react-epic-spinners'
+import {verifyCnpj} from './modules/verifyCnpj'
 
 class Cnpj extends Component {
   constructor(props) {
@@ -18,9 +19,10 @@ class Cnpj extends Component {
         password_confirm: '',
         telephone: '',
         address: '',
-        metier: ''
+        metier: '',
+        cnpj: ''
       },
-      requiredField: ['name', 'name_donator', 'password', 'password_confirm', 'email', 'address', 'telephone'],
+      requiredField: ['name', 'name_donator', 'password', 'password_confirm', 'email', 'address', 'telephone', 'cnpj'],
       errorBag: {},
       btnText: 'Criar Conta',
       btnLoading: false
@@ -29,7 +31,7 @@ class Cnpj extends Component {
 
   updateValue = (type) => (e) => {
     let state = this.state;
-    let options = ['telephone']
+    let options = ['telephone', 'cnpj']
     
     if(options.indexOf(type) > -1) {
       state.form[type] = e.formattedValue;
@@ -80,6 +82,15 @@ class Cnpj extends Component {
     if(verifyEmail.test(this.state.form.email)) {
       delete errorBag.email;
       this.setState({errorBag}); 
+    }
+
+    if(!verifyCnpj(this.state.form.cnpj)) {
+      errorBag.invalidCnpj = 'invalidCnpj'
+      this.setState({errorBag})
+    }
+    if(verifyCnpj(this.state.form.cnpj)) {
+      delete errorBag.invalidCnpj
+      this.setState({errorBag})
     }
   }
 
@@ -155,7 +166,7 @@ class Cnpj extends Component {
 
   render() {
     return (
-      <div className="cpf">
+      <div className="cnpj">
         <form action=""
           onKeyDown={
             (e) => {
@@ -248,11 +259,32 @@ class Cnpj extends Component {
                         <div className="invalid-feedback">A senha deve conter no mínimo 6 dígitos</div>
                       }                     
                     </div>
+
                     <div className={"col-sm-4 "+(this.state.errorBag['password_confirm'] && this.state.form.password_confirm === '' ? 'has-danger' : '')}>
                       <label className="control-label" htmlFor="password_confirm">Confirmar Senha</label>
                       <input className={'form-control '+(this.state.errorBag['password_confirm'] && this.state.form.password_confirm === '' ?'is-invalid':'')} type="password" name="password_confirm" id="password_confirm" placeholder="*****" value={this.state.form.password_confirm} onChange={this.updateValue('password_confirm')}/>
                       {(this.state.errorBag['password_confirm'] && this.state.form.password_confirm === '') &&
                         <div className="invalid-feedback">Campo Obrigatório</div>
+                      }
+                    </div>
+
+                    <div className={'col-sm-4 '+((this.state.errorBag['cnpj'] && this.state.form.cnpj === '') || (this.state.errorBag['invalidCnpj'] && this.state.form.cnpj !== '') ? 'has-danger' : '')}>
+                      <label className="control-label" htmlFor="cnpj">CNPJ</label>
+                      <CurrencyFormat
+                        className={'form-control '+((this.state.errorBag['cnpj'] && this.state.form.cnpj === '') || (this.state.errorBag['invalidCnpj'] && this.state.form.cnpj !== '') ?'is-invalid':'')}
+                        placeholder={'22.222.222/2222-22'}
+                        allowNegative={false}
+                        id="cnpj" 
+                        name="cnpj"
+                        format={'##.###.###/####-##'}
+                        value={this.state.form.cnpj}
+                        onValueChange={this.updateValue('cnpj')}
+                      />
+                      {(this.state.errorBag['cnpj'] && this.state.form.cnpj === '') &&
+                        <div className="invalid-feedback">Campo Obrigatório</div>
+                      }
+                      {(this.state.errorBag['invalidCnpj'] && this.state.form.cnpj !== '') &&
+                        <div className="invalid-feedback">CNPJ inválido</div>
                       }
                     </div>
 
