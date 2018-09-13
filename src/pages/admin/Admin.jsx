@@ -23,17 +23,15 @@ class Admin extends Component {
         {name: 'Buscar usuário', link: 'search'}
       ],
       adminUsers: '',
-      cpfUsers: 0,
-      cnpjUsers: 0,
+      cpfUsers: '',
+      cnpjUsers: '',
       tab: '',
       emailAdmin: '',
       btnLoading: false,
       btnText: 'adicionar novo',
       summaryLoading: true,
       configureLoading: true,
-      searchLoading: true,
-      searchResults: [],
-      search: ''
+      searchLoading: true
     }
   }
 
@@ -91,8 +89,8 @@ class Admin extends Component {
       let data = snapshot.val()
       if(data) {
         this.setState({
-          cpfUsers: data.users.cpf?data.users.cpf:0,
-          cnpjUsers: data.users.cnpj?data.users.cnpj:0,
+          cpfUsers: data.users.cpf,
+          cnpjUsers: data.users.cnpj,
           adminUsers: data.admin.value,
           summaryLoading: false,
           configureLoading: false,
@@ -100,21 +98,7 @@ class Admin extends Component {
           // tab: 'summary'
           /* TODO HERE */
           tab: 'search'
-        },
-          () => {
-            /* search */
-            let arrayUsers = []
-            let {cpfUsers} = this.state
-            let keys = Object.keys(cpfUsers)
-        
-            keys.forEach((key, i) => {
-              let item = cpfUsers[key].information
-              item.key = key
-              arrayUsers.push(item)
-            })
-            this.setState({arrayUsers})
-          }
-        )
+        })
       }
     })
     .catch((error) => {})
@@ -184,18 +168,22 @@ class Admin extends Component {
   }
 
   search = (e) => {
-    let state = this.state
-    let {search, arrayUsers, searchResults} = this.state
-    arrayUsers.forEach((key, i) => {
-      if(key.email === search) {
-        searchResults.push(arrayUsers[i])
-        state.search = ''
-        this.setState(state)
-        return false
-      }
+    let searchUsers = []
+    let {search, cpfUsers} = this.state
+    let keys = Object.keys(cpfUsers)
 
-      state.searchResults = []
-      this.setState(state)
+    keys.map((key, i) => {
+      let item = cpfUsers[key].information
+      item.key = key
+      searchUsers.push(item)
+    })
+    this.setState({searchUsers})
+
+    searchUsers.map((key, i) => {
+      console.log(key.email, search)
+      if(key.email === search) {
+        console.log('Achei: ', key.email)
+      }
     })
   }
 
@@ -234,11 +222,9 @@ class Admin extends Component {
                     <Search 
                       loading={this.state.searchLoading}
                       inputChange={this.updateValue}
-                      value={this.state.search}
                       btnLoading={this.state.btnLoading}
                       btnText={'Procurar'}
                       submit={this.search}
-                      results={this.state.searchResults}
                     />
                   }
                 </div>

@@ -35,9 +35,8 @@ class MyAccount extends Component {
   componentWillMount() {
     /* verify if user is logged */
     verify().then((response) => {
-      console.log('MY ACCOUNT: ' ,response)
-      let user = this.state.user
-      user = response
+      let user = this.state.user;
+      user = response;
       /* redirect to dashboard */
       this.setState({
         user
