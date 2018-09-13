@@ -111,7 +111,7 @@ class MyAccount extends Component {
     e.preventDefault();
 
     if(!this.validate()) {
-      console.log( 'ALGO ERRADO' )
+
       edit.name = '';
       template.showTemplateEmail = false;
       template.showTemplateName = false;

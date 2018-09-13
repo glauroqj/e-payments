@@ -18,6 +18,8 @@ export function getDataUser(id) {
     firebase.database().ref('users/').once('value')
     .then((snapshot) => {
       let data = snapshot.val()
+      data.cpf = data.cpf?data.cpf:[]
+      data.cnpj = data.cnpj?data.cnpj:[]
       let cpf = Object.keys(data.cpf)
       let cnpj = Object.keys(data.cnpj)
 
