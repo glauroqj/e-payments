@@ -1,9 +1,11 @@
 function verifyCpf(cpf) {
-  console.log(cpf)
   cpf = cpf.replace(/[.-]/g,'');
+  cpf = cpf.replace(/\s/g,'')
+  console.log(cpf)
   let sum;
   let rest;
   sum = 0;
+  if (cpf.length < 11) return false
   if (cpf === '00000000000') return false;
   
   for (let i=1; i<=9; i++) sum = sum + parseInt(cpf.substring(i-1, i), 10) * (11 - i);
