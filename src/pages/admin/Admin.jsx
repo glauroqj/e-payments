@@ -97,22 +97,41 @@ class Admin extends Component {
           summaryLoading: false,
           configureLoading: false,
           searchLoading: false,
-          // tab: 'summary'
-          /* TODO HERE */
-          tab: 'search'
+          tab: 'summary'
+          // /* TODO HERE */
+          // tab: 'search'
         },
           () => {
             /* search */
             let arrayUsers = []
-            let {cpfUsers} = this.state
-            let keys = Object.keys(cpfUsers)
-        
-            keys.forEach((key, i) => {
-              let item = cpfUsers[key].information
-              item.key = key
-              arrayUsers.push(item)
+            let keysAll = []
+            let {cpfUsers, cnpjUsers} = this.state
+            let keysCPF = Object.keys(cpfUsers)
+            let keysCNPJ = Object.keys(cnpjUsers)
+
+            keysAll = keysAll.concat(keysCPF, keysCNPJ)
+
+            keysAll.forEach((key, i) => {
+              let item = ''
+              let cpf = cpfUsers[key]?cpfUsers[key].information:false
+              let cnpj = cnpjUsers[key]?cnpjUsers[key].information:false
+              if (cpf) {
+                console.log('CPF: ',cpf)
+                item = cpf
+                item.key = cpf.key
+                arrayUsers.push(item)
+              }
+              if (cnpj) {
+                console.log('CNPJ:', cnpj)
+                item = cnpj
+                item.key = cnpj.key
+                arrayUsers.push(item)
+              }
+              // let item = cpfUsers[key].information
+              // item.key = key
+              // arrayUsers.push(item)
+              this.setState({arrayUsers})
             })
-            this.setState({arrayUsers})
           }
         )
       }
@@ -185,22 +204,30 @@ class Admin extends Component {
 
   search = (e) => {
     let state = this.state
-    let {search, arrayUsers, searchResults} = this.state
+    let {search, arrayUsers} = this.state
+    let nameUser = ''
+    search = search.toLowerCase()
 
-    arrayUsers.forEach((key, i) => {
-      if(key.email === search) {
-        searchResults.push(arrayUsers[i])
-        state.search = ''
-        this.setState(state)
-        return false
-      }
-      state.searchResults = []
+    const email = arrayUsers.filter(user => user.email === search)
+    const name = arrayUsers.filter(user => (nameUser = user.name.toLowerCase()) === search)
+    /* USING FILTER */
+    if (email.length > 0) {
+      state.searchResults = email
+      state.search = ''
       this.setState(state)
-    })
+      return false
+    }
+    if (name.length > 0) {
+      state.searchResults = name
+      state.search = ''
+      this.setState(state)
+      return false
+    }
+    state.searchResults = []
+    state.search = ''
+    this.setState(state)
 
   }
-
-  
 
   render() {
     return (
