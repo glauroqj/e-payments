@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "react-scripts start",
     "build": "react-scripts build",
-    "deploy": "yarn build && git add . && git commit -am 'deploy' && git push",
+    "deploy": "yarn test && yarn build && git add . && git commit -am 'deploy' && git push",
     "test": "./node_modules/.bin/jest --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
   },
   "dependencies": {

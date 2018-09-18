@@ -97,9 +97,9 @@ class Admin extends Component {
           summaryLoading: false,
           configureLoading: false,
           searchLoading: false,
-          // tab: 'summary'
+          tab: 'summary'
           // /* TODO HERE */
-          tab: 'search'
+          // tab: 'search'
         },
           () => {
             /* search */
