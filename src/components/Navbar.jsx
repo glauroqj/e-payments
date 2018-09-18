@@ -8,11 +8,11 @@ class Navbar extends Component {
     }
   }
 
-  exit = () => {
+  exit = (e) => {
     return this.props.exit()
   }
 
-  menu = () => {
+  menu = (e) => {
     this.setState({
       showMenu: !this.state.showMenu
     })
