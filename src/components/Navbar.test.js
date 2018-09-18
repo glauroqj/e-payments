@@ -19,31 +19,6 @@ describe('Navbar component', () => {
     expect(component.instance().props.link).toEqual('/admin')
   })
 
-  // it('Find class navbar', () => {
-  //   let component = shallow(<Navbar link={link} user={user}/>)
-  //   expect(component.find('.navbar').length).toBe(1)
-  // })
-
-  // it('Pass props user', () => {
-  //   let component = mount(<Navbar user={user}/>)
-  //   expect(component.props().user).toEqual(user)
-  // })
-
-  // it('Pass props link', () => {
-  //   let component = mount(<Navbar link={link} user={user}/>)
-  //   expect(component.props().link).toEqual('/dashboard')
-  // })
-
-  // it('Quantity menu options', () => {
-  //   let component = shallow(<Navbar link={link} user={user}/>)
-  //   expect(component.find('a.nav-link').length).toBe(5)
-  // })
-
-  // it('Verify all texts', () => {
-  //   let component = shallow(<Navbar link={link} user={user}/>)
-  //   expect( component.text()).toEqual('Equale DoaçõesGlauroQuero DoarMinha ContaSair')
-  // })
-
   it('Show menu', () => {
     let component = shallow(<Navbar link={link} user={user}/>)
     component.instance().menu()
