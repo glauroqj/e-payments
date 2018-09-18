@@ -97,9 +97,9 @@ class Admin extends Component {
           summaryLoading: false,
           configureLoading: false,
           searchLoading: false,
-          tab: 'summary'
+          // tab: 'summary'
           // /* TODO HERE */
-          // tab: 'search'
+          tab: 'search'
         },
           () => {
             /* search */
@@ -117,19 +117,20 @@ class Admin extends Component {
               let cnpj = cnpjUsers[key]?cnpjUsers[key].information:false
               if (cpf) {
                 console.log('CPF: ',cpf)
+                let nameSplit = cpf.name.toLowerCase().split(' ')
                 item = cpf
-                item.key = cpf.key
+                item.key = key
+                item.name_search = nameSplit
                 arrayUsers.push(item)
               }
               if (cnpj) {
                 console.log('CNPJ:', cnpj)
+                let nameSplit = cnpj.name.toLowerCase().split(' ')
                 item = cnpj
-                item.key = cnpj.key
+                item.key = key
+                item.name_search = nameSplit
                 arrayUsers.push(item)
               }
-              // let item = cpfUsers[key].information
-              // item.key = key
-              // arrayUsers.push(item)
               this.setState({arrayUsers})
             })
           }
@@ -205,11 +206,21 @@ class Admin extends Component {
   search = (e) => {
     let state = this.state
     let {search, arrayUsers} = this.state
-    let nameUser = ''
+    let name = []
     search = search.toLowerCase()
 
     const email = arrayUsers.filter(user => user.email === search)
-    const name = arrayUsers.filter(user => (nameUser = user.name.toLowerCase()) === search)
+    
+    arrayUsers.map((key, i) => {
+      return key.name_search.map((item, i) => {
+        if (item === search) {
+          name.push(key)
+          return key
+        }
+        return false
+      })
+    })
+
     /* USING FILTER */
     if (email.length > 0) {
       state.searchResults = email
