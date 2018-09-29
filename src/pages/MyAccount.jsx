@@ -22,11 +22,13 @@ class MyAccount extends Component {
       template: {
         showTemplateName: false,
         showTemplateEmail: false,
+        showTemplateAddress: false,
         btnChangeLoading: false
       },
       edit: {
         name: '',
         email: '',
+        address: ''
       },
       emailSended: false,
     }
@@ -95,12 +97,16 @@ class MyAccount extends Component {
     let edit = this.state.edit
     let template = this.state.template
     if (type === 'name') {
-      edit[type] = '';
-      template.showTemplateName = this.state.template.showTemplateName?false:true;
+      edit[type] = ''
+      template.showTemplateName = this.state.template.showTemplateName?false:true
     }
     if (type === 'email') {
-      edit[type] = '';
-      template.showTemplateEmail = this.state.template.showTemplateEmail?false:true;
+      edit[type] = ''
+      template.showTemplateEmail = this.state.template.showTemplateEmail?false:true
+    }
+    if (type === 'address') {
+      edit[type] = ''
+      template.showTemplateAddress = this.state.template.showTemplateAddress?false:true
     }
     this.setState({template})
   }
@@ -108,79 +114,101 @@ class MyAccount extends Component {
   saveInfo = (type) => (e) => {
     let edit = this.state.edit
     let template = this.state.template
-    e.preventDefault();
+    e.preventDefault()
 
     if(!this.validate()) {
 
-      edit.name = '';
-      template.showTemplateEmail = false;
-      template.showTemplateName = false;
-      template.btnChangeLoading = false;
-      this.setState({edit});
-      return false;
+      edit.name = ''
+      template.showTemplateEmail = false
+      template.showTemplateName = false
+      template.showTemplateAddress = false
+      template.btnChangeLoading = false
+      this.setState({edit})
+      return false
     }
 
-    template.btnChangeLoading = true;
-    this.setState({template});
+    template.btnChangeLoading = true
+    this.setState({template})
 
     if(type === 'name') {
       this.state.user.updateProfile({
         displayName: this.state.edit.name
       })
       .then(() => {
-        toast.success('Nome alterado com sucesso!');
-        template.showTemplateName = false;
-        template.btnChangeLoading = false;
-        this.setState({template});
-        this.reloadState();
+        toast.success('Nome alterado com sucesso!')
+        template.showTemplateName = false
+        template.btnChangeLoading = false
+        this.setState({template})
+        this.reloadState()
       })
-      .catch((error) => {});
+      .catch((error) => {})
       return false;
     }
 
     if(type === 'email') {
       this.state.user.updateEmail(this.state.edit.email)
       .then(() => {
-        toast.success('E-mail alterado com sucesso!');
-        template.showTemplateEmail = false;
-        template.btnChangeLoading = false;
-        this.setState({template});
-        this.reloadState();
+        toast.success('E-mail alterado com sucesso!')
+        template.showTemplateEmail = false
+        template.btnChangeLoading = false
+        this.setState({template})
+        this.reloadState()
       })
       .catch((error) => {
         console.log(error)
       });
+    }
+
+    if (type === 'address') {
+      firebase.database().ref('users/cpf/' + this.state.user.uid + '/information/').update({
+        address: edit.address
+      })
+      .then((success) => {
+        console.log('Saved: ')
+        toast.success('Endereço alterado com sucesso!')
+        template.showTemplateEmail = false
+        template.btnChangeLoading = false
+        template.showTemplateAddress = false
+        this.setState({template})
+        this.reloadState()
+      })
     }
   }
 
   validate() {
     let edit = this.state.edit;
     let verifyEmail = /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}/igm;
-    if(this.state.edit.name === '' && this.state.template.showTemplateName) {
+    if (this.state.edit.name === '' && this.state.template.showTemplateName) {
       toast.error('O nome não pode ficar vazio!')
       return false;
     }
-    if(this.state.edit.name === this.state.user.displayName && this.state.template.showTemplateName) {
+    if (this.state.edit.name === this.state.user.displayName && this.state.template.showTemplateName) {
       toast.error('O nome é identico ao atual!')
       edit.name = '';
       this.setState({edit})
       return false;
     }
-    if(this.state.edit.email === '' && this.state.template.showTemplateEmail) {
+    if (this.state.edit.email === '' && this.state.template.showTemplateEmail) {
       toast.error('O e-mail não pode ficar vazio!')
       return false;
     }
-    if(this.state.edit.email === this.state.user.email & this.state.template.showTemplateEmail) {
+    if (this.state.edit.email === this.state.user.email & this.state.template.showTemplateEmail) {
       toast.error('O e-mail é identico ao atual!')
       edit.email = '';
       this.setState({edit})
       return false;
     }
-    if(!verifyEmail.test(this.state.edit.email) && this.state.template.showTemplateEmail) {
+    if (!verifyEmail.test(this.state.edit.email) && this.state.template.showTemplateEmail) {
       toast.error('E-mail inválido!')
-      edit.email = '';
+      edit.email = ''
       this.setState({edit})
-      return false;
+      return false
+    }
+    if (this.state.edit.address === '' && this.state.template.showTemplateAddress) {
+      toast.error('O nome não pode ficar vazio!')
+      edit.address = ''
+      this.setState({edit})
+      return false
     }
 
     return true;
@@ -202,9 +230,9 @@ class MyAccount extends Component {
   }
 
   updateInput = (type) => (e) => {
-    let edit = this.state.edit;
-    edit[type] = e.target.value;
-    this.setState({edit});
+    let edit = this.state.edit
+    edit[type] = e.target.value
+    this.setState({edit})
   }
 
   render() {
@@ -312,9 +340,23 @@ class MyAccount extends Component {
                   <div className="card mb-3">
                     <h3 className="card-header">Endereço</h3>
                     <ul className="list-group list-group-flush">
-                      <li className="list-group-item">
+                      <li className="list-group-item myAccount_box_edit">
                         <h5 className="card-title">Rua</h5>
                         <h6 className="card-subtitle text-muted">{this.state.user.information.address}</h6>
+                        {this.state.template.showTemplateAddress &&
+                            <UpdateInformation 
+                              fieldName={'address'}
+                              type={'text'}
+                              updateInput={this.updateInput('address')}
+                              save={this.saveInfo}
+                              cancel={this.editInfo}
+                              value={this.state.edit.address}
+                              loading={this.state.template.btnChangeLoading}
+                            />
+                          }
+                          {!this.state.template.showTemplateAddress &&
+                            <button className="btn btn-warning btn-xs edit" id="address" onClick={this.editInfo('address')}><i className="fa fa-user-edit"></i></button>
+                          }
                       </li>
                     </ul>
                   </div>
