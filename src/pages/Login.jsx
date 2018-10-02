@@ -60,8 +60,8 @@ class Login extends Component {
   }
 
   submit = (e) => {
-    e.preventDefault();
-    let state = this.state;
+    e.preventDefault()
+    let state = this.state
     if(state.email === '' || state.password === '') {
       toast.error('Campos vazios')
       return false;
