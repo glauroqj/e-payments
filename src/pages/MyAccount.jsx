@@ -1,13 +1,15 @@
-import React, { Component } from 'react';
-import * as firebase from 'firebase';
-import * as moment from 'moment';
-import 'moment/locale/pt-br';
-import { ToastContainer, toast } from 'react-toastify';
+import React, { Component } from 'react'
+import * as firebase from 'firebase'
+import * as moment from 'moment'
+import 'moment/locale/pt-br'
+import { ToastContainer, toast } from 'react-toastify'
 import {verify, getDataUser} from '../components/modules/verifyLogin'
 
-import Navbar from '../components/Navbar';
-import Loader from '../components/Loader';
-import UpdateInformation from '../components/modules/updateInformation';
+import Navbar from '../components/Navbar'
+import Loader from '../components/Loader'
+
+import GetPhotoInstagram from '../components/modules/getPhotoInstagram'
+import UpdateInformation from '../components/modules/updateInformation'
 
 import '../assets/my-account.css'
 
@@ -31,14 +33,15 @@ class MyAccount extends Component {
         address: ''
       },
       emailSended: false,
+      isVisible: true
     }
   }
 
   componentWillMount() {
     /* verify if user is logged */
     verify().then((response) => {
-      let user = this.state.user;
-      user = response;
+      let user = this.state.user
+      user = response
       /* redirect to dashboard */
       this.setState({
         user
@@ -50,7 +53,7 @@ class MyAccount extends Component {
     })
     .catch((error) => {
       console.log('Not Loged: ')
-      this.props.history.push('/login');
+      this.props.history.push('/login')
     });
 
   }
@@ -176,27 +179,27 @@ class MyAccount extends Component {
   }
 
   validate() {
-    let edit = this.state.edit;
-    let verifyEmail = /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}/igm;
+    let edit = this.state.edit
+    let verifyEmail = /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}/igm
     if (this.state.edit.name === '' && this.state.template.showTemplateName) {
       toast.error('O nome não pode ficar vazio!')
-      return false;
+      return false
     }
     if (this.state.edit.name === this.state.user.displayName && this.state.template.showTemplateName) {
       toast.error('O nome é identico ao atual!')
-      edit.name = '';
+      edit.name = ''
       this.setState({edit})
-      return false;
+      return false
     }
     if (this.state.edit.email === '' && this.state.template.showTemplateEmail) {
       toast.error('O e-mail não pode ficar vazio!')
-      return false;
+      return false
     }
     if (this.state.edit.email === this.state.user.email & this.state.template.showTemplateEmail) {
       toast.error('O e-mail é identico ao atual!')
-      edit.email = '';
+      edit.email = ''
       this.setState({edit})
-      return false;
+      return false
     }
     if (!verifyEmail.test(this.state.edit.email) && this.state.template.showTemplateEmail) {
       toast.error('E-mail inválido!')
@@ -211,22 +214,29 @@ class MyAccount extends Component {
       return false
     }
 
-    return true;
+    return true
   }
 
   reloadState() {
-    verify().then((user) => {
-      console.log('Update information: ', user)
+    verify().then((response) => {
+      console.log('Update information: ', response)
       /* redirect to dashboard */
       this.setState({
-        user: user
+        user: response
       });
-      return false;
+      return false
     })
     .catch((error) => {
       console.log('Not Loged: ')
       this.props.history.push('/login');
     }); 
+  }
+
+  updateState = (user) => {
+    /* update when user change instagram photo */
+    this.setState({
+      user: user
+    })
   }
 
   updateInput = (type) => (e) => {
@@ -336,7 +346,7 @@ class MyAccount extends Component {
                   </div>
                 </div>
 
-                <div className="col-sm-6">
+                <div className="col-sm-8">
                   <div className="card mb-3">
                     <h3 className="card-header">Endereço</h3>
                     <ul className="list-group list-group-flush">
@@ -360,6 +370,7 @@ class MyAccount extends Component {
                       </li>
                     </ul>
                   </div>
+                  <GetPhotoInstagram confirm={this.updateState} />
                 </div>
 
               </div>

@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
-import { ToastContainer } from 'react-toastify';
+import React, { Component } from 'react'
+import { ToastContainer } from 'react-toastify'
 import {verify} from '../components/modules/verifyLogin'
-import Loader from '../components/Loader';
-import Logo from '../components/Logo';
-import Cpf from '../components/Cpf';
-import Cnpj from '../components/Cnpj';
+import Loader from '../components/Loader'
+import Logo from '../components/Logo'
+import Cpf from '../components/Cpf'
+import Cnpj from '../components/Cnpj'
 
-import 'react-toastify/dist/ReactToastify.css';
+import 'react-toastify/dist/ReactToastify.css'
 import '../assets/createAcc.css'
 
 class CreateAccount extends Component {
@@ -36,42 +36,6 @@ class CreateAccount extends Component {
       });
     })
   }
-
-  // getInfoInstagram = () => {
-  //   // https://www.instagram.com/glauroqj/?__a=1
-
-  //   if(this.state.userName === '') {
-  //     toast.error('Campo Instagram vazio');
-  //     return false;
-  //   }
-
-  //   this.setState({
-  //     btnTextInstagram: 'Buscando...',
-  //     btnLoadingInstagram: true
-  //   })
-
-  //   axios({
-  //     method:'get',
-  //     url:'https://apinsta.herokuapp.com/u/'+ this.state.userName,
-  //     responseType:'json'
-  //   })
-  //   .then((response) => {
-  //     console.log(response.data.graphql.user)
-  //     this.setState({
-  //       instagram: response.data.graphql.user,
-  //       btnLoadingInstagram: false
-  //     })
-  //   })
-  //   .catch((error) => {
-  //     toast.error('Usuário inexistente');
-  //     this.setState({
-  //       userName: '',
-  //       btnLoadingInstagram: false
-  //     })
-  //     console.log('ERROR: ',error)
-  //   })
-
-  // }
 
   toggleTabOption = (e) => {
     this.setState({

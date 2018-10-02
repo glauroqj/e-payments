@@ -17,7 +17,7 @@ class SideMenu extends Component {
 
   render() {
     return (
-      <div className="container side-menu">
+      <div className="side-menu">
         <div className="list-group">
           {this.props.menu.map((key, i) => {
             return (
