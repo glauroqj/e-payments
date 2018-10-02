@@ -58,7 +58,11 @@ input[type=number]:focus, [type=text].form-control:focus,
 	position: absolute;
   right: 0;
   left: 0;
-  padding: 0px;
+	padding: 0px;
+	white-space: nowrap;
+  text-overflow: ellipsis;
+  width: auto;
+  overflow: hidden;
 }
 .navbar .profile .name {
 	color: var(--green);

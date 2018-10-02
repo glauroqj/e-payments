@@ -28,7 +28,6 @@ class GetPhotoInstagram extends Component {
     })
     .then((response) => {
       let data = response.data.graphql.user.id?response.data.graphql.user.id:false
-      console.log(response.data.graphql.user)
       if (data === '8579566509') {
         this.setState({
           loading: false
