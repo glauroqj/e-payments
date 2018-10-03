@@ -26,18 +26,12 @@ class MyAccount extends Component {
       },
       link: '/my-account',
       template: {
-        showTemplateName: false,
-        showTemplateEmail: false,
         showTemplateAddress: false,
         btnChangeLoading: false
       },
       edit: {
-        name: '',
-        email: '',
         address: ''
       },
-      emailSended: false,
-      isVisible: true
     }
   }
 
@@ -88,14 +82,6 @@ class MyAccount extends Component {
   editInfo = (type) => (e) => {
     let edit = this.state.edit
     let template = this.state.template
-    if (type === 'name') {
-      edit[type] = ''
-      template.showTemplateName = this.state.template.showTemplateName?false:true
-    }
-    if (type === 'email') {
-      edit[type] = ''
-      template.showTemplateEmail = this.state.template.showTemplateEmail?false:true
-    }
     if (type === 'address') {
       edit[type] = ''
       template.showTemplateAddress = this.state.template.showTemplateAddress?false:true
@@ -108,17 +94,6 @@ class MyAccount extends Component {
     let template = this.state.template
     e.preventDefault()
 
-    if(!this.validate()) {
-
-      edit.name = ''
-      template.showTemplateEmail = false
-      template.showTemplateName = false
-      template.showTemplateAddress = false
-      template.btnChangeLoading = false
-      this.setState({edit})
-      return false
-    }
-
     template.btnChangeLoading = true
     this.setState({template})
 
@@ -129,8 +104,6 @@ class MyAccount extends Component {
       .then((success) => {
         console.log('Saved: ')
         toast.success('Endereço alterado com sucesso!')
-        template.showTemplateEmail = false
-        template.btnChangeLoading = false
         template.showTemplateAddress = false
         this.setState({template})
         this.reloadState()
