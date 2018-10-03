@@ -9,7 +9,8 @@ class ListGroup extends Component {
       user: this.props.user,
       templateEdit: '',
       textEdit: '',
-      btnEditLoading: false
+      btnEditLoading: false,
+      confirmEmailSended: false
     }
   }
 
@@ -100,6 +101,19 @@ class ListGroup extends Component {
     return true
   }
 
+  confirmEmail = () => {
+    const {user} = this.state 
+    this.setState({
+      confirmEmailSended: true
+    })
+    user.sendEmailVerification()
+    .then((success) => {
+      toast.success('E-mail enviado com sucesso!')
+    }).catch((error) => {
+      toast.error('Ocorreu um erro, tente novamente.')
+    })
+  }
+
   render() {
     const { items } = this.props
     return (
@@ -110,7 +124,7 @@ class ListGroup extends Component {
               <h5 className="card-title">{key.item}</h5>
               <h6 className="card-subtitle text-muted">{key.payload}</h6>
               {key.edit &&
-                <button className="btn btn-warning btn-xs edit" id={key.field} onClick={this.edit(key.field)} disabled={key.isVerified}><i className="fa fa-user-edit"/></button>
+                <button className={"btn btn-warning btn-xs edit "+ (key.isVerified?'hide':'')} id={key.field} onClick={this.edit(key.field)} disabled={key.isVerified}><i className="fa fa-user-edit"/></button>
               }
               {(key.edit && this.state.templateEdit === key.field) &&
                 <UpdateInformation 
@@ -122,6 +136,16 @@ class ListGroup extends Component {
                     value={this.state.textEdit}
                     loading={this.state.btnEditLoading}
                   />
+              }
+              {key.field === 'verifyEmail' &&
+                <React.Fragment>
+                  {(!this.state.confirmEmailSended && !key.isVerified) &&
+                    <button type="button" className='btn btn-outline-danger btn-sm mt-2' onClick={this.confirmEmail}>Verificar E-mail Agora!</button>
+                  }
+                  {key.isVerified &&
+                    <button type="button" className="btn btn-success btn-sm disabled mt-2" disabled>Verificado</button>
+                  }
+                </React.Fragment>
               }
             </li>
           )

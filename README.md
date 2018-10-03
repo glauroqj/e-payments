@@ -11,3 +11,4 @@
 Notify: https://fkhadra.github.io/react-toastify/
 Currency Format: https://www.npmjs.com/package/react-currency-format
 Modal: https://github.com/alexkuz/react-dock
+Icons: https://icons8.com/icon/set/student/office

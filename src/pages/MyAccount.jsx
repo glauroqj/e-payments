@@ -85,19 +85,6 @@ class MyAccount extends Component {
     })
   }
 
-  verifyEmail = () => {
-    this.setState({
-      emailSended: true
-    })
-    this.state.user.sendEmailVerification()
-    .then((success) => {
-      console.log('Envio de email: ',success)
-      toast.success('E-mail enviado com sucesso!')
-    }).catch((error) => {
-      toast.error('Ocorreu um erro, tente novamente.')
-    });
-  }
-
   editInfo = (type) => (e) => {
     let edit = this.state.edit
     let template = this.state.template
@@ -184,6 +171,7 @@ class MyAccount extends Component {
       {item: 'Profissão', field: 'job', payload: job},
       {item: 'Data de Nascimento', field: 'dateBirth', payload: dateBirth},
       {item: 'Tipo de Conta', field: 'accountType', payload: accountType},
+      {item: 'E-mail verificado?', field: 'verifyEmail', payload: 'Após o e-mail verificado, não é possível altera-lo', isVerified: user.emailVerified},
       {item: '', field: 'accountCreated', payload: moment(creationTime).format('LLLL')}
     ]
     return (
@@ -204,47 +192,6 @@ class MyAccount extends Component {
                       <img className="img-responsive" src={this.state.user.photoURL} alt=""/>
                     }
                     <ListGroup items={listGroupTitle} user={this.state.user} reloadState={this.reloadState} />
-
-                    <ul className="list-group list-group-flush">
-                      {!this.state.user.emailVerified &&
-                        <li className="list-group-item myAccount_box_edit">
-                          <h5 className="card-title">Email</h5>
-                          <h6 className="card-subtitle text-muted">{this.state.user.email}</h6>
-                          {this.state.template.showTemplateEmail &&
-                            <UpdateInformation 
-                              fieldName={'email'}
-                              type={'email'}
-                              updateInput={this.updateInput('email')}
-                              save={this.saveInfo}
-                              cancel={this.editInfo}
-                              value={this.state.edit.email}
-                              loading={this.state.template.btnChangeLoading}
-                            />
-                          }
-                          {!this.state.template.showTemplateEmail &&
-                            <button className="btn btn-warning btn-xs edit" id="name" onClick={this.editInfo('email')}><i className="fa fa-user-edit"></i></button>
-                          }
-                        </li>
-                      }
-
-                      <li className="list-group-item">
-                        <h5 className="card-title">Email verificado?</h5>
-                        {this.state.user.emailVerified &&
-                          <button type="button" className="btn btn-success btn-sm disabled">Verificado</button>
-                        }
-                        {!this.state.user.emailVerified &&
-                          <div>
-                            <p className="text-muted">Após o e-mail verificado, não é possível altera-lo</p>
-                              {!this.state.emailSended &&
-                                <button type="button" className='btn btn-outline-danger btn-sm' onClick={this.verifyEmail}>Verificar E-mail Agora!</button>
-                              }
-                              {this.state.emailSended &&
-                                <button type="button" class="btn btn-link btn-sm disabled">Email enviado</button>
-                              }
-                          </div>
-                        }
-                      </li>
-                    </ul>
 
                   </div>
                 </div>
