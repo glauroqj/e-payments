@@ -99,7 +99,7 @@ class GetPhotoInstagram extends Component {
       })
       .then(() => {
         this.closeModal()
-        return this.props.confirm(user)
+        return this.props.reloadState()
       })
     }
   }

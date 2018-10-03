@@ -3,7 +3,7 @@ import { SemipolarSpinner } from 'react-epic-spinners'
 
 class UpdateInformation extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state= {
 
     }
@@ -20,7 +20,7 @@ class UpdateInformation extends Component {
 
   cancel = (e) => {
     /* send state to MyAccount */
-    return this.props.cancel(e)
+    return this.props.cancel
   }
 
   render() {
@@ -62,4 +62,4 @@ class UpdateInformation extends Component {
   }
 }
 
-export default UpdateInformation;
+export default UpdateInformation
