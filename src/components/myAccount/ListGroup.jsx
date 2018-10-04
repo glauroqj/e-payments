@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
+import * as firebase from 'firebase'
 import UpdateInformation from '../../components/modules/updateInformation'
 import { toast } from 'react-toastify'
 
@@ -34,7 +35,7 @@ class ListGroup extends Component {
       btnEditLoading: true
     })
 
-    if(type === 'name') {
+    if (type === 'name') {
       user.updateProfile({
         displayName: textEdit
       })
@@ -46,10 +47,10 @@ class ListGroup extends Component {
       .catch((error) => {
         toast.error('Algo deu errado, não foi possível alterar o nome :(')
       })
-      return false;
+      return false
     }
 
-    if(type === 'email') {
+    if (type === 'email') {
       user.updateEmail(textEdit)
       .then(() => {
         toast.success('E-mail alterado com sucesso!')
@@ -58,7 +59,19 @@ class ListGroup extends Component {
       })
       .catch((error) => {
         console.log(error)
-      });
+      })
+      return false
+    }
+
+    if (type === 'address') {
+      firebase.database().ref('users/cpf/' + user.uid + '/information/').update({
+        address: textEdit
+      })
+      .then((success) => {
+        toast.success('Endereço alterado com sucesso!')
+        this.cancel()
+        return this.props.reloadState()
+      })
     }
 
   }
@@ -86,7 +99,7 @@ class ListGroup extends Component {
       toast.error('O campo não pode ficar vazio!')
       return false
     }
-    if (textEdit === user.displayName || textEdit === user.email) {
+    if (textEdit === user.displayName || textEdit === user.email || textEdit === user.information.address) {
       toast.error('O campo é identico ao atual!')
       this.cancel()
       return false

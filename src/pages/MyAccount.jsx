@@ -9,9 +9,7 @@ import Navbar from '../components/Navbar'
 import Loader from '../components/Loader'
 
 import ListGroup from '../components/myAccount/ListGroup'
-
 import GetPhotoInstagram from '../components/modules/getPhotoInstagram'
-import UpdateInformation from '../components/modules/updateInformation'
 
 import '../assets/my-account.css'
 
@@ -25,13 +23,6 @@ class MyAccount extends Component {
         information: {}
       },
       link: '/my-account',
-      template: {
-        showTemplateAddress: false,
-        btnChangeLoading: false
-      },
-      edit: {
-        address: ''
-      },
     }
   }
 
@@ -79,38 +70,6 @@ class MyAccount extends Component {
     })
   }
 
-  editInfo = (type) => (e) => {
-    let edit = this.state.edit
-    let template = this.state.template
-    if (type === 'address') {
-      edit[type] = ''
-      template.showTemplateAddress = this.state.template.showTemplateAddress?false:true
-    }
-    this.setState({template})
-  }
-
-  saveInfo = (type) => (e) => {
-    let edit = this.state.edit
-    let template = this.state.template
-    e.preventDefault()
-
-    template.btnChangeLoading = true
-    this.setState({template})
-
-    if (type === 'address') {
-      firebase.database().ref('users/cpf/' + this.state.user.uid + '/information/').update({
-        address: edit.address
-      })
-      .then((success) => {
-        console.log('Saved: ')
-        toast.success('Endereço alterado com sucesso!')
-        template.showTemplateAddress = false
-        this.setState({template})
-        this.reloadState()
-      })
-    }
-  }
-
   reloadState = (e) => {
     verify().then((response) => {
       this.setState({
@@ -135,9 +94,9 @@ class MyAccount extends Component {
 
   render() {
     const { user } = this.state
-    const { job, dateBirth, accountType } = this.state.user.information?this.state.user.information:''
+    const { job, dateBirth, accountType, address } = this.state.user.information?this.state.user.information:''
     const { creationTime } = this.state.user.metadata?this.state.user.metadata:''
-    const listGroupTitle = [
+    const listGroupAccountData = [
       {item: 'Nome', field: 'name', edit: true, typeInput: 'text', payload: user.displayName},
       {item: 'E-mail', field: 'email', edit: true, typeInput: 'email', payload: user.email, isVerified: user.emailVerified},
       {item: 'Status', field: 'status', payload: 'Doador'},
@@ -146,6 +105,9 @@ class MyAccount extends Component {
       {item: 'Tipo de Conta', field: 'accountType', payload: accountType},
       {item: 'E-mail verificado?', field: 'verifyEmail', payload: 'Após o e-mail verificado, não é possível altera-lo', isVerified: user.emailVerified},
       {item: '', field: 'accountCreated', payload: moment(creationTime).format('LLLL')}
+    ]
+    const listGroupAddress = [
+      {item: 'Rua', field: 'address', edit: true, typeInput: 'text', payload: address}
     ]
     return (
       <div className="myAccount">
@@ -164,34 +126,14 @@ class MyAccount extends Component {
                     {this.state.user.photoURL &&
                       <img className="img-responsive" src={this.state.user.photoURL} alt=""/>
                     }
-                    <ListGroup items={listGroupTitle} user={this.state.user} reloadState={this.reloadState} />
-
+                    <ListGroup items={listGroupAccountData} user={this.state.user} reloadState={this.reloadState} />
                   </div>
                 </div>
 
                 <div className="col-sm-8">
                   <div className="card mb-3">
                     <h3 className="card-header">Endereço</h3>
-                    <ul className="list-group list-group-flush">
-                      <li className="list-group-item myAccount_box_edit">
-                        <h5 className="card-title">Rua</h5>
-                        <h6 className="card-subtitle text-muted">{this.state.user.information.address}</h6>
-                        {this.state.template.showTemplateAddress &&
-                            <UpdateInformation 
-                              fieldName={'address'}
-                              type={'text'}
-                              updateInput={this.updateInput('address')}
-                              save={this.saveInfo}
-                              cancel={this.editInfo}
-                              value={this.state.edit.address}
-                              loading={this.state.template.btnChangeLoading}
-                            />
-                          }
-                          {!this.state.template.showTemplateAddress &&
-                            <button className="btn btn-warning btn-xs edit" id="address" onClick={this.editInfo('address')}><i className="fa fa-user-edit"></i></button>
-                          }
-                      </li>
-                    </ul>
+                    <ListGroup items={listGroupAddress} user={this.state.user} reloadState={this.reloadState} />
                   </div>
                   <GetPhotoInstagram reloadState={this.reloadState} />
                 </div>
