@@ -116,7 +116,7 @@ class Admin extends Component {
               let cpf = cpfUsers[key]?cpfUsers[key].information:false
               let cnpj = cnpjUsers[key]?cnpjUsers[key].information:false
               if (cpf) {
-                console.log('CPF: ',cpf)
+                // console.log('CPF: ',cpf)
                 let nameSplit = cpf.name.toLowerCase().split(' ')
                 item = cpf
                 item.key = key
@@ -124,7 +124,7 @@ class Admin extends Component {
                 arrayUsers.push(item)
               }
               if (cnpj) {
-                console.log('CNPJ:', cnpj)
+                // console.log('CNPJ:', cnpj)
                 let nameSplit = cnpj.name.toLowerCase().split(' ')
                 item = cnpj
                 item.key = key
@@ -203,43 +203,6 @@ class Admin extends Component {
     this.setState(state)
   }
 
-  search = (e) => {
-    let state = this.state
-    let {search, arrayUsers} = this.state
-    let name = []
-    search = search.toLowerCase()
-
-    const email = arrayUsers.filter(user => user.email === search)
-    
-    arrayUsers.map((key, i) => {
-      return key.name_search.map((item, i) => {
-        if (item === search) {
-          name.push(key)
-          return key
-        }
-        return false
-      })
-    })
-
-    /* USING FILTER */
-    if (email.length > 0) {
-      state.searchResults = email
-      state.search = ''
-      this.setState(state)
-      return false
-    }
-    if (name.length > 0) {
-      state.searchResults = name
-      state.search = ''
-      this.setState(state)
-      return false
-    }
-    state.searchResults = []
-    state.search = ''
-    this.setState(state)
-
-  }
-
   render() {
     return (
       <div className="admin">
@@ -272,14 +235,8 @@ class Admin extends Component {
                     />
                   }
                   {this.state.tab === 'search' &&
-                    <Search 
-                      loading={this.state.searchLoading}
-                      inputChange={this.updateValue}
-                      btnLoading={this.state.btnLoading}
-                      btnText={'Procurar'}
-                      submit={this.search}
-                      value={this.state.search}
-                      results={this.state.searchResults}
+                    <Search
+                      arrayUsers={this.state.arrayUsers}
                     />
                   }
                 </div>
