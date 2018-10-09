@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-class ListGroup extends Component {
+class ListGroupAdmin extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -13,7 +13,6 @@ class ListGroup extends Component {
       <React.Fragment>
         {items.map((key, i) => {
           let titles = Object.keys(key)
-          console.log(titles)
           return(
             <div className="col-sm-4 animated fadeIn" key={i}>
               <div className="card mb-3">
@@ -36,4 +35,4 @@ class ListGroup extends Component {
   }
 }
 
-export default ListGroup
+export default ListGroupAdmin
