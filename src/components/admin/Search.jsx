@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { SemipolarSpinner } from 'react-epic-spinners'
 import { toast } from 'react-toastify'
-import ListGroup from './ListGroup'
+import ListGroupAdmin from './ListGroupAdmin'
 
 class Search extends Component {
   constructor(props) {
@@ -106,8 +106,8 @@ class Search extends Component {
               <div className="col-sm-12">
                 <h3>{!this.state.searchResults.length?'Sem resultados :(':'Resultados '+this.state.searchResults.length}</h3>
               </div>
-                
-              <ListGroup items={this.state.searchResults} />
+
+              <ListGroupAdmin items={this.state.searchResults} />
 
             </div>
           </React.Fragment>
