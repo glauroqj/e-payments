@@ -106,7 +106,7 @@ class Search extends Component {
               <div className="col-sm-12">
                 <h3>{!this.state.searchResults.length?'Sem resultados :(':'Resultados '+this.state.searchResults.length}</h3>
               </div>
-
+                
               <ListGroup items={this.state.searchResults} />
 
             </div>
