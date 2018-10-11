@@ -1,5 +1,6 @@
-import React, { Component } from 'react';
-import CurrencyFormat from 'react-currency-format';
+import React, { Component } from 'react'
+import Input from './Input'
+import CurrencyFormat from 'react-currency-format'
 
 class Billet extends Component {
   constructor(props) {
@@ -16,64 +17,58 @@ class Billet extends Component {
     }
   }
 
-  updateValue = (e) => {
-    let state = this.state;
-    
-    if(e.target.name === 'name') {
-      state.billet.name = e.target.value;
-      this.setState(state);
-      return false;
+  updateValue = (type) => (e) => {
+    let billet = this.state.billet
+    let options = ['cpf', 'cep']
+    if(options.indexOf(type) > -1) {
+      billet[type] = e.formattedValue
+      this.setState({billet})
+      return false
     }
 
+    billet[type] = e.target.value
+    this.setState({billet})
   }
 
-  // updateCardNumber = (e) => {
-  //   let cardCredit = this.state.cardCredit;
-  //   cardCredit.cardNumber = e.value;
-  //   this.setState({cardCredit});
-  // }
-  // updateValidateDate = (e) => {
-  //   let cardCredit = this.state.cardCredit;
-  //   cardCredit.validateDate = e.value;
-  //   this.setState({cardCredit});
-  // }
-  // updateCvv = (e) => {
-  //   let cardCredit = this.state.cardCredit;
-  //   cardCredit.cvv = e.value;
-  //   this.setState({cardCredit});
-  // }
-  // updateDateBirth = (e) => {
-  //   let cardCredit = this.state.cardCredit;
-  //   cardCredit.dateBirth = e.value;
-  //   this.setState({cardCredit});
-  // }
-  // updateCpf = (e) => {
-  //   let cardCredit = this.state.cardCredit;
-  //   cardCredit.cpf = e.value;
-  //   this.setState({cardCredit});
-  // }
-  // updatePhone = (e) => {
-  //   let cardCredit = this.state.cardCredit;
-  //   cardCredit.phone = e.value;
-  //   this.setState({cardCredit});
-  // }
-
   validate = (e) => {
-    let errorBag = this.state.errorBag;
-    let inputs = document.querySelectorAll('input');
+    const {billet} = this.state
+    let verifyEmail = /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}/igm
+    let errorBag = {
+      name: [],
+      email: [],
+      cpf: [],
+      cep: []
+    }
+    let inputs = document.querySelectorAll('input')
     for (let i = 0; i < inputs.length; i++ ) {
       /* add error */
       if(this.state.requiredField.indexOf(inputs[i].name) > -1 && inputs[i].value === '') {
-        errorBag[inputs[i].name] = inputs[i].name
-        this.setState({errorBag});
+        let error = errorBag[inputs[i].name]
+        // errorBag[inputs[i].name] = inputs[i].name
+        error.push(inputs[i].name)
+        console.log(error)
+        this.setState({errorBag})
       }
       /* remove error */
       if(inputs[i].value !== '') {
-        delete errorBag[inputs[i].name];
-        this.setState({errorBag});
+        // delete errorBag[inputs[i].name]
+        errorBag[inputs[i].name] = []
+        this.setState({errorBag})
       }
     }
 
+    /* invalid email */
+    if(!verifyEmail.test(billet.email)) {
+      let error = errorBag['email']
+      error.push('invalidEmail')
+      this.setState({errorBag})
+      // errorBag.email = errorBag.email + 'invalidEmail'
+    }
+    if(verifyEmail.test(billet.email)) {
+      // delete errorBag.email
+      errorBag.email = []
+      this.setState({errorBag})
+    }
 
   }
 
@@ -82,6 +77,33 @@ class Billet extends Component {
   }
 
   render() {
+    const {billet, errorBag} = this.state
+    const name = [
+      {
+        label: 'Seu nome',
+        class: '',
+        type: 'text',
+        id: 'nome',
+        name: 'name',
+        placeholder: 'Ex: Valdeir Santana',
+        callback: this.updateValue('name'),
+        errorBag: errorBag['name'],
+        value: billet.name
+      }
+    ]
+    const email = [
+      {
+        label: 'Seu e-mail',
+        class: '',
+        type: 'email',
+        id: 'email',
+        name: 'email',
+        placeholder: 'Ex: exemplo@gmail.com',
+        callback: this.updateValue('email'),
+        errorBag: errorBag['email'],
+        value: billet.email
+      }
+    ]
     return (
       <div className="box-payment_creditcard">
         <form action=""
@@ -105,19 +127,27 @@ class Billet extends Component {
 
                   <div className={this.state.errorBag['name'] && this.state.billet.name === '' ?'form-group row has-danger':'form-group row'}>
                     <div className="col-sm-6">
-                      <label className="control-label" htmlFor="nome">Seu nome</label>
-                      <input className={this.state.errorBag['name'] && this.state.billet.name === '' ?'form-control is-invalid':'form-control'} type="text" id="nome" name="name" placeholder="Ex: Valdeir Santana" onChange={this.updateValue} />
+                      {/* <label className="control-label" htmlFor="nome">Seu nome</label>
+                      <input className={this.state.errorBag['name'] && this.state.billet.name === '' ?'form-control is-invalid':'form-control'} type="text" id="nome" name="name" placeholder="Ex: Valdeir Santana" onChange={this.updateValue('name')} />
                       {(this.state.errorBag['name'] && this.state.billet.name === '') &&
                         <div className="invalid-feedback">Campo Obrigatório</div>
-                      }
+                      } */}
+                      <Input
+                        input={name}
+                        handleInput={this.updateValue}
+                      />
                     </div>
 
                     <div className="col-sm-6">
-                      <label className="control-label" htmlFor="email">Seu e-mail</label>
-                      <input className={this.state.errorBag['email'] && this.state.billet.email === '' ?'form-control is-invalid':'form-control'} type="email" id="email" name="email" placeholder="Ex: exemplo@gmail.com" onChange={this.updateValue} />
+                      {/* <label className="control-label" htmlFor="email">Seu e-mail</label>
+                      <input className={this.state.errorBag['email'] && this.state.billet.email === '' ?'form-control is-invalid':'form-control'} type="email" id="email" name="email" placeholder="Ex: exemplo@gmail.com" onChange={this.updateValue('email')} />
                       {(this.state.errorBag['email'] && this.state.billet.email === '') &&
                         <div className="invalid-feedback">Campo Obrigatório</div>
-                      }
+                      } */}
+                      <Input
+                        input={email}
+                        handleInput={this.updateValue}
+                      />
                     </div>
 
                   </div>
@@ -134,7 +164,7 @@ class Billet extends Component {
                         name="cpf"
                         format={'###.###.###-##'}
                         mask={''}
-                        // onValueChange={this.updateCardNumber}
+                        onValueChange={this.updateValue('cpf')}
                       />
                     </div>
                     <div className="col-sm-6">
@@ -147,7 +177,7 @@ class Billet extends Component {
                         name="phone"
                         format={'#####-###'}
                         mask={''}
-                        // onValueChange={this.updateCardNumber}
+                        onValueChange={this.updateValue('cep')}
                       />
                     </div>
 
@@ -169,8 +199,8 @@ class Billet extends Component {
           </div> {/* card */}
         </form>
       </div>
-    );
+    )
   }
 }
 
-export default Billet;
+export default Billet
