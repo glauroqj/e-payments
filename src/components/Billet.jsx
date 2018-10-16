@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Input from './Input'
-import CurrencyFormat from 'react-currency-format'
+import InputFormat from './InputFormat'
+import {verifyCpf} from './modules/verifyCpf'
 
 class Billet extends Component {
   constructor(props) {
@@ -13,20 +14,24 @@ class Billet extends Component {
         cep: ''
       },
       requiredField: ['name', 'email', 'cpf', 'cep'],
-      errorBag: {}
+      errorBag: {
+        name: [],
+        email: [],
+        cpf: [],
+        cep: []
+      }
     }
   }
 
   updateValue = (type) => (e) => {
     let billet = this.state.billet
-    let options = ['cpf', 'cep']
-    if(options.indexOf(type) > -1) {
-      billet[type] = e.formattedValue
-      this.setState({billet})
-      return false
-    }
-
     billet[type] = e.target.value
+    this.setState({billet})
+  }
+
+  updateValueFormat = (type) => (e) => {
+    let billet = this.state.billet
+    billet[type] = e.formattedValue
     this.setState({billet})
   }
 
@@ -71,6 +76,16 @@ class Billet extends Component {
       this.setState({errorBag})
     }
 
+    /* invalid cpf */
+    if(!verifyCpf(billet.cpf)) {
+      let error = errorBag['cpf']
+      error.push('invalidCpf')
+      this.setState({errorBag})
+    }    
+    if(verifyCpf(billet.cpf)) {
+      errorBag.cpf = []
+      this.setState({errorBag})
+    }
   }
 
   submit = (e) => {
@@ -107,6 +122,37 @@ class Billet extends Component {
         value: billet.email
       }
     ]
+    const cpf = [
+      {
+        label: 'CPF',
+        class: '',
+        type: 'cpf',
+        id: 'cpf',
+        name: 'cpf',
+        placeholder: '222.222.222-22',
+        format: '###.###.###-##',
+        mask: '',
+        callback: this.updateValueFormat('cpf'),
+        errorBag: errorBag['cpf'],
+        value: billet.cpf
+      }
+    ]
+    const cep = [
+      {
+        label: 'CEP',
+        class: '',
+        type: 'cep',
+        id: 'cep',
+        name: 'cep',
+        placeholder: '#####-###',
+        format: '###.###.###-##',
+        mask: '',
+        callback: this.updateValueFormat('cep'),
+        errorBag: errorBag['cep'],
+        value: billet.cep
+      }
+    ]
+
     return (
       <div className="box-payment_creditcard">
         <form action=""
@@ -129,36 +175,28 @@ class Billet extends Component {
                   </div>
 
                   <div className="form-group row">
-                    <div className={this.state.errorBag['name'] && this.state.billet.name === ''?'col-sm-6 has-danger':'col-sm-6'}>
-                      {/* <label className="control-label" htmlFor="nome">Seu nome</label>
-                      <input className={this.state.errorBag['name'] && this.state.billet.name === '' ?'form-control is-invalid':'form-control'} type="text" id="nome" name="name" placeholder="Ex: Valdeir Santana" onChange={this.updateValue('name')} />
-                      {(this.state.errorBag['name'] && this.state.billet.name === '') &&
-                        <div className="invalid-feedback">Campo Obrigatório</div>
-                      } */}
+                    <div className={this.state.errorBag['name'].length>0?'col-sm-6 has-danger':'col-sm-6'}>
                       <Input
                         input={name}
-                        handleInput={this.updateValue}
                       />
                     </div>
 
-                    <div className={this.state.errorBag['email']?'col-sm-6 has-danger':'col-sm-6'}>
-                      {/* <label className="control-label" htmlFor="email">Seu e-mail</label>
-                      <input className={this.state.errorBag['email'] && this.state.billet.email === '' ?'form-control is-invalid':'form-control'} type="email" id="email" name="email" placeholder="Ex: exemplo@gmail.com" onChange={this.updateValue('email')} />
-                      {(this.state.errorBag['email'] && this.state.billet.email === '') &&
-                        <div className="invalid-feedback">Campo Obrigatório</div>
-                      } */}
+                    <div className={this.state.errorBag['email'].length>0?'col-sm-6 has-danger':'col-sm-6'}>
                       <Input
                         input={email}
-                        handleInput={this.updateValue}
                       />
                     </div>
 
                   </div>
                   
-                  {/* <div className="form-group row">
+                  <div className="form-group row">
 
-                    <div className="col-sm-6">
-                      <label className="control-label" htmlFor="cpf">CPF</label>
+                    <div className={this.state.errorBag['cpf'].length>0?'col-sm-6 has-danger':'col-sm-6'}>
+                      <InputFormat
+                        input={cpf}
+                      />
+
+                      {/* <label className="control-label" htmlFor="cpf">CPF</label>
                       <CurrencyFormat
                         className={this.state.errorBag['cpf'] && this.state.billet.cpf === '' ?'form-control is-invalid':'form-control'}
                         placeholder={'222.222.222-22'}
@@ -168,10 +206,14 @@ class Billet extends Component {
                         format={'###.###.###-##'}
                         mask={''}
                         onValueChange={this.updateValue('cpf')}
-                      />
+                      /> */}
                     </div>
-                    <div className="col-sm-6">
-                      <label className="control-label" htmlFor="cep">CEP</label>
+
+                    <div className={this.state.errorBag['cep'].length>0?'col-sm-6 has-danger':'col-sm-6'}>
+                      <InputFormat
+                        input={cep}
+                      />
+                      {/* <label className="control-label" htmlFor="cep">CEP</label>
                       <CurrencyFormat
                         className={this.state.errorBag['cep'] && this.state.billet.cep === '' ?'form-control is-invalid':'form-control'}
                         placeholder={'#####-###'}
@@ -181,10 +223,10 @@ class Billet extends Component {
                         format={'#####-###'}
                         mask={''}
                         onValueChange={this.updateValue('cep')}
-                      />
+                      /> */}
                     </div>
 
-                  </div> */}
+                  </div>
                   
                   <div className="form-group row mt-5">
                     <div className="col-sm-12">
