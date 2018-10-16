@@ -9,13 +9,12 @@ class ErrorBag extends Component {
   }
 
   render() {
-    console.log(this.props.error)
     const {error} = this.props
     return (
       <React.Fragment>
-        {/* {error.map((key, i) => {
-          <div className="invalid-feedback">Campo Obrigatório</div>
-        })} */}
+        {error && error.map((key, i) => (
+          <div className="invalid-feedback" key={i}>{key}</div>
+        ))}
       </React.Fragment>
     )
   }

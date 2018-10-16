@@ -31,6 +31,7 @@ class Billet extends Component {
   }
 
   validate = (e) => {
+    console.log('validate: ', e)
     const {billet} = this.state
     let verifyEmail = /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}/igm
     let errorBag = {
@@ -87,6 +88,7 @@ class Billet extends Component {
         name: 'name',
         placeholder: 'Ex: Valdeir Santana',
         callback: this.updateValue('name'),
+        validate: this.validate,
         errorBag: errorBag['name'],
         value: billet.name
       }
@@ -100,6 +102,7 @@ class Billet extends Component {
         name: 'email',
         placeholder: 'Ex: exemplo@gmail.com',
         callback: this.updateValue('email'),
+        validate: this.validate,
         errorBag: errorBag['email'],
         value: billet.email
       }
@@ -125,8 +128,8 @@ class Billet extends Component {
                     </div>
                   </div>
 
-                  <div className={this.state.errorBag['name'] && this.state.billet.name === '' ?'form-group row has-danger':'form-group row'}>
-                    <div className="col-sm-6">
+                  <div className="form-group row">
+                    <div className={this.state.errorBag['name'] && this.state.billet.name === ''?'col-sm-6 has-danger':'col-sm-6'}>
                       {/* <label className="control-label" htmlFor="nome">Seu nome</label>
                       <input className={this.state.errorBag['name'] && this.state.billet.name === '' ?'form-control is-invalid':'form-control'} type="text" id="nome" name="name" placeholder="Ex: Valdeir Santana" onChange={this.updateValue('name')} />
                       {(this.state.errorBag['name'] && this.state.billet.name === '') &&
@@ -138,7 +141,7 @@ class Billet extends Component {
                       />
                     </div>
 
-                    <div className="col-sm-6">
+                    <div className={this.state.errorBag['email']?'col-sm-6 has-danger':'col-sm-6'}>
                       {/* <label className="control-label" htmlFor="email">Seu e-mail</label>
                       <input className={this.state.errorBag['email'] && this.state.billet.email === '' ?'form-control is-invalid':'form-control'} type="email" id="email" name="email" placeholder="Ex: exemplo@gmail.com" onChange={this.updateValue('email')} />
                       {(this.state.errorBag['email'] && this.state.billet.email === '') &&
@@ -152,7 +155,7 @@ class Billet extends Component {
 
                   </div>
                   
-                  <div className="form-group row">
+                  {/* <div className="form-group row">
 
                     <div className="col-sm-6">
                       <label className="control-label" htmlFor="cpf">CPF</label>
@@ -181,7 +184,7 @@ class Billet extends Component {
                       />
                     </div>
 
-                  </div>
+                  </div> */}
                   
                   <div className="form-group row mt-5">
                     <div className="col-sm-12">
