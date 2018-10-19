@@ -36,7 +36,7 @@ class Billet extends Component {
   }
 
   validate = (e) => {
-    console.log('validate: ', e)
+    // console.log('validate: ', e)
     const {billet} = this.state
     let verifyEmail = /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}/igm
     let errorBag = {
@@ -52,7 +52,7 @@ class Billet extends Component {
         let error = errorBag[inputs[i].name]
         // errorBag[inputs[i].name] = inputs[i].name
         error.push(inputs[i].name)
-        console.log(error)
+        // console.log(error)
         this.setState({errorBag})
       }
       /* remove error */
