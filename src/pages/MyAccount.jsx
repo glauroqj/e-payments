@@ -9,7 +9,7 @@ import Navbar from '../components/Navbar'
 import Loader from '../components/Loader'
 
 import ListGroup from '../components/myAccount/ListGroup'
-import GetPhotoInstagram from '../components/modules/getPhotoInstagram'
+// import GetPhotoInstagram from '../components/modules/getPhotoInstagram'
 
 import '../assets/my-account.css'
 
@@ -135,7 +135,7 @@ class MyAccount extends Component {
                     <h3 className="card-header">Endereço</h3>
                     <ListGroup items={listGroupAddress} user={this.state.user} reloadState={this.reloadState} />
                   </div>
-                  <GetPhotoInstagram reloadState={this.reloadState} />
+                  {/* <GetPhotoInstagram reloadState={this.reloadState} /> */}
                 </div>
 
               </div>
