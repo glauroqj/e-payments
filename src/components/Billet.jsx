@@ -175,13 +175,13 @@ class Billet extends Component {
                   </div>
 
                   <div className="form-group row">
-                    <div className={this.state.errorBag['name'].length>0?'col-sm-6 has-danger':'col-sm-6'}>
+                    <div className={errorBag.name.length>0?'col-sm-6 has-danger':'col-sm-6'}>
                       <Input
                         input={name}
                       />
                     </div>
 
-                    <div className={this.state.errorBag['email'].length>0?'col-sm-6 has-danger':'col-sm-6'}>
+                    <div className={errorBag.email.length>0?'col-sm-6 has-danger':'col-sm-6'}>
                       <Input
                         input={email}
                       />
@@ -191,7 +191,7 @@ class Billet extends Component {
                   
                   <div className="form-group row">
 
-                    <div className={this.state.errorBag['cpf'].length>0?'col-sm-6 has-danger':'col-sm-6'}>
+                    <div className={errorBag.cpf.length>0?'col-sm-6 has-danger':'col-sm-6'}>
                       <InputFormat
                         input={cpf}
                       />
@@ -209,7 +209,7 @@ class Billet extends Component {
                       /> */}
                     </div>
 
-                    <div className={this.state.errorBag['cep'].length>0?'col-sm-6 has-danger':'col-sm-6'}>
+                    <div className={errorBag.cep.length>0?'col-sm-6 has-danger':'col-sm-6'}>
                       <InputFormat
                         input={cep}
                       />
