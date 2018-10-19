@@ -173,61 +173,24 @@ class Billet extends Component {
                     <div id="bandeiras" className="col-sm-12">
                     </div>
                   </div>
-
                   <div className="form-group row">
                     <div className={errorBag.name.length>0?'col-sm-6 has-danger':'col-sm-6'}>
-                      <Input
-                        input={name}
-                      />
+                      <Input input={name} />
                     </div>
-
                     <div className={errorBag.email.length>0?'col-sm-6 has-danger':'col-sm-6'}>
-                      <Input
-                        input={email}
-                      />
+                      <Input input={email} />
                     </div>
-
                   </div>
-                  
                   <div className="form-group row">
-
                     <div className={errorBag.cpf.length>0?'col-sm-6 has-danger':'col-sm-6'}>
-                      <InputFormat
-                        input={cpf}
-                      />
-
-                      {/* <label className="control-label" htmlFor="cpf">CPF</label>
-                      <CurrencyFormat
-                        className={this.state.errorBag['cpf'] && this.state.billet.cpf === '' ?'form-control is-invalid':'form-control'}
-                        placeholder={'222.222.222-22'}
-                        allowNegative={false}
-                        id="cpf" 
-                        name="cpf"
-                        format={'###.###.###-##'}
-                        mask={''}
-                        onValueChange={this.updateValue('cpf')}
-                      /> */}
+                      <InputFormat input={cpf} />
                     </div>
-
                     <div className={errorBag.cep.length>0?'col-sm-6 has-danger':'col-sm-6'}>
                       <InputFormat
                         input={cep}
                       />
-                      {/* <label className="control-label" htmlFor="cep">CEP</label>
-                      <CurrencyFormat
-                        className={this.state.errorBag['cep'] && this.state.billet.cep === '' ?'form-control is-invalid':'form-control'}
-                        placeholder={'#####-###'}
-                        allowNegative={false}
-                        id="phone" 
-                        name="phone"
-                        format={'#####-###'}
-                        mask={''}
-                        onValueChange={this.updateValue('cep')}
-                      /> */}
                     </div>
-
                   </div>
-                  
                   <div className="form-group row mt-5">
                     <div className="col-sm-12">
                       <button type="button" id="button-confirm" className="btn btn-block btn-success btn-donation" onClick={this.validate}>
@@ -247,5 +210,4 @@ class Billet extends Component {
     )
   }
 }
-
 export default Billet
