@@ -1,15 +1,16 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 // import { SemipolarSpinner } from 'react-epic-spinners'
-import * as firebase from 'firebase';
-import { ToastContainer, toast } from 'react-toastify';
+import * as firebase from 'firebase'
+import { ToastContainer, toast } from 'react-toastify'
 import {verify} from '../components/modules/verifyLogin'
-import Navbar from '../components/Navbar';
-import CreditCard from '../components/CreditCard';
-import Billet from '../components/Billet';
-import Loader from '../components/Loader';
+import Navbar from '../components/Navbar'
+
+import BoxToggleTabDashboard from '../components/dashboard/BoxToggleTabDashboard'
+
+import Loader from '../components/Loader'
 import Maintenance from '../components/Maintenance'
-import Footer from '../components/Footer';
-import CurrencyFormat from 'react-currency-format';
+import Footer from '../components/Footer'
+import CurrencyFormat from 'react-currency-format'
 
 import '../assets/dashboard.css'
 
@@ -24,9 +25,8 @@ class Dashboard extends Component {
       valueCustom: '',
       idSession: '',
       radio: 'option1',
-      paymentOptionAba: 'credit-card',
       form: {},
-      maintenance: true
+      maintenance: false /* change to true */
     }
   }
 
@@ -83,12 +83,6 @@ class Dashboard extends Component {
 
     this.setState(state)
 
-  }
-
-  togglePaymentOptionAba = (e) => {
-    this.setState({
-      paymentOptionAba: e.target.id
-    });
   }
 
   // saveOptionRadio = () => {
@@ -187,36 +181,13 @@ class Dashboard extends Component {
                 </div>
 
               </div>
+
+              <BoxToggleTabDashboard 
+                valueSelected={this.state.valueSelected}
+                valueCustom={this.state.valueCustom}
+              />
               
-              <div className="box-toggle-tab">
-                <ul className="nav nav-pills nav-fill">
-                  <li className="nav-item">
-                    <a className={this.state.paymentOptionAba === 'credit-card'?'nav-link active show':'nav-link'} id="credit-card" onClick={this.togglePaymentOptionAba}>
-                      Cartão de Crédito
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a className={this.state.paymentOptionAba === 'billet'?'nav-link active show':'nav-link'} id="billet" onClick={this.togglePaymentOptionAba}>
-                      Boleto
-                    </a>
-                  </li>
-                </ul>
-              </div>
-
-              <div className="tab-content box-toggle-tab-content">
-                <div className={this.state.paymentOptionAba === 'credit-card'?'tab-pane animated fadeIn active show':'tab-pane'}>
-                  {this.state.paymentOptionAba === 'credit-card' &&
-                    <CreditCard totalValue={this.state.valueSelected !== ''?this.state.valueSelected:this.state.valueCustom}/>  
-                  }
-                </div>
-                <div className={this.state.paymentOptionAba === 'billet'?'tab-pane animated fadeIn active show':'tab-pane'}>
-                  {this.state.paymentOptionAba === 'billet' &&
-                    <Billet totalValue={this.state.valueSelected !== ''?this.state.valueSelected:this.state.valueCustom}/>
-                  }
-                </div>
-              </div>
             </div>
-
             <Footer/>
           </div>
         }

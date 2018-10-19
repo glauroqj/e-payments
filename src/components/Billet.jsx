@@ -1,5 +1,7 @@
-import React, { Component } from 'react';
-import CurrencyFormat from 'react-currency-format';
+import React, { Component } from 'react'
+import Input from './Input'
+import InputFormat from './InputFormat'
+import {verifyCpf} from './modules/verifyCpf'
 
 class Billet extends Component {
   constructor(props) {
@@ -12,69 +14,78 @@ class Billet extends Component {
         cep: ''
       },
       requiredField: ['name', 'email', 'cpf', 'cep'],
-      errorBag: {}
+      errorBag: {
+        name: [],
+        email: [],
+        cpf: [],
+        cep: []
+      }
     }
   }
 
-  updateValue = (e) => {
-    let state = this.state;
-    
-    if(e.target.name === 'name') {
-      state.billet.name = e.target.value;
-      this.setState(state);
-      return false;
-    }
-
+  updateValue = (type) => (e) => {
+    let billet = this.state.billet
+    billet[type] = e.target.value
+    this.setState({billet})
   }
 
-  // updateCardNumber = (e) => {
-  //   let cardCredit = this.state.cardCredit;
-  //   cardCredit.cardNumber = e.value;
-  //   this.setState({cardCredit});
-  // }
-  // updateValidateDate = (e) => {
-  //   let cardCredit = this.state.cardCredit;
-  //   cardCredit.validateDate = e.value;
-  //   this.setState({cardCredit});
-  // }
-  // updateCvv = (e) => {
-  //   let cardCredit = this.state.cardCredit;
-  //   cardCredit.cvv = e.value;
-  //   this.setState({cardCredit});
-  // }
-  // updateDateBirth = (e) => {
-  //   let cardCredit = this.state.cardCredit;
-  //   cardCredit.dateBirth = e.value;
-  //   this.setState({cardCredit});
-  // }
-  // updateCpf = (e) => {
-  //   let cardCredit = this.state.cardCredit;
-  //   cardCredit.cpf = e.value;
-  //   this.setState({cardCredit});
-  // }
-  // updatePhone = (e) => {
-  //   let cardCredit = this.state.cardCredit;
-  //   cardCredit.phone = e.value;
-  //   this.setState({cardCredit});
-  // }
+  updateValueFormat = (type) => (e) => {
+    let billet = this.state.billet
+    billet[type] = e.formattedValue
+    this.setState({billet})
+  }
 
   validate = (e) => {
-    let errorBag = this.state.errorBag;
-    let inputs = document.querySelectorAll('input');
+    // console.log('validate: ', e)
+    const {billet} = this.state
+    let verifyEmail = /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}/igm
+    let errorBag = {
+      name: [],
+      email: [],
+      cpf: [],
+      cep: []
+    }
+    let inputs = document.querySelectorAll('input')
     for (let i = 0; i < inputs.length; i++ ) {
       /* add error */
       if(this.state.requiredField.indexOf(inputs[i].name) > -1 && inputs[i].value === '') {
-        errorBag[inputs[i].name] = inputs[i].name
-        this.setState({errorBag});
+        let error = errorBag[inputs[i].name]
+        // errorBag[inputs[i].name] = inputs[i].name
+        error.push(inputs[i].name)
+        // console.log(error)
+        this.setState({errorBag})
       }
       /* remove error */
       if(inputs[i].value !== '') {
-        delete errorBag[inputs[i].name];
-        this.setState({errorBag});
+        // delete errorBag[inputs[i].name]
+        errorBag[inputs[i].name] = []
+        this.setState({errorBag})
       }
     }
 
+    /* invalid email */
+    if(!verifyEmail.test(billet.email)) {
+      let error = errorBag['email']
+      error.push('invalidEmail')
+      this.setState({errorBag})
+      // errorBag.email = errorBag.email + 'invalidEmail'
+    }
+    if(verifyEmail.test(billet.email)) {
+      // delete errorBag.email
+      errorBag.email = []
+      this.setState({errorBag})
+    }
 
+    /* invalid cpf */
+    if(!verifyCpf(billet.cpf)) {
+      let error = errorBag['cpf']
+      error.push('invalidCpf')
+      this.setState({errorBag})
+    }    
+    if(verifyCpf(billet.cpf)) {
+      errorBag.cpf = []
+      this.setState({errorBag})
+    }
   }
 
   submit = (e) => {
@@ -82,6 +93,66 @@ class Billet extends Component {
   }
 
   render() {
+    const {billet, errorBag} = this.state
+    const name = [
+      {
+        label: 'Seu nome',
+        class: '',
+        type: 'text',
+        id: 'nome',
+        name: 'name',
+        placeholder: 'Ex: Valdeir Santana',
+        callback: this.updateValue('name'),
+        validate: this.validate,
+        errorBag: errorBag['name'],
+        value: billet.name
+      }
+    ]
+    const email = [
+      {
+        label: 'Seu e-mail',
+        class: '',
+        type: 'email',
+        id: 'email',
+        name: 'email',
+        placeholder: 'Ex: exemplo@gmail.com',
+        callback: this.updateValue('email'),
+        validate: this.validate,
+        errorBag: errorBag['email'],
+        value: billet.email
+      }
+    ]
+    const cpf = [
+      {
+        label: 'CPF',
+        class: '',
+        type: 'cpf',
+        id: 'cpf',
+        name: 'cpf',
+        placeholder: '222.222.222-22',
+        format: '###.###.###-##',
+        mask: '',
+        callback: this.updateValueFormat('cpf'),
+        errorBag: errorBag['cpf'],
+        value: billet.cpf
+      }
+    ]
+    const cep = [
+      {
+        label: 'CEP',
+        class: '',
+        type: 'cep',
+        id: 'cep',
+        name: 'cep',
+        placeholder: '#####-###',
+        format: '###.###.###-##',
+        mask: '',
+        callback: this.updateValueFormat('cep'),
+        errorBag: errorBag['cep'],
+        value: billet.cep
+      }
+    ]
+
     return (
       <div className="box-payment_creditcard">
         <form action=""
@@ -103,29 +174,29 @@ class Billet extends Component {
                     </div>
                   </div>
 
-                  <div className={this.state.errorBag['name'] && this.state.billet.name === '' ?'form-group row has-danger':'form-group row'}>
-                    <div className="col-sm-6">
-                      <label className="control-label" htmlFor="nome">Seu nome</label>
-                      <input className={this.state.errorBag['name'] && this.state.billet.name === '' ?'form-control is-invalid':'form-control'} type="text" id="nome" name="name" placeholder="Ex: Valdeir Santana" onChange={this.updateValue} />
-                      {(this.state.errorBag['name'] && this.state.billet.name === '') &&
-                        <div className="invalid-feedback">Campo Obrigatório</div>
-                      }
+                  <div className="form-group row">
+                    <div className={errorBag.name.length>0?'col-sm-6 has-danger':'col-sm-6'}>
+                      <Input
+                        input={name}
+                      />
                     </div>
 
-                    <div className="col-sm-6">
-                      <label className="control-label" htmlFor="email">Seu e-mail</label>
-                      <input className={this.state.errorBag['email'] && this.state.billet.email === '' ?'form-control is-invalid':'form-control'} type="email" id="email" name="email" placeholder="Ex: exemplo@gmail.com" onChange={this.updateValue} />
-                      {(this.state.errorBag['email'] && this.state.billet.email === '') &&
-                        <div className="invalid-feedback">Campo Obrigatório</div>
-                      }
+                    <div className={errorBag.email.length>0?'col-sm-6 has-danger':'col-sm-6'}>
+                      <Input
+                        input={email}
+                      />
                     </div>
 
                   </div>
                   
                   <div className="form-group row">
 
-                    <div className="col-sm-6">
-                      <label className="control-label" htmlFor="cpf">CPF</label>
+                    <div className={errorBag.cpf.length>0?'col-sm-6 has-danger':'col-sm-6'}>
+                      <InputFormat
+                        input={cpf}
+                      />
+
+                      {/* <label className="control-label" htmlFor="cpf">CPF</label>
                       <CurrencyFormat
                         className={this.state.errorBag['cpf'] && this.state.billet.cpf === '' ?'form-control is-invalid':'form-control'}
                         placeholder={'222.222.222-22'}
@@ -134,11 +205,15 @@ class Billet extends Component {
                         name="cpf"
                         format={'###.###.###-##'}
                         mask={''}
-                        // onValueChange={this.updateCardNumber}
-                      />
+                        onValueChange={this.updateValue('cpf')}
+                      /> */}
                     </div>
-                    <div className="col-sm-6">
-                      <label className="control-label" htmlFor="cep">CEP</label>
+
+                    <div className={errorBag.cep.length>0?'col-sm-6 has-danger':'col-sm-6'}>
+                      <InputFormat
+                        input={cep}
+                      />
+                      {/* <label className="control-label" htmlFor="cep">CEP</label>
                       <CurrencyFormat
                         className={this.state.errorBag['cep'] && this.state.billet.cep === '' ?'form-control is-invalid':'form-control'}
                         placeholder={'#####-###'}
@@ -147,8 +222,8 @@ class Billet extends Component {
                         name="phone"
                         format={'#####-###'}
                         mask={''}
-                        // onValueChange={this.updateCardNumber}
-                      />
+                        onValueChange={this.updateValue('cep')}
+                      /> */}
                     </div>
 
                   </div>
@@ -169,8 +244,8 @@ class Billet extends Component {
           </div> {/* card */}
         </form>
       </div>
-    );
+    )
   }
 }
 
-export default Billet;
+export default Billet
