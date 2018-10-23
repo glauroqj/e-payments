@@ -65,7 +65,7 @@ class Billet extends Component {
 
     /* invalid email */
     if(!verifyEmail.test(billet.email)) {
-      let error = errorBag['email']
+      let error = errorBag.email
       error.push('invalidEmail')
       this.setState({errorBag})
       // errorBag.email = errorBag.email + 'invalidEmail'
@@ -78,7 +78,7 @@ class Billet extends Component {
 
     /* invalid cpf */
     if(!verifyCpf(billet.cpf)) {
-      let error = errorBag['cpf']
+      let error = errorBag.cpf
       error.push('invalidCpf')
       this.setState({errorBag})
     }    
@@ -103,7 +103,7 @@ class Billet extends Component {
       placeholder: 'Ex: Valdeir Santana',
       callback: this.updateValue('name'),
       validate: this.validate,
-      errorBag: errorBag['name'],
+      errorBag: errorBag.name,
       value: billet.name
     }
 
@@ -116,7 +116,7 @@ class Billet extends Component {
       placeholder: 'Ex: exemplo@gmail.com',
       callback: this.updateValue('email'),
       validate: this.validate,
-      errorBag: errorBag['email'],
+      errorBag: errorBag.email,
       value: billet.email
     }
     
@@ -130,7 +130,7 @@ class Billet extends Component {
       format: '###.###.###-##',
       mask: '',
       callback: this.updateValueFormat('cpf'),
-      errorBag: errorBag['cpf'],
+      errorBag: errorBag.cpf,
       value: billet.cpf
     }
 
@@ -144,7 +144,7 @@ class Billet extends Component {
       format: '###.###.###-##',
       mask: '',
       callback: this.updateValueFormat('cep'),
-      errorBag: errorBag['cep'],
+      errorBag: errorBag.cep,
       value: billet.cep
     }
 
@@ -164,10 +164,6 @@ class Billet extends Component {
             <div className="card-body">
               <div className="row-fluid">
                 <div className="form-horizontal">
-                  <div className="form-group row">
-                    <div id="bandeiras" className="col-sm-12">
-                    </div>
-                  </div>
                   <div className="form-group row">
                     <div className={`${errorBag.name.length > 0 ? 'col-sm-6 has-danger' : 'col-sm-6'}`}>
                       <Input input={name} />

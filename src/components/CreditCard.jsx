@@ -1,7 +1,10 @@
-import React, { Component } from 'react';
-import CurrencyFormat from 'react-currency-format';
-import * as moment from 'moment';
-import {verifyCpf} from './modules/verifyCpf';
+import React, { Component } from 'react'
+import Input from './Input'
+import InputFormat from './InputFormat'
+
+import CurrencyFormat from 'react-currency-format'
+import * as moment from 'moment'
+import {verifyCpf} from './modules/verifyCpf'
 
 class CreditCard extends Component {
   constructor(props) {
@@ -18,94 +21,136 @@ class CreditCard extends Component {
         telephone: ''
       },
       requiredField: ['name', 'cardNumber', 'validateDate', 'cvv', 'dateBirth', 'cpf', 'phone'],
-      errorBag: {}
+      errorBag: {
+        name: [],
+        cardNumber: [],
+        validateDate: [],
+        cvv: [],
+        dateBirth: [],
+        cpf: [],
+        phone: []
+      }
     }
   }
 
   // updateValue = (type) => (e) => {
-  //   let state = this.state.form;
-    // let options = ['telephone', 'dateBirth']
-    
-    // if(options.indexOf(type) > -1) {
-    //   state[type] = e.formattedValue;
-    //   this.setState({state});
-    //   return false;
-    // }
+  //   let cardCredit = this.state.cardCredit
+  //   let options = ['telephone', 'cpf', 'dateBirth', 'cvv', 'validateDate']
+  //   if(options.indexOf(type) > -1) {
+  //     cardCredit[type] = e.formattedValue;
+  //     this.setState({cardCredit})
+  //     return false;
+  //   }
 
-    // state[e.target.name] = e.target.value;
-    // this.setState({state});
+  //   if(type === 'cardNumber') {
+  //     cardCredit[type] = e.value;
+  //     this.setState({cardCredit})
+  //     return false;
+  //   }
+    
+  //   cardCredit[type] = e.target.value
+  //   this.setState({cardCredit})
   // }
 
   updateValue = (type) => (e) => {
     let cardCredit = this.state.cardCredit
-    let options = ['telephone', 'cpf', 'dateBirth', 'cvv', 'validateDate']
-    if(options.indexOf(type) > -1) {
-      cardCredit[type] = e.formattedValue;
-      this.setState({cardCredit})
-      return false;
-    }
-
-    if(type === 'cardNumber') {
-      cardCredit[type] = e.value;
-      this.setState({cardCredit})
-      return false;
-    }
-    
     cardCredit[type] = e.target.value
     this.setState({cardCredit})
   }
 
+  updateValueFormat = (type) => (e) => {
+    let cardCredit = this.state.cardCredit
+    cardCredit[type] = e.formattedValue
+    this.setState({cardCredit})
+  }
+
   validate = (e) => {
-    let errorBag = this.state.errorBag;
-    let inputs = document.querySelectorAll('input');
+    const { cardCredit, requiredField } = this.state
+    let errorBag = {
+      name: [],
+      cardNumber: [],
+      validateDate: [],
+      cvv: [],
+      dateBirth: [],
+      cpf: [],
+      phone: []
+    }
+    let inputs = document.querySelectorAll('input')
     for (let i = 0; i < inputs.length; i++ ) {
       /* add error */
-      if(this.state.requiredField.indexOf(inputs[i].name) > -1 && inputs[i].value === '') {
-        errorBag[inputs[i].name] = inputs[i].name
-        this.setState({errorBag});
+      if (requiredField.indexOf(inputs[i].name) > -1 && inputs[i].value === '') {
+        let error = errorBag[inputs[i].name]
+        error.push(inputs[i].name)
+        this.setState({errorBag})
       }
       /* remove error */
-      if(inputs[i].value !== '') {
-        delete errorBag[inputs[i].name];
-        this.setState({errorBag});
+      if (inputs[i].value !== '') {
+        errorBag[inputs[i].name] = []
+        this.setState({errorBag})
       }
     }
+
     /* invalid card */
-    if(this.state.cardCredit.cardNumber.length < 16 && this.state.cardCredit.cardNumber !== '') {
-      errorBag.invalidCardNumber = 'invalidCardNumber';
-      this.setState({errorBag});
+    if (cardCredit.cardNumber.length < 16 && cardCredit.cardNumber !== '') {
+      let error = errorBag.cardNumber
+      error.push('invalidCardNumber')
+      this.setState({errorBag})
     }
-    if(this.state.cardCredit.cardNumber.length === 16) {
-      delete errorBag.invalidCardNumber
-      this.setState({errorBag});
-    }
-    /* date birth */
-    if(!moment(this.state.cardCredit.dateBirth, 'DD/MM/YYYY',true).isValid()) {
-      errorBag.invalidDateBirth = 'invalidDateBirth';
-      this.setState({errorBag});
-    }
-    if(moment(this.state.cardCredit.dateBirth, 'DD/MM/YYYY',true).isValid()) {
-      delete errorBag.invalidDateBirth;
-      this.setState({errorBag}); 
+    if (cardCredit.cardNumber.length === 16) {
+      errorBag.cardNumber = []
+      this.setState({errorBag})
     }
 
-    if(!moment(this.state.cardCredit.validateDate, 'MM/YYYY',true).isValid()) {
-      errorBag.invalidValidateDate = 'invalidValidateDate';
-      this.setState({errorBag});
-    }
-    if(moment(this.state.cardCredit.validateDate, 'MM/YYYY',true).isValid()) {
-      delete errorBag.invalidValidateDate;
-      this.setState({errorBag}); 
-    }
+    // let errorBag = this.state.errorBag
+    // let inputs = document.querySelectorAll('input')
+    // for (let i = 0; i < inputs.length; i++ ) {
+    //   /* add error */
+    //   if(this.state.requiredField.indexOf(inputs[i].name) > -1 && inputs[i].value === '') {
+    //     errorBag[inputs[i].name] = inputs[i].name
+    //     this.setState({errorBag});
+    //   }
+    //   /* remove error */
+    //   if(inputs[i].value !== '') {
+    //     delete errorBag[inputs[i].name];
+    //     this.setState({errorBag});
+    //   }
+    // }
+    // /* invalid card */
+    // if(this.state.cardCredit.cardNumber.length < 16 && this.state.cardCredit.cardNumber !== '') {
+    //   errorBag.invalidCardNumber = 'invalidCardNumber';
+    //   this.setState({errorBag});
+    // }
+    // if(this.state.cardCredit.cardNumber.length === 16) {
+    //   delete errorBag.invalidCardNumber
+    //   this.setState({errorBag});
+    // }
+    // /* date birth */
+    // if(!moment(this.state.cardCredit.dateBirth, 'DD/MM/YYYY',true).isValid()) {
+    //   errorBag.invalidDateBirth = 'invalidDateBirth';
+    //   this.setState({errorBag});
+    // }
+    // if(moment(this.state.cardCredit.dateBirth, 'DD/MM/YYYY',true).isValid()) {
+    //   delete errorBag.invalidDateBirth;
+    //   this.setState({errorBag}); 
+    // }
 
-    if(!verifyCpf(this.state.cardCredit.cpf)) {
-      errorBag.invalidCpf = 'invalidCpf';
-      this.setState({errorBag});
-    }
-    if(verifyCpf(this.state.cardCredit.cpf)) {
-      delete errorBag.invalidCpf
-      this.setState({errorBag});
-    }
+    // if(!moment(this.state.cardCredit.validateDate, 'MM/YYYY',true).isValid()) {
+    //   errorBag.invalidValidateDate = 'invalidValidateDate';
+    //   this.setState({errorBag});
+    // }
+    // if(moment(this.state.cardCredit.validateDate, 'MM/YYYY',true).isValid()) {
+    //   delete errorBag.invalidValidateDate;
+    //   this.setState({errorBag}); 
+    // }
+
+    // if(!verifyCpf(this.state.cardCredit.cpf)) {
+    //   errorBag.invalidCpf = 'invalidCpf';
+    //   this.setState({errorBag});
+    // }
+    // if(verifyCpf(this.state.cardCredit.cpf)) {
+    //   delete errorBag.invalidCpf
+    //   this.setState({errorBag});
+    // }
 
   }
 
@@ -114,6 +159,34 @@ class CreditCard extends Component {
   }
 
   render() {
+    const {cardCredit, errorBag} = this.state
+    const name = {
+      label: 'Seu nome como aparece no cartão',
+      class: '',
+      type: 'text',
+      id: 'nome',
+      name: 'name',
+      placeholder: 'Ex: Valdeir Santana',
+      callback: this.updateValue('name'),
+      validate: this.validate,
+      errorBag: errorBag.name,
+      value: cardCredit.name
+    }
+
+    const cardNumber = {
+      label: 'Número do cartão',
+      class: '',
+      type: 'cardNumber',
+      id: 'cardNumber',
+      name: 'cardNumber',
+      placeholder: '#### #### #### ####',
+      format: '#### #### #### ####',
+      mask: '',
+      callback: this.updateValueFormat('cardNumber'),
+      errorBag: errorBag.cardNumber,
+      value: cardCredit.cardNumber
+    }
+
     return (
       <div className="box-payment_creditcard">
         <form action=""
@@ -130,24 +203,26 @@ class CreditCard extends Component {
             <div className="card-body">
               <div className="row-fluid">
                 <div className="form-horizontal">
-                  <div className="form-group row">
-                    <div id="bandeiras" className="col-sm-12">
-                    </div>
-                  </div>
 
                   <div className="form-group row">
-                    <div className={'col-sm-6 '+((this.state.errorBag['name'] && this.state.cardCredit.name === '') || (this.state.errorBag['name']) ? 'has-danger' : '')}>
+                    <div className={`${errorBag.name.length > 0 ? 'col-sm-6 has-danger' : 'col-sm-6'}`}>
+                      <Input input={name} />
+                    </div>
+                    {/* <div className={'col-sm-6 '+((this.state.errorBag['name'] && this.state.cardCredit.name === '') || (this.state.errorBag['name']) ? 'has-danger' : '')}>
                       <label className="control-label" htmlFor="nome">Seu nome como aparece no cartão</label>
                       <input className={this.state.errorBag['name'] && this.state.cardCredit.name === '' ?'form-control is-invalid':'form-control'} type="text" id="nome" name="name" value={this.state.cardCredit.name} placeholder="Ex: Valdeir Santana" onChange={this.updateValue('name')} />
                       {(this.state.errorBag['name'] && this.state.cardCredit.name === '') &&
                         <div className="invalid-feedback">Campo Obrigatório</div>
                       }
-                    </div>
+                    </div> */}
                   </div>
                   
                   <div className="form-group row">
                     
-                    <div className={'col-sm-4 '+((this.state.errorBag['cardNumber'] && this.state.cardCredit.cardNumber === '') || (this.state.errorBag.invalidCardNumber && this.state.cardCredit.cardNumber.length < 16) ? 'has-danger' : '')}>
+                    <div className={`${errorBag.cardNumber.length > 0 ? 'col-sm-4 has-danger' : 'col-sm-4'}`}>
+                      <InputFormat input={cardNumber} />
+                    </div>
+                    {/* <div className={'col-sm-4 '+((this.state.errorBag['cardNumber'] && this.state.cardCredit.cardNumber === '') || (this.state.errorBag.invalidCardNumber && this.state.cardCredit.cardNumber.length < 16) ? 'has-danger' : '')}>
                       <label className="control-label" htmlFor="numero-cartao">Número do cartão</label>
                       <CurrencyFormat
                         className={'form-control '+((this.state.errorBag['cardNumber'] && this.state.cardCredit.cardNumber === '') || (this.state.errorBag.invalidCardNumber && this.state.cardCredit.cardNumber.length < 16) ?'is-invalid':'')}
@@ -166,7 +241,7 @@ class CreditCard extends Component {
                       {(this.state.errorBag['invalidCardNumber'] && this.state.cardCredit.cardNumber.length < 16) &&
                         <div className="invalid-feedback">Número do cartão inválido</div>
                       }                    
-                    </div>
+                    </div> */}
                     
                     <div className={'col-sm-4 '+((this.state.errorBag['validateDate'] && this.state.cardCredit.validateDate === '') || (this.state.errorBag['invalidValidateDate']) ? 'has-danger' : '')}>
                       <label className="control-label" htmlFor="validade">Validade</label>
