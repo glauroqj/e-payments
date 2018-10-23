@@ -26,7 +26,7 @@ class Dashboard extends Component {
       idSession: '',
       radio: 'option1',
       form: {},
-      maintenance: true /* change to true */
+      maintenance: false /* change to true */
     }
   }
 
