@@ -176,7 +176,7 @@ class CreditCard extends Component {
     const cardNumber = {
       label: 'Número do cartão',
       class: '',
-      type: 'cardNumber',
+      type: 'tel',
       id: 'cardNumber',
       name: 'cardNumber',
       placeholder: '#### #### #### ####',

@@ -123,7 +123,7 @@ class Billet extends Component {
     const cpf = {
       label: 'CPF',
       class: '',
-      type: 'cpf',
+      type: 'tel',
       id: 'cpf',
       name: 'cpf',
       placeholder: '222.222.222-22',
@@ -137,7 +137,7 @@ class Billet extends Component {
     const cep = {
       label: 'CEP',
       class: '',
-      type: 'cep',
+      type: 'tel',
       id: 'cep',
       name: 'cep',
       placeholder: '#####-###',
