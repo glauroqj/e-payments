@@ -10,23 +10,19 @@ class Input extends Component {
   }
 
   render() {
-    console.log('Input: ', this.props.input)
+    const { input } = this.props
     return (
       <React.Fragment>
-        {this.props.input.map((key, i) => (
-          <React.Fragment key={i}>
-            <label className="control-label" htmlFor="nome">{key.label}</label>
-            <input 
-              className={key.errorBag?'form-control is-invalid':'form-control'}
-              type={key.type} id={key.id} name={key.name}
-              placeholder={key.placeholder} 
-              onChange={key.callback}
-              onBlur={key.validate}
-              value={key.value}
-            />
-            <ErrorBag error={key.errorBag}/>
-          </React.Fragment>
-        ))}
+        <label className="control-label" htmlFor="nome">{input.label}</label>
+        <input 
+          className={`${input.errorBag ? 'form-control is-invalid' : 'form-control'}`}
+          type={input.type} id={input.id} name={input.name}
+          placeholder={input.placeholder} 
+          onChange={input.callback}
+          onBlur={input.validate}
+          value={input.value}
+        />
+        <ErrorBag error={input.errorBag}/>
       </React.Fragment>
     )
   }

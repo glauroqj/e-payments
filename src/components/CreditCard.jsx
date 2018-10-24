@@ -1,7 +1,10 @@
-import React, { Component } from 'react';
-import CurrencyFormat from 'react-currency-format';
-import * as moment from 'moment';
-import {verifyCpf} from './modules/verifyCpf';
+import React, { Component } from 'react'
+import Input from './Input'
+import InputFormat from './InputFormat'
+
+import CurrencyFormat from 'react-currency-format'
+import * as moment from 'moment'
+import {verifyCpf} from './modules/verifyCpf'
 
 class CreditCard extends Component {
   constructor(props) {
@@ -18,102 +21,216 @@ class CreditCard extends Component {
         telephone: ''
       },
       requiredField: ['name', 'cardNumber', 'validateDate', 'cvv', 'dateBirth', 'cpf', 'phone'],
-      errorBag: {}
+      errorBag: {
+        name: [],
+        cardNumber: [],
+        validateDate: [],
+        cvv: [],
+        dateBirth: [],
+        cpf: [],
+        phone: []
+      },
+      validForm: false
     }
   }
 
-  // updateValue = (type) => (e) => {
-  //   let state = this.state.form;
-    // let options = ['telephone', 'dateBirth']
-    
-    // if(options.indexOf(type) > -1) {
-    //   state[type] = e.formattedValue;
-    //   this.setState({state});
-    //   return false;
-    // }
-
-    // state[e.target.name] = e.target.value;
-    // this.setState({state});
-  // }
-
   updateValue = (type) => (e) => {
-    let cardCredit = this.state.cardCredit
-    let options = ['telephone', 'cpf', 'dateBirth', 'cvv', 'validateDate']
-    if(options.indexOf(type) > -1) {
-      cardCredit[type] = e.formattedValue;
-      this.setState({cardCredit})
-      return false;
-    }
-
-    if(type === 'cardNumber') {
-      cardCredit[type] = e.value;
-      this.setState({cardCredit})
-      return false;
-    }
-    
+    const {cardCredit} = this.state
     cardCredit[type] = e.target.value
     this.setState({cardCredit})
   }
 
+  updateValueFormat = (type) => (e) => {
+    const {cardCredit} = this.state
+    cardCredit[type] = e.formattedValue
+    this.setState({cardCredit})
+  }
+
   validate = (e) => {
-    let errorBag = this.state.errorBag;
-    let inputs = document.querySelectorAll('input');
+    const { cardCredit, requiredField } = this.state
+    let errorBag = {
+      name: [],
+      cardNumber: [],
+      validateDate: [],
+      cvv: [],
+      dateBirth: [],
+      cpf: [],
+      phone: []
+    }
+    let inputs = document.querySelectorAll('input')
     for (let i = 0; i < inputs.length; i++ ) {
       /* add error */
-      if(this.state.requiredField.indexOf(inputs[i].name) > -1 && inputs[i].value === '') {
-        errorBag[inputs[i].name] = inputs[i].name
-        this.setState({errorBag});
+      if (requiredField.indexOf(inputs[i].name) > -1 && inputs[i].value === '') {
+        let error = errorBag[inputs[i].name]
+        error.push(inputs[i].name)
+        this.setState({errorBag})
       }
       /* remove error */
-      if(inputs[i].value !== '') {
-        delete errorBag[inputs[i].name];
-        this.setState({errorBag});
+      if (inputs[i].value !== '') {
+        errorBag[inputs[i].name] = []
+        this.setState({errorBag})
       }
     }
+
     /* invalid card */
-    if(this.state.cardCredit.cardNumber.length < 16 && this.state.cardCredit.cardNumber !== '') {
-      errorBag.invalidCardNumber = 'invalidCardNumber';
-      this.setState({errorBag});
+    if (cardCredit.cardNumber.length < 16 && cardCredit.cardNumber !== '') {
+      let error = errorBag.cardNumber
+      error.push('invalidCardNumber')
+      this.setState({errorBag})
+      return false
     }
-    if(this.state.cardCredit.cardNumber.length === 16) {
-      delete errorBag.invalidCardNumber
-      this.setState({errorBag});
-    }
-    /* date birth */
-    if(!moment(this.state.cardCredit.dateBirth, 'DD/MM/YYYY',true).isValid()) {
-      errorBag.invalidDateBirth = 'invalidDateBirth';
-      this.setState({errorBag});
-    }
-    if(moment(this.state.cardCredit.dateBirth, 'DD/MM/YYYY',true).isValid()) {
-      delete errorBag.invalidDateBirth;
-      this.setState({errorBag}); 
+    if (cardCredit.cardNumber.length === 16) {
+      errorBag.cardNumber = []
+      this.setState({errorBag})
     }
 
-    if(!moment(this.state.cardCredit.validateDate, 'MM/YYYY',true).isValid()) {
-      errorBag.invalidValidateDate = 'invalidValidateDate';
-      this.setState({errorBag});
+    /* invalid date */
+    if (!moment(cardCredit.validateDate, 'MM/YYYY',true).isValid()) {
+      let error = errorBag.validateDate
+      error.push('invalidValidateDate')
+      this.setState({errorBag})
+      return false
     }
-    if(moment(this.state.cardCredit.validateDate, 'MM/YYYY',true).isValid()) {
-      delete errorBag.invalidValidateDate;
-      this.setState({errorBag}); 
-    }
-
-    if(!verifyCpf(this.state.cardCredit.cpf)) {
-      errorBag.invalidCpf = 'invalidCpf';
-      this.setState({errorBag});
-    }
-    if(verifyCpf(this.state.cardCredit.cpf)) {
-      delete errorBag.invalidCpf
-      this.setState({errorBag});
+    if (moment(cardCredit.validateDate, 'MM/YYYY',true).isValid()) {
+      errorBag.validateDate = []
+      this.setState({errorBag})
     }
 
+    /* invalid date birth */
+    if (!moment(cardCredit.dateBirth, 'DD/MM/YYYY',true).isValid()) {
+      let error = errorBag.dateBirth
+      error.push('invalidDateBirth')
+      this.setState({errorBag})
+      return false
+    }
+    if (moment(cardCredit.dateBirth, 'DD/MM/YYYY',true).isValid()) {
+      errorBag.dateBirth = []
+      this.setState({errorBag})
+    }
+
+    /* verify cpf */
+    if(!verifyCpf(cardCredit.cpf)) {
+      let error = errorBag.cpf
+      error.push('invalidCpf')
+      this.setState({errorBag})
+      return false
+    }
+    if(verifyCpf(cardCredit.cpf)) {
+      errorBag.cpf = []
+      this.setState({errorBag})
+    }
+
+    return true
   }
 
   submit = (e) => {
     /* emit state */
+    if (!this.validate()) {
+      console.log('ERRORS')
+      return false
+    }
+
   }
 
   render() {
+    const {cardCredit, errorBag} = this.state
+    const name = {
+      label: 'Seu nome como aparece no cartão',
+      class: '',
+      type: 'text',
+      id: 'nome',
+      name: 'name',
+      placeholder: 'Ex: Valdeir Santana',
+      callback: this.updateValue('name'),
+      validate: this.validate,
+      errorBag: errorBag.name,
+      value: cardCredit.name
+    }
+
+    const cardNumber = {
+      label: 'Número do cartão',
+      class: '',
+      type: 'tel',
+      id: 'cardNumber',
+      name: 'cardNumber',
+      placeholder: '#### #### #### ####',
+      format: '#### #### #### ####',
+      mask: '',
+      callback: this.updateValueFormat('cardNumber'),
+      errorBag: errorBag.cardNumber,
+      value: cardCredit.cardNumber
+    }
+
+    const validateDate = {
+      label: 'Validade',
+      class: '',
+      type: 'tel',
+      id: 'validateDate',
+      name: 'validateDate',
+      placeholder: '12/2015',
+      format: '##/####',
+      mask: '',
+      callback: this.updateValueFormat('validateDate'),
+      errorBag: errorBag.validateDate,
+      value: cardCredit.validateDate
+    }
+
+    const cvv = {
+      label: 'Código de Segurança',
+      class: '',
+      type: 'tel',
+      id: 'cvv',
+      name: 'cvv',
+      placeholder: '123 ou 1234',
+      format: '####',
+      mask: '',
+      callback: this.updateValueFormat('cvv'),
+      errorBag: errorBag.cvv,
+      value: cardCredit.cvv
+    }
+
+    const dateBirth = {
+      label: 'Data de Nascimento',
+      class: '',
+      type: 'tel',
+      id: 'dateBirth',
+      name: 'dateBirth',
+      placeholder: '07/03/1980',
+      format: '##/##/####',
+      mask: '',
+      callback: this.updateValueFormat('dateBirth'),
+      errorBag: errorBag.dateBirth,
+      value: cardCredit.dateBirth
+    }
+
+    const cpf = {
+      label: 'CPF',
+      class: '',
+      type: 'tel',
+      id: 'cpf',
+      name: 'cpf',
+      placeholder: '222.222.222-22',
+      format: '###.###.###-##',
+      mask: '',
+      callback: this.updateValueFormat('cpf'),
+      errorBag: errorBag.cpf,
+      value: cardCredit.cpf
+    }
+
+    const phone = {
+      label: 'Telefone',
+      class: '',
+      type: 'tel',
+      id: 'phone',
+      name: 'phone',
+      placeholder: '(11) 9 8765-4321',
+      format: '(##) # ####-####',
+      mask: '',
+      callback: this.updateValueFormat('phone'),
+      errorBag: errorBag.phone,
+      value: cardCredit.phone
+    }
+
     return (
       <div className="box-payment_creditcard">
         <form action=""
@@ -121,7 +238,7 @@ class CreditCard extends Component {
             (e) => {
                 if (e.key === 'Enter') {
                     e.preventDefault();
-                    // this.submit(e)
+                    this.submit(e)
                 }
             }
           }
@@ -130,148 +247,49 @@ class CreditCard extends Component {
             <div className="card-body">
               <div className="row-fluid">
                 <div className="form-horizontal">
-                  <div className="form-group row">
-                    <div id="bandeiras" className="col-sm-12">
-                    </div>
-                  </div>
 
                   <div className="form-group row">
-                    <div className={'col-sm-6 '+((this.state.errorBag['name'] && this.state.cardCredit.name === '') || (this.state.errorBag['name']) ? 'has-danger' : '')}>
-                      <label className="control-label" htmlFor="nome">Seu nome como aparece no cartão</label>
-                      <input className={this.state.errorBag['name'] && this.state.cardCredit.name === '' ?'form-control is-invalid':'form-control'} type="text" id="nome" name="name" value={this.state.cardCredit.name} placeholder="Ex: Valdeir Santana" onChange={this.updateValue('name')} />
-                      {(this.state.errorBag['name'] && this.state.cardCredit.name === '') &&
-                        <div className="invalid-feedback">Campo Obrigatório</div>
-                      }
+                    <div className={`${errorBag.name.length > 0 ? 'col-sm-6 has-danger' : 'col-sm-6'}`}>
+                      <Input input={name} />
                     </div>
                   </div>
                   
                   <div className="form-group row">
                     
-                    <div className={'col-sm-4 '+((this.state.errorBag['cardNumber'] && this.state.cardCredit.cardNumber === '') || (this.state.errorBag.invalidCardNumber && this.state.cardCredit.cardNumber.length < 16) ? 'has-danger' : '')}>
-                      <label className="control-label" htmlFor="numero-cartao">Número do cartão</label>
-                      <CurrencyFormat
-                        className={'form-control '+((this.state.errorBag['cardNumber'] && this.state.cardCredit.cardNumber === '') || (this.state.errorBag.invalidCardNumber && this.state.cardCredit.cardNumber.length < 16) ?'is-invalid':'')}
-                        placeholder={'#### #### #### ####'}
-                        allowNegative={false}
-                        id="numero-cartao" 
-                        name="cardNumber"
-                        format={'#### #### #### ####'}
-                        // mask={''}
-                        value={this.state.cardCredit.cardNumber}
-                        onValueChange={this.updateValue('cardNumber')}
-                      />
-                      {(this.state.errorBag['cardNumber'] && this.state.cardCredit.cardNumber === '') &&
-                        <div className="invalid-feedback">Campo Obrigatório</div>
-                      }
-                      {(this.state.errorBag['invalidCardNumber'] && this.state.cardCredit.cardNumber.length < 16) &&
-                        <div className="invalid-feedback">Número do cartão inválido</div>
-                      }                    
-                    </div>
-                    
-                    <div className={'col-sm-4 '+((this.state.errorBag['validateDate'] && this.state.cardCredit.validateDate === '') || (this.state.errorBag['invalidValidateDate']) ? 'has-danger' : '')}>
-                      <label className="control-label" htmlFor="validade">Validade</label>
-                      <CurrencyFormat
-                        className={'form-control '+((this.state.errorBag['validateDate'] && this.state.cardCredit.validateDate === '') || (this.state.errorBag['invalidValidateDate']) ?'is-invalid':'')}
-                        placeholder={'12/2015'}
-                        allowNegative={false}
-                        id="validateDate" 
-                        name="validateDate"
-                        format={'##/####'}
-                        mask={''}
-                        value={this.state.cardCredit.validateDate}
-                        onValueChange={this.updateValue('validateDate')}
-                      />
-                      {(this.state.errorBag['validateDate'] && this.state.cardCredit.validateDate === '') &&
-                        <div className="invalid-feedback">Campo Obrigatório</div>
-                      }
-                      {(this.state.errorBag['invalidValidateDate'] && this.state.cardCredit.validateDate !== '') &&
-                        <div className="invalid-feedback">Data inválida</div>
-                      }
+                    <div className={`${errorBag.cardNumber.length > 0 ? 'col-sm-4 has-danger' : 'col-sm-4'}`}>
+                      <InputFormat input={cardNumber} />
                     </div>
 
-                    <div className="col-sm-4">
-                      <label className="control-label" htmlFor="cvv">Código de Segurança</label>
-                      <CurrencyFormat
-                        className={'form-control '+(this.state.errorBag['cvv'] && this.state.cardCredit.cvv !== '' ?'is-invalid':'')}
-                        placeholder={'123 ou 1234'}
-                        allowNegative={false}
-                        id="cvv" 
-                        name="cvv"
-                        format={'####'}
-                        mask={''}
-                        value={this.state.cardCredit.cvv}
-                        onValueChange={this.updateValue('cvv')}
-                      />
+                    <div className={`${errorBag.validateDate.length > 0 ? 'col-sm-4 has-danger' : 'col-sm-4'}`}>
+                      <InputFormat input={validateDate} />
+                    </div>
+
+                    <div className={`${errorBag.cvv.length > 0 ? 'col-sm-4 has-danger' : 'col-sm-4'}`}>
+                      <InputFormat input={cvv} />
                     </div>
 
                   </div>
 
                   <div className="form-group row titular">
 
-                    <div className={'col-sm-4 '+((this.state.errorBag['dateBirth'] && this.state.cardCredit.dateBirth === '') || (this.state.errorBag['invalidDateBirth'] && this.state.cardCredit.dateBirth !== '') ? 'has-danger' : '')}>
-                      <label className="control-label" htmlFor="data-nascimento">Data de Nascimento</label>
-                      <CurrencyFormat
-                        className={'form-control '+((this.state.errorBag['dateBirth'] && this.state.cardCredit.dateBirth === '') || (this.state.errorBag['invalidDateBirth'] && this.state.cardCredit.dateBirth !== '') ?'is-invalid':'')}
-                        placeholder={'07/03/1980'}
-                        allowNegative={false}
-                        id="dateBirth" 
-                        name="dateBirth"
-                        format={'##/##/####'}
-                        mask={''}
-                        value={this.state.cardCredit.dateBirth}
-                        onValueChange={this.updateValue('dateBirth')}
-                      />
-                      {(this.state.errorBag['dateBirth'] && this.state.cardCredit.dateBirth === '') &&
-                        <div className="invalid-feedback">Campo Obrigatório</div>
-                      }
-                      {(this.state.errorBag['invalidDateBirth'] && this.state.cardCredit.dateBirth !== '') &&
-                        <div className="invalid-feedback">Data inválida</div>
-                      }
+                    <div className={`${errorBag.dateBirth.length > 0 ? 'col-sm-4 has-danger' : 'col-sm-4'}`}>
+                      <InputFormat input={dateBirth} />
                     </div>
-                    <div className={'col-sm-4 '+((this.state.errorBag['cpf'] && this.state.cardCredit.cpf === '') || (this.state.errorBag['invalidCpf'] && this.state.cardCredit.cpf !== '') ? 'has-danger' : '')}>
-                      <label className="control-label" htmlFor="cpf">CPF</label>
-                      <CurrencyFormat
-                        className={'form-control '+((this.state.errorBag['cpf'] && this.state.cardCredit.cpf === '') || (this.state.errorBag['invalidCpf'] && this.state.cardCredit.cpf !== '') ?'is-invalid':'')}
-                        placeholder={'222.222.222-22'}
-                        allowNegative={false}
-                        id="cpf" 
-                        name="cpf"
-                        format={'###.###.###-##'}
-                        // mask={''}
-                        value={this.state.cardCredit.cpf}
-                        onValueChange={this.updateValue('cpf')}
-                      />
-                      {(this.state.errorBag['cpf'] && this.state.cardCredit.cpf === '') &&
-                        <div className="invalid-feedback">Campo Obrigatório</div>
-                      }
-                      {(this.state.errorBag['invalidCpf'] && this.state.cardCredit.cpf !== '') &&
-                        <div className="invalid-feedback">CPF inválido</div>
-                      }
+
+                    <div className={`${errorBag.cpf.length > 0 ? 'col-sm-4 has-danger' : 'col-sm-4'}`}>
+                      <InputFormat input={cpf} />
                     </div>
-                    <div className="col-sm-4">
-                      <label className="control-label" htmlFor="telephone">Telefone</label>
-                      <CurrencyFormat
-                        className={'form-control '+(this.state.errorBag['telephone'] && this.state.cardCredit.telephone !== '' ?'is-invalid':'')}
-                        placeholder={'(11) 9 8765-4321'}
-                        allowNegative={false}
-                        id="telephone" 
-                        name="telephone"
-                        format={'(##) # ####-####'}
-                        mask={''}
-                        value={this.state.cardCredit.telephone}
-                        onValueChange={this.updateValue('telephone')}
-                      />
+
+                    <div className={`${errorBag.phone.length > 0 ? 'col-sm-4 has-danger' : 'col-sm-4'}`}>
+                      <InputFormat input={phone} />
                     </div>
 
                   </div>
                   
                   <div className="form-group row mt-5">
                     <div className="col-sm-12">
-                      <button type="button" id="button-confirm" className="btn btn-block btn-success btn-donation" onClick={this.validate}>
-                        Doar 
-                        {this.props.totalValue &&
-                          <span>{this.props.totalValue}</span>
-                        }
+                      <button type="button" id="button-confirm" className="btn btn-block btn-success btn-donation" onClick={this.submit}>
+                        {`Doar ${this.props.totalValue}`}
                       </button>
                     </div>
                   </div>

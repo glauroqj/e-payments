@@ -65,7 +65,7 @@ class Billet extends Component {
 
     /* invalid email */
     if(!verifyEmail.test(billet.email)) {
-      let error = errorBag['email']
+      let error = errorBag.email
       error.push('invalidEmail')
       this.setState({errorBag})
       // errorBag.email = errorBag.email + 'invalidEmail'
@@ -78,7 +78,7 @@ class Billet extends Component {
 
     /* invalid cpf */
     if(!verifyCpf(billet.cpf)) {
-      let error = errorBag['cpf']
+      let error = errorBag.cpf
       error.push('invalidCpf')
       this.setState({errorBag})
     }    
@@ -94,64 +94,59 @@ class Billet extends Component {
 
   render() {
     const {billet, errorBag} = this.state
-    const name = [
-      {
-        label: 'Seu nome',
-        class: '',
-        type: 'text',
-        id: 'nome',
-        name: 'name',
-        placeholder: 'Ex: Valdeir Santana',
-        callback: this.updateValue('name'),
-        validate: this.validate,
-        errorBag: errorBag['name'],
-        value: billet.name
-      }
-    ]
-    const email = [
-      {
-        label: 'Seu e-mail',
-        class: '',
-        type: 'email',
-        id: 'email',
-        name: 'email',
-        placeholder: 'Ex: exemplo@gmail.com',
-        callback: this.updateValue('email'),
-        validate: this.validate,
-        errorBag: errorBag['email'],
-        value: billet.email
-      }
-    ]
-    const cpf = [
-      {
-        label: 'CPF',
-        class: '',
-        type: 'cpf',
-        id: 'cpf',
-        name: 'cpf',
-        placeholder: '222.222.222-22',
-        format: '###.###.###-##',
-        mask: '',
-        callback: this.updateValueFormat('cpf'),
-        errorBag: errorBag['cpf'],
-        value: billet.cpf
-      }
-    ]
-    const cep = [
-      {
-        label: 'CEP',
-        class: '',
-        type: 'cep',
-        id: 'cep',
-        name: 'cep',
-        placeholder: '#####-###',
-        format: '###.###.###-##',
-        mask: '',
-        callback: this.updateValueFormat('cep'),
-        errorBag: errorBag['cep'],
-        value: billet.cep
-      }
-    ]
+    const name = {
+      label: 'Seu nome',
+      class: '',
+      type: 'text',
+      id: 'nome',
+      name: 'name',
+      placeholder: 'Ex: Valdeir Santana',
+      callback: this.updateValue('name'),
+      validate: this.validate,
+      errorBag: errorBag.name,
+      value: billet.name
+    }
+
+    const email = {
+      label: 'Seu e-mail',
+      class: '',
+      type: 'email',
+      id: 'email',
+      name: 'email',
+      placeholder: 'Ex: exemplo@gmail.com',
+      callback: this.updateValue('email'),
+      validate: this.validate,
+      errorBag: errorBag.email,
+      value: billet.email
+    }
+    
+    const cpf = {
+      label: 'CPF',
+      class: '',
+      type: 'tel',
+      id: 'cpf',
+      name: 'cpf',
+      placeholder: '222.222.222-22',
+      format: '###.###.###-##',
+      mask: '',
+      callback: this.updateValueFormat('cpf'),
+      errorBag: errorBag.cpf,
+      value: billet.cpf
+    }
+
+    const cep = {
+      label: 'CEP',
+      class: '',
+      type: 'tel',
+      id: 'cep',
+      name: 'cep',
+      placeholder: '#####-###',
+      format: '###.###.###-##',
+      mask: '',
+      callback: this.updateValueFormat('cep'),
+      errorBag: errorBag.cep,
+      value: billet.cep
+    }
 
     return (
       <div className="box-payment_creditcard">
@@ -170,34 +165,25 @@ class Billet extends Component {
               <div className="row-fluid">
                 <div className="form-horizontal">
                   <div className="form-group row">
-                    <div id="bandeiras" className="col-sm-12">
-                    </div>
-                  </div>
-                  <div className="form-group row">
-                    <div className={errorBag.name.length>0?'col-sm-6 has-danger':'col-sm-6'}>
+                    <div className={`${errorBag.name.length > 0 ? 'col-sm-6 has-danger' : 'col-sm-6'}`}>
                       <Input input={name} />
                     </div>
-                    <div className={errorBag.email.length>0?'col-sm-6 has-danger':'col-sm-6'}>
+                    <div className={`${errorBag.email.length > 0 ? 'col-sm-6 has-danger' : 'col-sm-6'}`}>
                       <Input input={email} />
                     </div>
                   </div>
                   <div className="form-group row">
-                    <div className={errorBag.cpf.length>0?'col-sm-6 has-danger':'col-sm-6'}>
+                    <div className={`${errorBag.cpf.length > 0 ? 'col-sm-6 has-danger' : 'col-sm-6'}`}>
                       <InputFormat input={cpf} />
                     </div>
-                    <div className={errorBag.cep.length>0?'col-sm-6 has-danger':'col-sm-6'}>
-                      <InputFormat
-                        input={cep}
-                      />
+                    <div className={`${errorBag.cep.length > 0 ? 'col-sm-6 has-danger' : 'col-sm-6'}`}>
+                      <InputFormat input={cep} />
                     </div>
                   </div>
                   <div className="form-group row mt-5">
                     <div className="col-sm-12">
                       <button type="button" id="button-confirm" className="btn btn-block btn-success btn-donation" onClick={this.validate}>
-                        Doar 
-                        {this.props.totalValue &&
-                          <span>{this.props.totalValue}</span>
-                        }
+                        {`Doar ${this.props.totalValue}`}
                       </button>
                     </div>
                   </div>

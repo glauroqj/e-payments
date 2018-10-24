@@ -9,7 +9,7 @@ class ErrorBag extends Component {
   }
 
   render() {
-    const {error} = this.props
+    const { error } = this.props
     return (
       <React.Fragment>
         {error && error.map((key, i) => (
