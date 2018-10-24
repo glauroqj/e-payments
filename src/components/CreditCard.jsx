@@ -34,25 +34,6 @@ class CreditCard extends Component {
     }
   }
 
-  // updateValue = (type) => (e) => {
-  //   let cardCredit = this.state.cardCredit
-  //   let options = ['telephone', 'cpf', 'dateBirth', 'cvv', 'validateDate']
-  //   if(options.indexOf(type) > -1) {
-  //     cardCredit[type] = e.formattedValue;
-  //     this.setState({cardCredit})
-  //     return false;
-  //   }
-
-  //   if(type === 'cardNumber') {
-  //     cardCredit[type] = e.value;
-  //     this.setState({cardCredit})
-  //     return false;
-  //   }
-    
-  //   cardCredit[type] = e.target.value
-  //   this.setState({cardCredit})
-  // }
-
   updateValue = (type) => (e) => {
     const {cardCredit} = this.state
     cardCredit[type] = e.target.value
@@ -66,7 +47,7 @@ class CreditCard extends Component {
   }
 
   validate = (e) => {
-    const { cardCredit, requiredField, validForm } = this.state
+    const { cardCredit, requiredField } = this.state
     let errorBag = {
       name: [],
       cardNumber: [],
@@ -96,6 +77,7 @@ class CreditCard extends Component {
       let error = errorBag.cardNumber
       error.push('invalidCardNumber')
       this.setState({errorBag})
+      return false
     }
     if (cardCredit.cardNumber.length === 16) {
       errorBag.cardNumber = []
@@ -107,6 +89,7 @@ class CreditCard extends Component {
       let error = errorBag.validateDate
       error.push('invalidValidateDate')
       this.setState({errorBag})
+      return false
     }
     if (moment(cardCredit.validateDate, 'MM/YYYY',true).isValid()) {
       errorBag.validateDate = []
@@ -114,10 +97,11 @@ class CreditCard extends Component {
     }
 
     /* invalid date birth */
-    if (!moment(cardCredit.dateBirth, 'MM/YYYY',true).isValid()) {
+    if (!moment(cardCredit.dateBirth, 'DD/MM/YYYY',true).isValid()) {
       let error = errorBag.dateBirth
       error.push('invalidDateBirth')
       this.setState({errorBag})
+      return false
     }
     if (moment(cardCredit.dateBirth, 'DD/MM/YYYY',true).isValid()) {
       errorBag.dateBirth = []
@@ -129,16 +113,23 @@ class CreditCard extends Component {
       let error = errorBag.cpf
       error.push('invalidCpf')
       this.setState({errorBag})
+      return false
     }
     if(verifyCpf(cardCredit.cpf)) {
       errorBag.cpf = []
       this.setState({errorBag})
     }
 
+    return true
   }
 
   submit = (e) => {
     /* emit state */
+    if (!this.validate()) {
+      console.log('ERRORS')
+      return false
+    }
+
   }
 
   render() {
@@ -247,7 +238,7 @@ class CreditCard extends Component {
             (e) => {
                 if (e.key === 'Enter') {
                     e.preventDefault();
-                    // this.submit(e)
+                    this.submit(e)
                 }
             }
           }
@@ -297,7 +288,7 @@ class CreditCard extends Component {
                   
                   <div className="form-group row mt-5">
                     <div className="col-sm-12">
-                      <button type="button" id="button-confirm" className="btn btn-block btn-success btn-donation" onClick={this.validate}>
+                      <button type="button" id="button-confirm" className="btn btn-block btn-success btn-donation" onClick={this.submit}>
                         {`Doar ${this.props.totalValue}`}
                       </button>
                     </div>
