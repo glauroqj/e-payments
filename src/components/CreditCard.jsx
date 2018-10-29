@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import Input from './Input'
 import InputFormat from './InputFormat'
 
-import CurrencyFormat from 'react-currency-format'
 import * as moment from 'moment'
 import {verifyCpf} from './modules/verifyCpf'
 
