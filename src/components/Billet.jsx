@@ -148,6 +148,24 @@ class Billet extends Component {
       value: billet.cep
     }
 
+    let col_xs_6_name = 'col-sm-6'
+    let col_xs_6_email = 'col-sm-6'
+    let col_xs_6_cpf = 'col-sm-6'
+    let col_xs_6_cep = 'col-sm-6'
+    
+    if (errorBag.name.length > 0) {
+      col_xs_6_name += ' has-danger'
+    }
+    if (errorBag.email.length > 0) {
+      col_xs_6_email += ' has-danger'
+    }
+    if (errorBag.cpf.length > 0) {
+      col_xs_6_cpf += ' has-danger'
+    }
+    if (errorBag.cep.length > 0) {
+      col_xs_6_cep += ' has-danger'
+    }
+
     return (
       <div className="box-payment_creditcard">
         <form action=""
@@ -165,18 +183,18 @@ class Billet extends Component {
               <div className="row-fluid">
                 <div className="form-horizontal">
                   <div className="form-group row">
-                    <div className={`${errorBag.name.length > 0 ? 'col-sm-6 has-danger' : 'col-sm-6'}`}>
+                    <div className={col_xs_6_name}>
                       <Input input={name} />
                     </div>
-                    <div className={`${errorBag.email.length > 0 ? 'col-sm-6 has-danger' : 'col-sm-6'}`}>
+                    <div className={col_xs_6_email}>
                       <Input input={email} />
                     </div>
                   </div>
                   <div className="form-group row">
-                    <div className={`${errorBag.cpf.length > 0 ? 'col-sm-6 has-danger' : 'col-sm-6'}`}>
+                    <div className={col_xs_6_cpf}>
                       <InputFormat input={cpf} />
                     </div>
-                    <div className={`${errorBag.cep.length > 0 ? 'col-sm-6 has-danger' : 'col-sm-6'}`}>
+                    <div className={col_xs_6_cep}>
                       <InputFormat input={cep} />
                     </div>
                   </div>
