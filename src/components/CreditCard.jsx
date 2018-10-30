@@ -230,6 +230,36 @@ class CreditCard extends Component {
       value: cardCredit.phone
     }
 
+    let col_xs_6_name = 'col-sm-6'
+    let col_xs_6_card = 'col-sm-6'
+    let col_xs_6_validateDate = 'col-sm-6'
+    let col_xs_6_cvv = 'col-sm-6'
+    let col_xs_6_dateBirth = 'col-sm-6'
+    let col_xs_6_cpf = 'col-sm-6'
+    let col_xs_6_phone = 'col-sm-6'
+
+    if (errorBag.name.length > 0) {
+      col_xs_6_name += ' has-danger'
+    }
+    if (errorBag.cardNumber.length > 0) {
+      col_xs_6_card += ' has-danger'
+    }
+    if (errorBag.validateDate.length > 0) {
+      col_xs_6_validateDate += ' has-danger'
+    }
+    if (errorBag.cvv.length > 0) {
+      col_xs_6_cvv += ' has-danger'
+    }
+    if (errorBag.dateBirth.length > 0) {
+      col_xs_6_dateBirth += ' has-danger'
+    }
+    if (errorBag.cpf.length > 0) {
+      col_xs_6_cpf += ' has-danger'
+    }
+    if (errorBag.phone.length > 0) {
+      col_xs_6_phone += ' has-danger'
+    }
+
     return (
       <div className="box-payment_creditcard">
         <form action=""
@@ -248,39 +278,39 @@ class CreditCard extends Component {
                 <div className="form-horizontal">
 
                   <div className="form-group row">
-                    <div className={`${errorBag.name.length > 0 ? 'col-sm-6 has-danger' : 'col-sm-6'}`}>
-                      <Input input={name} />
+                    <div className={col_xs_6_name}>
+                      <Input {...name} />
                     </div>
                   </div>
                   
                   <div className="form-group row">
                     
-                    <div className={`${errorBag.cardNumber.length > 0 ? 'col-sm-4 has-danger' : 'col-sm-4'}`}>
-                      <InputFormat input={cardNumber} />
+                    <div className={col_xs_6_card}>
+                      <InputFormat {...cardNumber} />
                     </div>
 
-                    <div className={`${errorBag.validateDate.length > 0 ? 'col-sm-4 has-danger' : 'col-sm-4'}`}>
-                      <InputFormat input={validateDate} />
+                    <div className={col_xs_6_validateDate}>
+                      <InputFormat {...validateDate} />
                     </div>
 
-                    <div className={`${errorBag.cvv.length > 0 ? 'col-sm-4 has-danger' : 'col-sm-4'}`}>
-                      <InputFormat input={cvv} />
+                    <div className={col_xs_6_cvv}>
+                      <InputFormat {...cvv} />
                     </div>
 
                   </div>
 
                   <div className="form-group row titular">
 
-                    <div className={`${errorBag.dateBirth.length > 0 ? 'col-sm-4 has-danger' : 'col-sm-4'}`}>
-                      <InputFormat input={dateBirth} />
+                    <div className={col_xs_6_dateBirth}>
+                      <InputFormat {...dateBirth} />
                     </div>
 
-                    <div className={`${errorBag.cpf.length > 0 ? 'col-sm-4 has-danger' : 'col-sm-4'}`}>
-                      <InputFormat input={cpf} />
+                    <div className={col_xs_6_cpf}>
+                      <InputFormat {...cpf} />
                     </div>
 
-                    <div className={`${errorBag.phone.length > 0 ? 'col-sm-4 has-danger' : 'col-sm-4'}`}>
-                      <InputFormat input={phone} />
+                    <div className={col_xs_6_phone}>
+                      <InputFormat {...phone} />
                     </div>
 
                   </div>

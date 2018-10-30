@@ -11,21 +11,25 @@ class InputFormat extends Component {
   }
 
   render() {
-    const { input } = this.props
+    const { label, errorBag, id, format, mask, name, placeholder, callback } = this.props
+    let classError = 'form-control'
+    if (errorBag) {
+      classError += ' is-invalid'
+    }
     return (
       <React.Fragment>
-        <label className="control-label" htmlFor="nome">{input.label}</label>
+        <label className="control-label" htmlFor="nome">{label}</label>
         <CurrencyFormat
-          className={`${input.errorBag ? 'form-control is-invalid' : 'form-control'}`}
-          placeholder={input.placeholder}
+          className={classError}
+          placeholder={placeholder}
           allowNegative={false}
-          id={input.id} 
-          name={input.name}
-          format={input.format}
-          mask={input.mask}
-          onValueChange={input.callback}
+          id={id} 
+          name={name}
+          format={format}
+          mask={mask}
+          onValueChange={callback}
         />
-        <ErrorBag error={input.errorBag}/>
+        <ErrorBag error={errorBag}/>
       </React.Fragment>
     )
   }

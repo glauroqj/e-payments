@@ -184,18 +184,18 @@ class Billet extends Component {
                 <div className="form-horizontal">
                   <div className="form-group row">
                     <div className={col_xs_6_name}>
-                      <Input input={name} />
+                      <Input {...name} />
                     </div>
                     <div className={col_xs_6_email}>
-                      <Input input={email} />
+                      <Input {...email} />
                     </div>
                   </div>
                   <div className="form-group row">
                     <div className={col_xs_6_cpf}>
-                      <InputFormat input={cpf} />
+                      <InputFormat {...cpf} />
                     </div>
                     <div className={col_xs_6_cep}>
-                      <InputFormat input={cep} />
+                      <InputFormat {...cep} />
                     </div>
                   </div>
                   <div className="form-group row mt-5">

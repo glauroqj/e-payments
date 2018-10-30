@@ -10,19 +10,23 @@ class Input extends Component {
   }
 
   render() {
-    const { input } = this.props
+    const { label, errorBag, type, id, name, placeholder, callback, validate, value } = this.props
+    let classError = 'form-control'
+    if (errorBag) {
+      classError += ' is-invalid'
+    }
     return (
       <React.Fragment>
-        <label className="control-label" htmlFor="nome">{input.label}</label>
+        <label className="control-label" htmlFor="nome">{label}</label>
         <input 
-          className={`${input.errorBag ? 'form-control is-invalid' : 'form-control'}`}
-          type={input.type} id={input.id} name={input.name}
-          placeholder={input.placeholder} 
-          onChange={input.callback}
-          onBlur={input.validate}
-          value={input.value}
+          className={classError}
+          type={type} id={id} name={name}
+          placeholder={placeholder} 
+          onChange={callback}
+          onBlur={validate}
+          value={value}
         />
-        <ErrorBag error={input.errorBag}/>
+        <ErrorBag error={errorBag}/>
       </React.Fragment>
     )
   }
