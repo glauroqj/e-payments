@@ -17,7 +17,7 @@ class BoxToggleTabDashboard extends Component {
   }
 
   render() {
-    const { tab, valueSelected } = this.state
+    const { tab, valueSelected, valueCustom } = this.state
     let classNameOptionTabCC = 'nav-link'
     let classNameTabPaneCC = 'tab-pane'
     let classNameOptionTabBillet = 'nav-link'
@@ -26,7 +26,7 @@ class BoxToggleTabDashboard extends Component {
       classNameOptionTabCC += ' nav-link active show'
       classNameTabPaneCC += ' tab-pane animated fadeIn active show'
     }
-    if (optionTab === 'billet') {
+    if (tab === 'billet') {
       classNameOptionTabBillet += ' nav-link active show'
       classNameTabPaneBillet += ' tab-pane animated fadeIn active show'
     }

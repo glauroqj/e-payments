@@ -6,27 +6,27 @@ class ToggleTab extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      optionTab: 'cpf'
+      tab: 'cpf'
     }
   }
 
   toggleTab = (e) => {
     this.setState({
-      optionTab: e.target.id
+      tab: e.target.id
     })
   }
 
   render() {
-    const { optionTab } = this.state
+    const { tab } = this.state
     let classNameOptionTabCPF = 'nav-link'
     let classNameTabPaneCPF = 'tab-pane'
     let classNameOptionTabCNPJ = 'nav-link'
     let classNameTabPaneCNPJ = 'tab-pane'
-    if (optionTab === 'cpf') {
+    if (tab === 'cpf') {
       classNameOptionTabCPF += ' nav-link active show'
       classNameTabPaneCPF += ' tab-pane animated fadeIn active show'
     }
-    if (optionTab === 'cnpj') {
+    if (tab === 'cnpj') {
       classNameOptionTabCNPJ += ' nav-link active show'
       classNameTabPaneCNPJ += ' tab-pane animated fadeIn active show'
     }
@@ -50,12 +50,12 @@ class ToggleTab extends Component {
 
         <div className="tab-content box-toggle-tab-content">
           <div className={classNameTabPaneCPF}>
-            {optionTab === 'cpf' &&
+            {tab === 'cpf' &&
               <Cpf />
             }
           </div>
           <div className={classNameTabPaneCNPJ}>
-            {optionTab === 'cnpj' &&
+            {tab === 'cnpj' &&
               <Cnpj />
             }
           </div>
