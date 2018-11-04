@@ -17,7 +17,7 @@ class BoxToggleTabDashboard extends Component {
   }
 
   render() {
-    const { tab } = this.state
+    const { tab, valueSelected } = this.state
     let classNameOptionTabCC = 'nav-link'
     let classNameTabPaneCC = 'tab-pane'
     let classNameOptionTabBillet = 'nav-link'
@@ -51,12 +51,12 @@ class BoxToggleTabDashboard extends Component {
         <div className="tab-content box-toggle-tab-content">
           <div className={classNameTabPaneCC}>
             {tab === 'credit-card' &&
-              <CreditCard totalValue={this.props.valueSelected !== ''?this.props.valueSelected:this.props.valueCustom}/>  
+              <CreditCard totalValue={valueSelected !== ''?valueSelected:valueCustom}/>  
             }
           </div>
           <div className={classNameTabPaneBillet}>
             {tab === 'billet' &&
-              <Billet totalValue={this.props.valueSelected !== ''?this.props.valueSelected:this.props.valueCustom}/>
+              <Billet totalValue={valueSelected !== ''?valueSelected:valueCustom}/>
             }
           </div>
         </div>

@@ -10,7 +10,7 @@ class ToggleTab extends Component {
     }
   }
 
-  toggleTabOption = (e) => {
+  toggleTab = (e) => {
     this.setState({
       optionTab: e.target.id
     })
@@ -36,12 +36,12 @@ class ToggleTab extends Component {
         <div className="box-toggle-tab">
           <ul className="nav nav-pills nav-fill">
             <li className="nav-item">
-              <a className={classNameOptionTabCPF} id="cpf" onClick={this.toggleTabOption}>
+              <a className={classNameOptionTabCPF} id="cpf" onClick={this.toggleTab}>
                 CPF
               </a>
             </li>
             <li className="nav-item">
-              <a className={classNameOptionTabCNPJ} id="cnpj" onClick={this.toggleTabOption}>
+              <a className={classNameOptionTabCNPJ} id="cnpj" onClick={this.toggleTab}>
                 CNPJ
               </a>
             </li>
