@@ -17,7 +17,8 @@ class BoxToggleTabDashboard extends Component {
   }
 
   render() {
-    const {tab} = this.state
+    const { tab } = this.state
+    
     return (
       <React.Fragment>
         <div className="box-toggle-tab">

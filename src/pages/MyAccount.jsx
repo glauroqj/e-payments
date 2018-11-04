@@ -26,7 +26,7 @@ class MyAccount extends Component {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     /* verify if user is logged */
     verify().then((response) => {
       /* redirect to dashboard */

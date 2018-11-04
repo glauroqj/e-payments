@@ -20,7 +20,7 @@ class Login extends Component {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     /* verify if user is logged */
     verify().then((user) => {
       console.log('LOGED: ', user)

@@ -5,7 +5,7 @@ import { ToastContainer, toast } from 'react-toastify'
 import {verify} from '../components/modules/verifyLogin'
 import Navbar from '../components/Navbar'
 
-import BoxToggleTabDashboard from '../components/dashboard/BoxToggleTabDashboard'
+import ToggleTab from '../components/dashboard/ToggleTab'
 
 import Loader from '../components/Loader'
 import Maintenance from '../components/Maintenance'
@@ -30,7 +30,7 @@ class Dashboard extends Component {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     /* verify if user is logged */
     verify().then((user) => {
       // console.log('LOGED: ', user)
@@ -182,7 +182,7 @@ class Dashboard extends Component {
 
               </div>
 
-              <BoxToggleTabDashboard 
+              <ToggleTab 
                 valueSelected={this.state.valueSelected}
                 valueCustom={this.state.valueCustom}
               />
