@@ -7,6 +7,9 @@ import CurrencyFormat from 'react-currency-format'
 import { SemipolarSpinner } from 'react-epic-spinners'
 import {verifyCpf} from './modules/verifyCpf'
 
+import Input from './Input'
+import InputFormat from './InputFormat'
+
 class Cpf extends Component {
   constructor(props) {
     super(props)
@@ -24,85 +27,110 @@ class Cpf extends Component {
         nationality: '',
         marital_status: 'solteira(o)'
       },
-      requiredField: ['name', 'password', 'password_confirm', 'email', 'address', 'telephone', 'cpf', 'nationality', 'job', 'dateBirth', 'nationality'],
-      errorBag: {},
+      requiredField: ['name', 'password', 'password_confirm', 'email', 'address', 'telephone', 'cpf', 'job', 'dateBirth', 'nationality'],
+      errorBag: {
+        name: [],
+        password: [],
+        password_confirm: [],
+        email: [],
+        address: [],
+        telephone: [],
+        cpf: [],
+        job: [],
+        dateBirth: [],
+        nationality: []
+      },
       btnText: 'Criar Conta',
       btnLoading: false
     }
   }
 
   updateValue = (type) => (e) => {
-    let state = this.state
-    let options = ['telephone', 'dateBirth', 'cpf']
-    
-    if(options.indexOf(type) > -1) {
-      state.form[type] = e.formattedValue
-      this.setState(state)
-      return false
-    }
+    let form = this.state.form
+    form[type] = e.target.value
+    this.setState({form})
+  }
 
-    state.form[e.target.name] = e.target.value
-    this.setState(state)
+  updateValueFormat = (type) => (e) => {
+    let form = this.state.form
+    form[type] = e.formattedValue
+    this.setState({form})
   }
 
   validate = (e) => {
+    const {form, requiredField} = this.state
     let verifyEmail = /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}/igm
-    let errorBag = this.state.errorBag
+    let errorBag = {
+      name: [],
+      password: [],
+      password_confirm: [],
+      email: [],
+      address: [],
+      telephone: [],
+      cpf: [],
+      job: [],
+      dateBirth: [],
+      nationality: []
+    }
     let inputs = document.querySelectorAll('input')
     for (let i = 0; i < inputs.length; i++ ) {
-      /* add error mandatory */
-      if(this.state.requiredField.indexOf(inputs[i].name) > -1 && inputs[i].value === '') {
-        errorBag[inputs[i].name] = inputs[i].name
+      /* add error */
+      if(requiredField.indexOf(inputs[i].name) > -1 && inputs[i].value === '') {
+        let error = errorBag[inputs[i].name]
+        // errorBag[inputs[i].name] = inputs[i].name
+        error.push(inputs[i].name)
+        // console.log(error)
         this.setState({errorBag})
       }
-      /* remove error mandatory */
+      /* remove error */
       if(inputs[i].value !== '') {
-        delete errorBag[inputs[i].name]
+        // delete errorBag[inputs[i].name]
+        errorBag[inputs[i].name] = []
         this.setState({errorBag})
       }
     }
 
-    /* invalid password */
-    if(this.state.form.password.length <= 6) {
-      errorBag.password = 'password'
-      this.setState({errorBag})
-    }
-    if(this.state.form.password !== this.state.form.password_confirm) {
-      errorBag.password = 'password'
-      this.setState({errorBag})
-    }
-    if((this.state.form.password.length >= 6 && this.state.form.password === this.state.form.password_confirm && this.state.form.password !== '')) {
-      delete errorBag.password
-      this.setState({errorBag})
-    }
+    // /* invalid password */
+    // if(this.state.form.password.length <= 6) {
+    //   errorBag.password = 'password'
+    //   this.setState({errorBag})
+    // }
+    // if(this.state.form.password !== this.state.form.password_confirm) {
+    //   errorBag.password = 'password'
+    //   this.setState({errorBag})
+    // }
+    // if((this.state.form.password.length >= 6 && this.state.form.password === this.state.form.password_confirm && this.state.form.password !== '')) {
+    //   delete errorBag.password
+    //   this.setState({errorBag})
+    // }
 
-    /* invalid email */
-    if(!verifyEmail.test(this.state.form.email)) {
-      errorBag.email = 'email'
-      this.setState({errorBag})
-    }
-    if(verifyEmail.test(this.state.form.email)) {
-      delete errorBag.email
-      this.setState({errorBag})
-    }
-    /* date birth */
-    if(!moment(this.state.form.dateBirth, 'DD/MM/YYYY',true).isValid() && this.state.form.dateBirth !== '') {
-      errorBag.dateBirth = 'dateBirth'
-      this.setState({errorBag})
-    }
-    if(moment(this.state.form.dateBirth, 'DD/MM/YYYY',true).isValid()) {
-      delete errorBag.dateBirth
-      this.setState({errorBag})
-    }
+    // /* invalid email */
+    // if(!verifyEmail.test(this.state.form.email)) {
+    //   errorBag.email = 'email'
+    //   this.setState({errorBag})
+    // }
+    // if(verifyEmail.test(this.state.form.email)) {
+    //   delete errorBag.email
+    //   this.setState({errorBag})
+    // }
+    // /* date birth */
+    // if(!moment(this.state.form.dateBirth, 'DD/MM/YYYY',true).isValid() && this.state.form.dateBirth !== '') {
+    //   errorBag.dateBirth = 'dateBirth'
+    //   this.setState({errorBag})
+    // }
+    // if(moment(this.state.form.dateBirth, 'DD/MM/YYYY',true).isValid()) {
+    //   delete errorBag.dateBirth
+    //   this.setState({errorBag})
+    // }
     
-    if(!verifyCpf(this.state.form.cpf)) {
-      errorBag.invalidCpf = 'invalidCpf'
-      this.setState({errorBag})
-    }    
-    if(verifyCpf(this.state.form.cpf)) {
-      delete errorBag.invalidCpf
-      this.setState({errorBag})
-    }
+    // if(!verifyCpf(this.state.form.cpf)) {
+    //   errorBag.invalidCpf = 'invalidCpf'
+    //   this.setState({errorBag})
+    // }    
+    // if(verifyCpf(this.state.form.cpf)) {
+    //   delete errorBag.invalidCpf
+    //   this.setState({errorBag})
+    // }
   }
 
   submit = (e) => {
@@ -178,6 +206,26 @@ class Cpf extends Component {
   }
 
   render() {
+    const {form, errorBag} = this.state
+    const name = {
+      label: 'Nome Completo',
+      class: '',
+      type: 'text',
+      id: 'nome',
+      name: 'name',
+      placeholder: 'Ex: Valdeir Santana',
+      callback: this.updateValue('name'),
+      validate: this.validate,
+      errorBag: errorBag.name,
+      value: form.name
+    }
+
+    let col_xs_4 = 'col-sm-4'
+    let error_name = ''
+    if (errorBag.name.length > 0) {
+      error_name += ' has-danger'
+    }
+
     return (
       <div className="cpf">
         <form action=""
@@ -195,13 +243,18 @@ class Cpf extends Component {
               <div className="row-fluid">
                 <div className="form-horizontal">
                   <div className="form-group row">
-                    <div className={'col-sm-4 '+(this.state.errorBag['name'] && this.state.form.name === '' ? 'has-danger' : '')}>
+
+                    <div className={col_xs_4 + error_name}>
+                      <Input {...name} />
+                    </div>
+
+                    {/* <div className={'col-sm-4 '+(this.state.errorBag['name'] && this.state.form.name === '' ? 'has-danger' : '')}>
                       <label className="control-label" htmlFor="nome">Nome Completo</label>
                       <input className={"form-control "+(this.state.errorBag['name'] && this.state.form.name === '' ?'is-invalid':'')} type="text" id="name" name="name" placeholder="Ex: Valdeir Santana" value={this.state.form.name} onChange={this.updateValue('name')} />
                       {(this.state.errorBag['name'] && this.state.form.name === '') &&
                         <div className="invalid-feedback">Campo Obrigatório</div>
                       }
-                    </div>
+                    </div> */}
 
                     <div className={'col-sm-4 '+((this.state.errorBag['email'] && this.state.form.email === '') || (this.state.errorBag['email']) ? 'has-danger' : '')}>
                       <label className="control-label" htmlFor="email">E-mail</label>

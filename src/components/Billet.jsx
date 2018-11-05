@@ -37,7 +37,7 @@ class Billet extends Component {
 
   validate = (e) => {
     // console.log('validate: ', e)
-    const {billet} = this.state
+    const {billet, requiredField} = this.state
     let verifyEmail = /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}/igm
     let errorBag = {
       name: [],
@@ -48,7 +48,7 @@ class Billet extends Component {
     let inputs = document.querySelectorAll('input')
     for (let i = 0; i < inputs.length; i++ ) {
       /* add error */
-      if(this.state.requiredField.indexOf(inputs[i].name) > -1 && inputs[i].value === '') {
+      if(requiredField.indexOf(inputs[i].name) > -1 && inputs[i].value === '') {
         let error = errorBag[inputs[i].name]
         // errorBag[inputs[i].name] = inputs[i].name
         error.push(inputs[i].name)
