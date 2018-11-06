@@ -9,6 +9,7 @@ import {verifyCpf} from './modules/verifyCpf'
 
 import Input from './Input'
 import InputFormat from './InputFormat'
+import LoadingCard from './LoadingCard'
 
 class Cpf extends Component {
   constructor(props) {
@@ -41,7 +42,8 @@ class Cpf extends Component {
         nationality: []
       },
       btnText: 'Criar Conta',
-      btnLoading: false
+      btnLoading: false,
+      loadingTemplate: false
     }
   }
 
@@ -209,7 +211,7 @@ class Cpf extends Component {
   }
 
   render() {
-    const {form, errorBag} = this.state
+    const {form, errorBag, loadingTemplate} = this.state
     const name = {
       label: 'Nome Completo',
       class: '',
@@ -271,6 +273,18 @@ class Cpf extends Component {
       errorBag: errorBag.password_confirm,
       value: form.password_confirm
     }
+    const job = {
+      label: 'Profissão',
+      class: '',
+      type: 'text',
+      id: 'job',
+      name: 'job',
+      placeholder: 'Ex: exemplo@gmail.com',
+      callback: this.updateValue('job'),
+      validate: this.validate,
+      errorBag: errorBag.job,
+      value: form.job
+    }
 
     const cpf = {
       label: 'CPF',
@@ -292,6 +306,7 @@ class Cpf extends Component {
     let error_telephone = ''
     let error_password = ''
     let error_password_confirm = ''
+    let error_job = ''
     if (errorBag.name.length > 0) {
       error_name += ' has-danger'
     }
@@ -307,143 +322,145 @@ class Cpf extends Component {
     if (errorBag.password_confirm.length > 0) {
       error_password_confirm += ' has-danger'
     }
+    if (errorBag.job.length > 0) {
+      error_job += ' has-danger'
+    }
 
     return (
       <div className="cpf">
-        <form action=""
-          onKeyDown={
-            (e) => {
-                if (e.key === 'Enter') {
-                    e.preventDefault()
-                    this.submit(e)
-                }
+        {loadingTemplate && (
+          <LoadingCard text={'Criando conta...'} size={70} color={'#323232'} />
+        )}
+        {!loadingTemplate && (
+          <form action=""
+            onKeyDown={
+              (e) => {
+                  if (e.key === 'Enter') {
+                      e.preventDefault()
+                      this.submit(e)
+                  }
+              }
             }
-          }
-        >
-          <div className="card border-secondary mb-3">
-            <div className="card-body">
-              <div className="row-fluid">
-                <div className="form-horizontal">
-                  <div className="form-group row">
-                    <div className={col_xs_4 + error_name}>
-                      <Input {...name} />
-                    </div>
-                    <div className={col_xs_4 + error_email}>
-                      <Input {...email} />
-                    </div>
-                    <div className={col_xs_4 + error_telephone}>
-                      <InputFormat {...telephone} />
-                    </div>
-                  </div>
-
-                  <div className="form-group row">
-                    <div className={col_xs_4 + error_password}>
-                      <Input {...password} />
-                    </div>
-                    <div className={col_xs_4 + error_password_confirm}>
-                      <Input {...password_confirm} />
+          >
+            <div className="card border-secondary mb-3">
+              <div className="card-body">
+                <div className="row-fluid">
+                  <div className="form-horizontal">
+                    <div className="form-group row">
+                      <div className={col_xs_4 + error_name}>
+                        <Input {...name} />
+                      </div>
+                      <div className={col_xs_4 + error_email}>
+                        <Input {...email} />
+                      </div>
+                      <div className={col_xs_4 + error_telephone}>
+                        <InputFormat {...telephone} />
+                      </div>
                     </div>
 
-                    <div className={'col-sm-4 '+(this.state.errorBag['job'] && this.state.form.job === '' ? 'has-danger' : '')}>
-                      <label className="control-label" htmlFor="job">Profissão</label>
-                      <input className={'form-control '+(this.state.errorBag['job'] && this.state.form.job === '' ?'is-invalid':'')} type="text" name="job" id="job" placeholder="Professor, empresário, médico..." value={this.state.form.job} onChange={this.updateValue('job')}/>
-                      {(this.state.errorBag['job'] && this.state.form.job === '') &&
-                        <div className="invalid-feedback">Campo Obrigatório</div>
-                      }
+                    <div className="form-group row">
+                      <div className={col_xs_4 + error_password}>
+                        <Input {...password} />
+                      </div>
+                      <div className={col_xs_4 + error_password_confirm}>
+                        <Input {...password_confirm} />
+                      </div>
+                      <div className={col_xs_4 + error_job}>
+                        <Input {...job} />
+                      </div>
                     </div>
 
-                  </div>
-
-                  <div className="form-group row">
-                    <div className={'col-sm-3 '+( (this.state.errorBag['dateBirth'] && this.state.form.dateBirth === '') || (this.state.errorBag['dateBirth'] && this.state.form.dateBirth !== '') ? 'has-danger' : '')}>
-                      <label className="control-label" htmlFor="dateBirth">Data de Nascimento</label>
-                      <CurrencyFormat
-                        className={'form-control '+( (this.state.errorBag['dateBirth'] && this.state.form.dateBirth === '') || (this.state.errorBag['dateBirth'] && this.state.form.dateBirth !== '') ?'is-invalid':'')}
-                        placeholder={'10/11/1980'}
-                        allowNegative={false}
-                        format={'##/##/####'}
-                        mask={''}
-                        id={'dateBirth'}
-                        name={'dateBirth'}
-                        value={this.state.form.dateBirth}
-                        onValueChange={this.updateValue('dateBirth')}
-                      />
-                      {(this.state.errorBag['dateBirth'] && this.state.form.dateBirth !== '') &&
-                        <div className="invalid-feedback">Data inválida</div>
-                      }
-                      {(this.state.errorBag['dateBirth'] && this.state.form.dateBirth === '') &&
-                        <div className="invalid-feedback">Campo Obrigatório</div>
-                      }
-                    </div>
-
-                    <div className={'col-sm-3 '+((this.state.errorBag['cpf'] && this.state.form.cpf === '') || (this.state.errorBag['invalidCpf'] && this.state.form.cpf !== '') ? 'has-danger' : '')}>
-                      <label className="control-label" htmlFor="cpf">CPF</label>
-                      <CurrencyFormat
-                        className={'form-control '+((this.state.errorBag['cpf'] && this.state.form.cpf === '') || (this.state.errorBag['invalidCpf'] && this.state.form.cpf !== '') ?'is-invalid':'')}
-                        placeholder={'222.222.222-22'}
-                        allowNegative={false}
-                        id="cpf" 
-                        name="cpf"
-                        format={'###.###.###-##'}
-                        value={this.state.form.cpf}
-                        onValueChange={this.updateValue('cpf')}
-                      />
-                      {(this.state.errorBag['cpf'] && this.state.form.cpf === '') &&
-                        <div className="invalid-feedback">Campo Obrigatório</div>
-                      }
-                      {(this.state.errorBag['invalidCpf'] && this.state.form.cpf !== '') &&
-                        <div className="invalid-feedback">CPF inválido</div>
-                      }
-                    </div>
-
-                    <div className={'col-sm-3 '+(this.state.errorBag['nationality'] && this.state.form.nationality === '' ? 'has-danger' : '')}>
-                      <label className="control-label" htmlFor="nationality">Nacionalidade</label>
-                      <input className={"form-control "+(this.state.errorBag['nationality'] && this.state.form.nationality === '' ?'is-invalid':'')} type="text" id="nationality" name="nationality" placeholder="Ex: Brasileiro" value={this.state.form.nationality} onChange={this.updateValue('nationality')} />
-                      {(this.state.errorBag['nationality'] && this.state.form.nationality === '') &&
-                        <div className="invalid-feedback">Campo Obrigatório</div>
-                      }
-                    </div>
-
-                    <div className={'col-sm-3 '+(this.state.errorBag['marital_status'] && this.state.form.marital_status === '' ? 'has-danger' : '')}>
-                      <label className="control-label" htmlFor="marital_status">Estado Civil</label>
-                      <select className={"custom-select "+(this.state.errorBag['marital_status'] && this.state.form.marital_status === '' ?'is-invalid':'')} id="marital_status" name="marital_status" onChange={this.updateValue('marital_status')}>
-                        <option value="solteira(o)">Solteira(o)</option>
-                        <option value="casada(o)">Casada(o)</option>
-                        <option value="divorciada(o)">Divorciada(o)</option>
-                        <option value="viuva(o)">Viúva(o)</option>
-                      </select>
-                      {(this.state.errorBag['marital_status'] && this.state.form.marital_status === '') &&
-                        <div className="invalid-feedback">Campo Obrigatório</div>
-                      }
-                    </div>
-
-                  </div>
-
-                  <div className="form-group row">
-                    <div className={'col-sm-12 '+(this.state.errorBag['address'] && this.state.form.address === '' ? 'has-danger' : '')}>
-                        <label className="control-label" htmlFor="adress">Endereço (nome da rua, número, bairro, cidade e estado)</label>
-                        <input className={'form-control '+(this.state.errorBag['address'] && this.state.form.address === '' ?'is-invalid':'')} type="text" name="address" id="address" placeholder="Ex: Rua Nossa Senhora do Carmo, 1571, São Pedro, Belo Horizonte-MG" value={this.state.form.address} onChange={this.updateValue('address')}/>
-                        {(this.state.errorBag['address'] && this.state.form.address === '') &&
+                    <div className="form-group row">
+                      <div className={'col-sm-3 '+( (this.state.errorBag['dateBirth'] && this.state.form.dateBirth === '') || (this.state.errorBag['dateBirth'] && this.state.form.dateBirth !== '') ? 'has-danger' : '')}>
+                        <label className="control-label" htmlFor="dateBirth">Data de Nascimento</label>
+                        <CurrencyFormat
+                          className={'form-control '+( (this.state.errorBag['dateBirth'] && this.state.form.dateBirth === '') || (this.state.errorBag['dateBirth'] && this.state.form.dateBirth !== '') ?'is-invalid':'')}
+                          placeholder={'10/11/1980'}
+                          allowNegative={false}
+                          format={'##/##/####'}
+                          mask={''}
+                          id={'dateBirth'}
+                          name={'dateBirth'}
+                          value={this.state.form.dateBirth}
+                          onValueChange={this.updateValue('dateBirth')}
+                        />
+                        {(this.state.errorBag['dateBirth'] && this.state.form.dateBirth !== '') &&
+                          <div className="invalid-feedback">Data inválida</div>
+                        }
+                        {(this.state.errorBag['dateBirth'] && this.state.form.dateBirth === '') &&
                           <div className="invalid-feedback">Campo Obrigatório</div>
                         }
-                    </div> 
-                  </div>
-                  
-                  <div className="form-group row mt-5">
-                    <div className="col-sm-12">
-                      <button type="button" id="button-confirm" className={"btn btn-block btn-success btn-donation "+(this.state.btnLoading?'disabled':'')} disabled={this.state.btnLoading} onClick={this.submit}>
-                        {this.state.btnLoading &&
-                          <SemipolarSpinner size={30} color="white"/>
+                      </div>
+
+                      <div className={'col-sm-3 '+((this.state.errorBag['cpf'] && this.state.form.cpf === '') || (this.state.errorBag['invalidCpf'] && this.state.form.cpf !== '') ? 'has-danger' : '')}>
+                        <label className="control-label" htmlFor="cpf">CPF</label>
+                        <CurrencyFormat
+                          className={'form-control '+((this.state.errorBag['cpf'] && this.state.form.cpf === '') || (this.state.errorBag['invalidCpf'] && this.state.form.cpf !== '') ?'is-invalid':'')}
+                          placeholder={'222.222.222-22'}
+                          allowNegative={false}
+                          id="cpf" 
+                          name="cpf"
+                          format={'###.###.###-##'}
+                          value={this.state.form.cpf}
+                          onValueChange={this.updateValue('cpf')}
+                        />
+                        {(this.state.errorBag['cpf'] && this.state.form.cpf === '') &&
+                          <div className="invalid-feedback">Campo Obrigatório</div>
                         }
-                        <div>{this.state.btnText}</div>                        
-                      </button>
+                        {(this.state.errorBag['invalidCpf'] && this.state.form.cpf !== '') &&
+                          <div className="invalid-feedback">CPF inválido</div>
+                        }
+                      </div>
+
+                      <div className={'col-sm-3 '+(this.state.errorBag['nationality'] && this.state.form.nationality === '' ? 'has-danger' : '')}>
+                        <label className="control-label" htmlFor="nationality">Nacionalidade</label>
+                        <input className={"form-control "+(this.state.errorBag['nationality'] && this.state.form.nationality === '' ?'is-invalid':'')} type="text" id="nationality" name="nationality" placeholder="Ex: Brasileiro" value={this.state.form.nationality} onChange={this.updateValue('nationality')} />
+                        {(this.state.errorBag['nationality'] && this.state.form.nationality === '') &&
+                          <div className="invalid-feedback">Campo Obrigatório</div>
+                        }
+                      </div>
+
+                      <div className={'col-sm-3 '+(this.state.errorBag['marital_status'] && this.state.form.marital_status === '' ? 'has-danger' : '')}>
+                        <label className="control-label" htmlFor="marital_status">Estado Civil</label>
+                        <select className={"custom-select "+(this.state.errorBag['marital_status'] && this.state.form.marital_status === '' ?'is-invalid':'')} id="marital_status" name="marital_status" onChange={this.updateValue('marital_status')}>
+                          <option value="solteira(o)">Solteira(o)</option>
+                          <option value="casada(o)">Casada(o)</option>
+                          <option value="divorciada(o)">Divorciada(o)</option>
+                          <option value="viuva(o)">Viúva(o)</option>
+                        </select>
+                        {(this.state.errorBag['marital_status'] && this.state.form.marital_status === '') &&
+                          <div className="invalid-feedback">Campo Obrigatório</div>
+                        }
+                      </div>
+
+                    </div>
+
+                    <div className="form-group row">
+                      <div className={'col-sm-12 '+(this.state.errorBag['address'] && this.state.form.address === '' ? 'has-danger' : '')}>
+                          <label className="control-label" htmlFor="adress">Endereço (nome da rua, número, bairro, cidade e estado)</label>
+                          <input className={'form-control '+(this.state.errorBag['address'] && this.state.form.address === '' ?'is-invalid':'')} type="text" name="address" id="address" placeholder="Ex: Rua Nossa Senhora do Carmo, 1571, São Pedro, Belo Horizonte-MG" value={this.state.form.address} onChange={this.updateValue('address')}/>
+                          {(this.state.errorBag['address'] && this.state.form.address === '') &&
+                            <div className="invalid-feedback">Campo Obrigatório</div>
+                          }
+                      </div> 
+                    </div>
+                    
+                    <div className="form-group row mt-5">
+                      <div className="col-sm-12">
+                        <button type="button" id="button-confirm" className={"btn btn-block btn-success btn-donation "+(this.state.btnLoading?'disabled':'')} disabled={this.state.btnLoading} onClick={this.submit}>
+                          {this.state.btnLoading &&
+                            <SemipolarSpinner size={30} color="white"/>
+                          }
+                          <div>{this.state.btnText}</div>                        
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </div> {/* row-fluid */}
-            </div> {/*  card-body */}
-          </div> {/* card */}
-        </form>
+                </div> {/* row-fluid */}
+              </div> {/*  card-body */}
+            </div> {/* card */}
+          </form>
+        )}
       </div>
     )
   }
