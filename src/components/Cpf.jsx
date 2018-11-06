@@ -75,7 +75,7 @@ class Cpf extends Component {
     let inputs = document.querySelectorAll('input')
     for (let i = 0; i < inputs.length; i++ ) {
       /* add error */
-      if(requiredField.indexOf(inputs[i].name) > -1 && inputs[i].value === '') {
+      if (requiredField.indexOf(inputs[i].name) > -1 && inputs[i].value === '') {
         let error = errorBag[inputs[i].name]
         // errorBag[inputs[i].name] = inputs[i].name
         error.push(inputs[i].name)
@@ -90,29 +90,32 @@ class Cpf extends Component {
       }
     }
 
-    // /* invalid password */
-    // if(this.state.form.password.length <= 6) {
-    //   errorBag.password = 'password'
-    //   this.setState({errorBag})
-    // }
-    // if(this.state.form.password !== this.state.form.password_confirm) {
-    //   errorBag.password = 'password'
-    //   this.setState({errorBag})
-    // }
-    // if((this.state.form.password.length >= 6 && this.state.form.password === this.state.form.password_confirm && this.state.form.password !== '')) {
-    //   delete errorBag.password
-    //   this.setState({errorBag})
-    // }
+    /* invalid email */
+    if(!verifyEmail.test(form.email)) {
+      let error = errorBag.email
+      error.push('invalidEmail')
+      this.setState({errorBag})
+    }
+    if(verifyEmail.test(form.email)) {
+      errorBag.email = []
+      this.setState({errorBag})
+    }
 
-    // /* invalid email */
-    // if(!verifyEmail.test(this.state.form.email)) {
-    //   errorBag.email = 'email'
-    //   this.setState({errorBag})
-    // }
-    // if(verifyEmail.test(this.state.form.email)) {
-    //   delete errorBag.email
-    //   this.setState({errorBag})
-    // }
+    /* invalid password */
+    if (form.password.length <= 6) {
+      let error = errorBag.password
+      error.push('minCharacterPassword')
+      this.setState({errorBag})
+    }
+    if (form.password !== form.password_confirm) {
+      let error = errorBag.password
+      error.push('invalidPassword')
+      this.setState({errorBag})
+    }
+    if ((form.password.length >= 6 && form.password === form.password_confirm && form.password !== '')) {
+      errorBag.password = []
+      this.setState({errorBag})
+    }
     // /* date birth */
     // if(!moment(this.state.form.dateBirth, 'DD/MM/YYYY',true).isValid() && this.state.form.dateBirth !== '') {
     //   errorBag.dateBirth = 'dateBirth'
@@ -219,11 +222,90 @@ class Cpf extends Component {
       errorBag: errorBag.name,
       value: form.name
     }
+    const email = {
+      label: 'E-mail',
+      class: '',
+      type: 'email',
+      id: 'email',
+      name: 'email',
+      placeholder: 'Ex: exemplo@gmail.com',
+      callback: this.updateValue('email'),
+      validate: this.validate,
+      errorBag: errorBag.email,
+      value: form.email
+    }
+    const telephone = {
+      label: 'Telefone',
+      class: '',
+      type: 'tel',
+      id: 'telephone',
+      name: 'telephone',
+      placeholder: '(31) 9 8765-4321',
+      format: '(##) # ####-####',
+      mask: '',
+      callback: this.updateValueFormat('telephone'),
+      errorBag: errorBag.telephone,
+      value: form.telephone
+    }
+    const password = {
+      label: 'Senha',
+      class: '',
+      type: 'password',
+      id: 'password',
+      name: 'password',
+      placeholder: 'Ex: exemplo@gmail.com',
+      callback: this.updateValue('password'),
+      validate: this.validate,
+      errorBag: errorBag.password,
+      value: form.password
+    }
+    const password_confirm = {
+      label: 'Confirmar Senha',
+      class: '',
+      type: 'password',
+      id: 'password_confirm',
+      name: 'password_confirm',
+      placeholder: 'Ex: exemplo@gmail.com',
+      callback: this.updateValue('password_confirm'),
+      validate: this.validate,
+      errorBag: errorBag.password_confirm,
+      value: form.password_confirm
+    }
+
+    const cpf = {
+      label: 'CPF',
+      class: '',
+      type: 'tel',
+      id: 'cpf',
+      name: 'cpf',
+      placeholder: '222.222.222-22',
+      format: '###.###.###-##',
+      mask: '',
+      callback: this.updateValueFormat('cpf'),
+      errorBag: errorBag.cpf,
+      value: form.cpf
+    }
 
     let col_xs_4 = 'col-sm-4'
     let error_name = ''
+    let error_email = ''
+    let error_telephone = ''
+    let error_password = ''
+    let error_password_confirm = ''
     if (errorBag.name.length > 0) {
       error_name += ' has-danger'
+    }
+    if (errorBag.email.length > 0) {
+      error_email += ' has-danger'
+    }
+    if (errorBag.telephone.length > 0) {
+      error_telephone += ' has-danger'
+    }
+    if (errorBag.password.length > 0) {
+      error_password += ' has-danger'
+    }
+    if (errorBag.password_confirm.length > 0) {
+      error_password_confirm += ' has-danger'
     }
 
     return (
@@ -243,71 +325,23 @@ class Cpf extends Component {
               <div className="row-fluid">
                 <div className="form-horizontal">
                   <div className="form-group row">
-
                     <div className={col_xs_4 + error_name}>
                       <Input {...name} />
                     </div>
-
-                    {/* <div className={'col-sm-4 '+(this.state.errorBag['name'] && this.state.form.name === '' ? 'has-danger' : '')}>
-                      <label className="control-label" htmlFor="nome">Nome Completo</label>
-                      <input className={"form-control "+(this.state.errorBag['name'] && this.state.form.name === '' ?'is-invalid':'')} type="text" id="name" name="name" placeholder="Ex: Valdeir Santana" value={this.state.form.name} onChange={this.updateValue('name')} />
-                      {(this.state.errorBag['name'] && this.state.form.name === '') &&
-                        <div className="invalid-feedback">Campo Obrigatório</div>
-                      }
-                    </div> */}
-
-                    <div className={'col-sm-4 '+((this.state.errorBag['email'] && this.state.form.email === '') || (this.state.errorBag['email']) ? 'has-danger' : '')}>
-                      <label className="control-label" htmlFor="email">E-mail</label>
-                      <input className={"form-control "+((this.state.errorBag['email'] && this.state.form.email === '') || (this.state.errorBag['email']) ?'is-invalid':'')} type="email" id="email" name="email" placeholder="Ex: exemplo@gmail.com" value={this.state.form.email} onChange={this.updateValue('email')} />
-                      {(this.state.errorBag['email'] && this.state.form.email === '') &&
-                        <div className="invalid-feedback">Campo Obrigatório</div>
-                      }
-                      {(this.state.errorBag['email']) &&
-                        <div className="invalid-feedback">E-mail inválido</div>
-                      }
+                    <div className={col_xs_4 + error_email}>
+                      <Input {...email} />
                     </div>
-
-                    <div className={'col-sm-4 '+(this.state.errorBag['telephone'] && this.state.form.telephone === '' ? 'has-danger' : '')}>
-                      <label className="control-label" htmlFor="telephone">Telefone</label>
-                      <CurrencyFormat
-                        className={'form-control '+(this.state.errorBag['telephone'] && this.state.form.telephone === '' ?'is-invalid':'')}
-                        placeholder={'(31) 9 8765-4321'}
-                        allowNegative={false}
-                        format={'(##) # ####-####'}
-                        mask={''}
-                        id={'telephone'}
-                        name={'telephone'}
-                        value={this.state.form.telephone}
-                        onValueChange={this.updateValue('telephone')}
-                      />
-                      {(this.state.errorBag['telephone'] && this.state.form.telephone === '') &&
-                        <div className="invalid-feedback">Campo Obrigatório</div>
-                      }
+                    <div className={col_xs_4 + error_telephone}>
+                      <InputFormat {...telephone} />
                     </div>
-
                   </div>
 
                   <div className="form-group row">
-
-                    <div className={'col-sm-4 '+((this.state.errorBag['password'] && this.state.form.password === '') || (this.state.form.password !== this.state.form.password_confirm) || (this.state.form.password.length < 6 && this.state.form.password !== '') ? 'has-danger' : '')}>
-                      <label className="control-label" htmlFor="password">Senha</label>
-                      <input className={'form-control '+((this.state.errorBag['password'] && this.state.form.password === '') || (this.state.form.password !== this.state.form.password_confirm) || (this.state.form.password.length < 6 && this.state.form.password !== '') ?'is-invalid':'')} type="password" name="password" id="password" placeholder="*****" value={this.state.form.password} onChange={this.updateValue('password')}/>
-                      {(this.state.errorBag['password'] && this.state.form.password === '') &&
-                        <div className="invalid-feedback">Campo Obrigatório</div>
-                      }
-                      {(this.state.form.password !== this.state.form.password_confirm) &&
-                        <div className="invalid-feedback">As senhas precisam ser idênticas, preencha (confirmar senha)</div>
-                      }
-                      {(this.state.errorBag['password'] && this.state.form.password.length < 6) &&
-                        <div className="invalid-feedback">A senha deve conter no mínimo 6 dígitos</div>
-                      }                     
+                    <div className={col_xs_4 + error_password}>
+                      <Input {...password} />
                     </div>
-                    <div className={"col-sm-4 "+(this.state.errorBag['password_confirm'] && this.state.form.password_confirm === '' ? 'has-danger' : '')}>
-                      <label className="control-label" htmlFor="password_confirm">Confirmar Senha</label>
-                      <input className={'form-control '+(this.state.errorBag['password_confirm'] && this.state.form.password_confirm === '' ?'is-invalid':'')} type="password" name="password_confirm" id="password_confirm" placeholder="*****" value={this.state.form.password_confirm} onChange={this.updateValue('password_confirm')}/>
-                      {(this.state.errorBag['password_confirm'] && this.state.form.password_confirm === '') &&
-                        <div className="invalid-feedback">Campo Obrigatório</div>
-                      }
+                    <div className={col_xs_4 + error_password_confirm}>
+                      <Input {...password_confirm} />
                     </div>
 
                     <div className={'col-sm-4 '+(this.state.errorBag['job'] && this.state.form.job === '' ? 'has-danger' : '')}>

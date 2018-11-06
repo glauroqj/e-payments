@@ -48,7 +48,7 @@ class Billet extends Component {
     let inputs = document.querySelectorAll('input')
     for (let i = 0; i < inputs.length; i++ ) {
       /* add error */
-      if(requiredField.indexOf(inputs[i].name) > -1 && inputs[i].value === '') {
+      if (requiredField.indexOf(inputs[i].name) > -1 && inputs[i].value === '') {
         let error = errorBag[inputs[i].name]
         // errorBag[inputs[i].name] = inputs[i].name
         error.push(inputs[i].name)
@@ -148,22 +148,23 @@ class Billet extends Component {
       value: billet.cep
     }
 
-    let col_xs_6_name = 'col-sm-6'
-    let col_xs_6_email = 'col-sm-6'
-    let col_xs_6_cpf = 'col-sm-6'
-    let col_xs_6_cep = 'col-sm-6'
+    let col_xs_6 = 'col-sm-6'
+    let error_name = ''
+    let error_email = ''
+    let error_cpf = ''
+    let error_cep = ''
     
     if (errorBag.name.length > 0) {
-      col_xs_6_name += ' has-danger'
+      error_name += ' has-danger'
     }
     if (errorBag.email.length > 0) {
-      col_xs_6_email += ' has-danger'
+      error_email += ' has-danger'
     }
     if (errorBag.cpf.length > 0) {
-      col_xs_6_cpf += ' has-danger'
+      error_cpf += ' has-danger'
     }
     if (errorBag.cep.length > 0) {
-      col_xs_6_cep += ' has-danger'
+      error_cep += ' has-danger'
     }
 
     return (
@@ -183,18 +184,18 @@ class Billet extends Component {
               <div className="row-fluid">
                 <div className="form-horizontal">
                   <div className="form-group row">
-                    <div className={col_xs_6_name}>
+                    <div className={col_xs_6 + error_name}>
                       <Input {...name} />
                     </div>
-                    <div className={col_xs_6_email}>
+                    <div className={col_xs_6 + error_email}>
                       <Input {...email} />
                     </div>
                   </div>
                   <div className="form-group row">
-                    <div className={col_xs_6_cpf}>
+                    <div className={col_xs_6 + error_cpf}>
                       <InputFormat {...cpf} />
                     </div>
-                    <div className={col_xs_6_cep}>
+                    <div className={col_xs_6 + error_cep}>
                       <InputFormat {...cep} />
                     </div>
                   </div>
