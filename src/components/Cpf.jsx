@@ -3,7 +3,6 @@ import * as firebase from 'firebase'
 // import axios from 'axios'
 import * as moment from 'moment'
 import { toast } from 'react-toastify'
-import CurrencyFormat from 'react-currency-format'
 import { SemipolarSpinner } from 'react-epic-spinners'
 import {verifyCpf} from './modules/verifyCpf'
 
