@@ -93,12 +93,12 @@ class Cpf extends Component {
     }
 
     /* invalid email */
-    if(!verifyEmail.test(form.email)) {
+    if (!verifyEmail.test(form.email)) {
       let error = errorBag.email
       error.push('invalidEmail')
       this.setState({errorBag})
     }
-    if(verifyEmail.test(form.email)) {
+    if (verifyEmail.test(form.email)) {
       errorBag.email = []
       this.setState({errorBag})
     }
@@ -118,24 +118,26 @@ class Cpf extends Component {
       errorBag.password = []
       this.setState({errorBag})
     }
-    // /* date birth */
-    // if(!moment(this.state.form.dateBirth, 'DD/MM/YYYY',true).isValid() && this.state.form.dateBirth !== '') {
-    //   errorBag.dateBirth = 'dateBirth'
-    //   this.setState({errorBag})
-    // }
-    // if(moment(this.state.form.dateBirth, 'DD/MM/YYYY',true).isValid()) {
-    //   delete errorBag.dateBirth
-    //   this.setState({errorBag})
-    // }
+    /* date birth */
+    if (!moment(form.dateBirth, 'DD/MM/YYYY',true).isValid() && form.dateBirth !== '') {
+      let error = errorBag.dateBirth
+      error.push('invalidDateBirth')
+      this.setState({errorBag})
+    }
+    if (moment(form.dateBirth, 'DD/MM/YYYY',true).isValid()) {
+      errorBag.dateBirth = []
+      this.setState({errorBag})
+    }
     
-    // if(!verifyCpf(this.state.form.cpf)) {
-    //   errorBag.invalidCpf = 'invalidCpf'
-    //   this.setState({errorBag})
-    // }    
-    // if(verifyCpf(this.state.form.cpf)) {
-    //   delete errorBag.invalidCpf
-    //   this.setState({errorBag})
-    // }
+    if (!verifyCpf(this.state.form.cpf)) {
+      let error = errorBag.cpf
+      error.push('invalidCpf')
+      this.setState({errorBag})
+    }    
+    if (verifyCpf(this.state.form.cpf)) {
+      errorBag.cpf = []
+      this.setState({errorBag})
+    }
   }
 
   submit = (e) => {
@@ -285,7 +287,19 @@ class Cpf extends Component {
       errorBag: errorBag.job,
       value: form.job
     }
-
+    const dateBirth = {
+      label: 'Data de Nascimento',
+      class: '',
+      type: 'tel',
+      id: 'dateBirth',
+      name: 'dateBirth',
+      placeholder: '10/11/1980',
+      format: '##/##/####',
+      mask: '',
+      callback: this.updateValueFormat('dateBirth'),
+      errorBag: errorBag.dateBirth,
+      value: form.dateBirth          
+    }
     const cpf = {
       label: 'CPF',
       class: '',
@@ -299,7 +313,32 @@ class Cpf extends Component {
       errorBag: errorBag.cpf,
       value: form.cpf
     }
-
+    const nationality = {
+      label: 'Nacionalidade',
+      class: '',
+      type: 'text',
+      id: 'nationality',
+      name: 'nationality',
+      placeholder: 'Ex: exemplo@gmail.com',
+      callback: this.updateValue('nationality'),
+      validate: this.validate,
+      errorBag: errorBag.nationality,
+      value: form.nationality
+    }
+    const address = {
+      label: 'Endereço (nome da rua, número, bairro, cidade e estado)',
+      class: '',
+      type: 'text',
+      id: 'address',
+      name: 'address',
+      placeholder: 'Ex: Rua Nossa Senhora do Carmo, 1571, São Pedro, Belo Horizonte-MG',
+      callback: this.updateValue('address'),
+      validate: this.validate,
+      errorBag: errorBag.address,
+      value: form.address
+    }
+    let col_xs_12 = 'col-sm-12'
+    let col_xs_3 = 'col-sm-3'
     let col_xs_4 = 'col-sm-4'
     let error_name = ''
     let error_email = ''
@@ -307,6 +346,10 @@ class Cpf extends Component {
     let error_password = ''
     let error_password_confirm = ''
     let error_job = ''
+    let error_dateBirth = ''
+    let error_cpf = ''
+    let error_nationality = ''
+    let error_address = ''
     if (errorBag.name.length > 0) {
       error_name += ' has-danger'
     }
@@ -324,6 +367,18 @@ class Cpf extends Component {
     }
     if (errorBag.job.length > 0) {
       error_job += ' has-danger'
+    }
+    if (errorBag.dateBirth.length > 0) {
+      error_dateBirth += ' has-danger'
+    }
+    if (errorBag.cpf.length > 0) {
+      error_cpf += ' has-danger'
+    }
+    if (errorBag.nationality.length > 0) {
+      error_nationality += ' has-danger'
+    }
+    if (errorBag.address.length > 0) {
+      error_address += ' has-danger'
     }
 
     return (
@@ -371,78 +426,34 @@ class Cpf extends Component {
                     </div>
 
                     <div className="form-group row">
-                      <div className={'col-sm-3 '+( (this.state.errorBag['dateBirth'] && this.state.form.dateBirth === '') || (this.state.errorBag['dateBirth'] && this.state.form.dateBirth !== '') ? 'has-danger' : '')}>
-                        <label className="control-label" htmlFor="dateBirth">Data de Nascimento</label>
-                        <CurrencyFormat
-                          className={'form-control '+( (this.state.errorBag['dateBirth'] && this.state.form.dateBirth === '') || (this.state.errorBag['dateBirth'] && this.state.form.dateBirth !== '') ?'is-invalid':'')}
-                          placeholder={'10/11/1980'}
-                          allowNegative={false}
-                          format={'##/##/####'}
-                          mask={''}
-                          id={'dateBirth'}
-                          name={'dateBirth'}
-                          value={this.state.form.dateBirth}
-                          onValueChange={this.updateValue('dateBirth')}
-                        />
-                        {(this.state.errorBag['dateBirth'] && this.state.form.dateBirth !== '') &&
-                          <div className="invalid-feedback">Data inválida</div>
-                        }
-                        {(this.state.errorBag['dateBirth'] && this.state.form.dateBirth === '') &&
-                          <div className="invalid-feedback">Campo Obrigatório</div>
-                        }
+                      <div className={col_xs_3 + error_dateBirth}>
+                        <InputFormat {...dateBirth} />
                       </div>
 
-                      <div className={'col-sm-3 '+((this.state.errorBag['cpf'] && this.state.form.cpf === '') || (this.state.errorBag['invalidCpf'] && this.state.form.cpf !== '') ? 'has-danger' : '')}>
-                        <label className="control-label" htmlFor="cpf">CPF</label>
-                        <CurrencyFormat
-                          className={'form-control '+((this.state.errorBag['cpf'] && this.state.form.cpf === '') || (this.state.errorBag['invalidCpf'] && this.state.form.cpf !== '') ?'is-invalid':'')}
-                          placeholder={'222.222.222-22'}
-                          allowNegative={false}
-                          id="cpf" 
-                          name="cpf"
-                          format={'###.###.###-##'}
-                          value={this.state.form.cpf}
-                          onValueChange={this.updateValue('cpf')}
-                        />
-                        {(this.state.errorBag['cpf'] && this.state.form.cpf === '') &&
-                          <div className="invalid-feedback">Campo Obrigatório</div>
-                        }
-                        {(this.state.errorBag['invalidCpf'] && this.state.form.cpf !== '') &&
-                          <div className="invalid-feedback">CPF inválido</div>
-                        }
+                      <div className={col_xs_3 + error_cpf}>
+                        <InputFormat {...cpf} />
                       </div>
 
-                      <div className={'col-sm-3 '+(this.state.errorBag['nationality'] && this.state.form.nationality === '' ? 'has-danger' : '')}>
-                        <label className="control-label" htmlFor="nationality">Nacionalidade</label>
-                        <input className={"form-control "+(this.state.errorBag['nationality'] && this.state.form.nationality === '' ?'is-invalid':'')} type="text" id="nationality" name="nationality" placeholder="Ex: Brasileiro" value={this.state.form.nationality} onChange={this.updateValue('nationality')} />
-                        {(this.state.errorBag['nationality'] && this.state.form.nationality === '') &&
-                          <div className="invalid-feedback">Campo Obrigatório</div>
-                        }
+                      <div className={col_xs_3 + error_nationality}>
+                        <Input {...nationality} />
                       </div>
 
-                      <div className={'col-sm-3 '+(this.state.errorBag['marital_status'] && this.state.form.marital_status === '' ? 'has-danger' : '')}>
+                      <div className="col-sm-3">
                         <label className="control-label" htmlFor="marital_status">Estado Civil</label>
-                        <select className={"custom-select "+(this.state.errorBag['marital_status'] && this.state.form.marital_status === '' ?'is-invalid':'')} id="marital_status" name="marital_status" onChange={this.updateValue('marital_status')}>
+                        <select className="custom-select " id="marital_status" name="marital_status" onChange={this.updateValue('marital_status')}>
                           <option value="solteira(o)">Solteira(o)</option>
                           <option value="casada(o)">Casada(o)</option>
                           <option value="divorciada(o)">Divorciada(o)</option>
                           <option value="viuva(o)">Viúva(o)</option>
                         </select>
-                        {(this.state.errorBag['marital_status'] && this.state.form.marital_status === '') &&
-                          <div className="invalid-feedback">Campo Obrigatório</div>
-                        }
                       </div>
 
                     </div>
 
                     <div className="form-group row">
-                      <div className={'col-sm-12 '+(this.state.errorBag['address'] && this.state.form.address === '' ? 'has-danger' : '')}>
-                          <label className="control-label" htmlFor="adress">Endereço (nome da rua, número, bairro, cidade e estado)</label>
-                          <input className={'form-control '+(this.state.errorBag['address'] && this.state.form.address === '' ?'is-invalid':'')} type="text" name="address" id="address" placeholder="Ex: Rua Nossa Senhora do Carmo, 1571, São Pedro, Belo Horizonte-MG" value={this.state.form.address} onChange={this.updateValue('address')}/>
-                          {(this.state.errorBag['address'] && this.state.form.address === '') &&
-                            <div className="invalid-feedback">Campo Obrigatório</div>
-                          }
-                      </div> 
+                      <div className={col_xs_12 + error_address}>
+                        <Input {...address} />
+                      </div>
                     </div>
                     
                     <div className="form-group row mt-5">
