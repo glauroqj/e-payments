@@ -6,6 +6,8 @@ import { toast } from 'react-toastify'
 import { SemipolarSpinner } from 'react-epic-spinners'
 import {verifyCpf} from './modules/verifyCpf'
 
+import {validateEach, validateAll} from './modules/validateFields'
+
 import Input from './Input'
 import InputFormat from './InputFormat'
 import LoadingCard from './LoadingCard'
@@ -59,93 +61,48 @@ class Cpf extends Component {
   }
 
   validate = (e) => {
-    const {form, requiredField} = this.state
-    let verifyEmail = /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}/igm
-    let errorBag = {
-      name: [],
-      password: [],
-      password_confirm: [],
-      email: [],
-      address: [],
-      telephone: [],
-      cpf: [],
-      job: [],
-      dateBirth: [],
-      nationality: []
-    }
-    let inputs = document.querySelectorAll('input')
-    for (let i = 0; i < inputs.length; i++ ) {
-      /* add error */
-      if (requiredField.indexOf(inputs[i].name) > -1 && inputs[i].value === '') {
-        let error = errorBag[inputs[i].name]
-        // errorBag[inputs[i].name] = inputs[i].name
-        error.push(inputs[i].name)
-        // console.log(error)
-        this.setState({errorBag})
+    const {form, requiredField, errorBag} = this.state
+    const { value, name } = e.target
+    /* we need to send, name = {input name} | value = {input value} | requiredField = {array with required fields} | form = {state with the form values} */
+    validateEach(name, value, requiredField, form).then((error) => {
+      console.log('ERROR: ',error)
+      /* reset error, avoid same errors on bag */
+      errorBag[name] = []
+      /* set error */
+      errorBag[name] = error
+      if (error === null) {
+        /* reset error to empty */
+        errorBag[name] = []
       }
-      /* remove error */
-      if(inputs[i].value !== '') {
-        // delete errorBag[inputs[i].name]
-        errorBag[inputs[i].name] = []
-        this.setState({errorBag})
-      }
-    }
+      console.log('Error BAG: ', errorBag)
+      this.setState({errorBag})
+    })
 
-    /* invalid email */
-    if (!verifyEmail.test(form.email)) {
-      let error = errorBag.email
-      error.push('invalidEmail')
-      this.setState({errorBag})
-    }
-    if (verifyEmail.test(form.email)) {
-      errorBag.email = []
-      this.setState({errorBag})
-    }
-
-    /* invalid password */
-    if (form.password.length <= 6) {
-      let error = errorBag.password
-      error.push('minCharacterPassword')
-      this.setState({errorBag})
-    }
-    if (form.password !== form.password_confirm) {
-      let error = errorBag.password
-      error.push('invalidPassword')
-      this.setState({errorBag})
-    }
-    if ((form.password.length >= 6 && form.password === form.password_confirm && form.password !== '')) {
-      errorBag.password = []
-      this.setState({errorBag})
-    }
-    /* date birth */
-    if (!moment(form.dateBirth, 'DD/MM/YYYY',true).isValid() && form.dateBirth !== '') {
-      let error = errorBag.dateBirth
-      error.push('invalidDateBirth')
-      this.setState({errorBag})
-    }
-    if (moment(form.dateBirth, 'DD/MM/YYYY',true).isValid()) {
-      errorBag.dateBirth = []
-      this.setState({errorBag})
-    }
-    
-    if (!verifyCpf(this.state.form.cpf)) {
-      let error = errorBag.cpf
-      error.push('invalidCpf')
-      this.setState({errorBag})
-    }    
-    if (verifyCpf(this.state.form.cpf)) {
-      errorBag.cpf = []
-      this.setState({errorBag})
-    }
+    // let inputs = document.querySelectorAll('input')
+    // for (let i = 0; i < inputs.length; i++ ) {
+    //   /* add error */
+    //   if (requiredField.indexOf(name) > -1 && value === '') {
+    //     let error = errorBag[name]
+    //     error.push(name)
+    //     this.setState({errorBag})
+    //   }
+    //   /* remove error */
+    //   if(inputs[i].value !== '') {
+    //     errorBag[inputs[i].name] = []
+    //     this.setState({errorBag})
+    //   }
+    // }
   }
 
   submit = (e) => {
-    this.validate()
-    let errorBag = Object.keys(this.state.errorBag)
-    if(errorBag.length > 0) {
-      return false
-    }
-    this.createAcc(e)
+    validateAll().then((result) => {
+      // console.log('Validate ALL: ', result)
+    })
+    // let errorBag = Object.keys(this.state.errorBag)
+    // if(errorBag.length > 0) {
+    //   return false
+    // }
+    // this.createAcc(e)
   }
 
   createAcc = (e) => {
@@ -247,6 +204,7 @@ class Cpf extends Component {
       format: '(##) # ####-####',
       mask: '',
       callback: this.updateValueFormat('telephone'),
+      validate: this.validate,
       errorBag: errorBag.telephone,
       value: form.telephone
     }
@@ -296,6 +254,7 @@ class Cpf extends Component {
       format: '##/##/####',
       mask: '',
       callback: this.updateValueFormat('dateBirth'),
+      validate: this.validate,
       errorBag: errorBag.dateBirth,
       value: form.dateBirth          
     }
@@ -309,6 +268,7 @@ class Cpf extends Component {
       format: '###.###.###-##',
       mask: '',
       callback: this.updateValueFormat('cpf'),
+      validate: this.validate,
       errorBag: errorBag.cpf,
       value: form.cpf
     }

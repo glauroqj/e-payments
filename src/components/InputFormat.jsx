@@ -11,7 +11,7 @@ class InputFormat extends Component {
   }
 
   render() {
-    const { label, errorBag, id, format, mask, name, placeholder, callback } = this.props
+    const { label, errorBag, id, format, mask, name, placeholder, callback, validate } = this.props
     let classError = 'form-control'
     if (errorBag) {
       classError += ' is-invalid'
@@ -28,6 +28,7 @@ class InputFormat extends Component {
           format={format}
           mask={mask}
           onValueChange={callback}
+          onBlur={validate}
         />
         <ErrorBag error={errorBag}/>
       </React.Fragment>
