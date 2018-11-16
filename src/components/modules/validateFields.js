@@ -27,7 +27,7 @@ function validateEach(name, value, requiredField, form) {
     }
 
     /* invalid password */
-    if ((form.password.length <= 6 && name === 'password') || form.password_confirm.length <= 6 && name === 'password_confirm') {
+    if ((form.password.length <= 6 && name === 'password') || (form.password_confirm.length <= 6 && name === 'password_confirm')) {
       errors.push('minCharacterPassword')
     }
     if ((form.password.length >= 6 && name === 'password') || (form.password_confirm.length >= 6 && name === 'password_confirm')) {
@@ -62,13 +62,26 @@ function validateEach(name, value, requiredField, form) {
 }
 
 function validateAll() {
+  let inputs = document.querySelectorAll('form input')
+  inputs = Array.from(inputs) /* convert NodeList to array */
   return new Promise((resolve) => {
-    let inputs = document.querySelectorAll('form input')
-    for (let i = 0; i < inputs.length; i++) {
-      // inputs[i].focus()
-      inputs[i].blur()
+    const validations = inputs.map((element, index) => {
+      const {value} = element
+      console.log('ELEMENT: ', element)
+      /* verify if input use component format, bug if focus on this inputs :( */
+      if (value === '') {
+        element.focus()
+        
+      }
+      return index
+    })
+
+    /* just resolce if inputs.length === count */
+    if (inputs.length === validations.length) {
+      console.log('validations', validations.length, ' Inputs: ', inputs.length)
+      resolve(true)
     }
-    resolve(true)
+    // resolve(true)
   })
 }
 

@@ -12,7 +12,7 @@ class Input extends Component {
   render() {
     const { label, errorBag, type, id, name, placeholder, callback, validate, value } = this.props
     let classError = 'form-control'
-    if (errorBag) {
+    if (errorBag.length > 0) {
       classError += ' is-invalid'
     }
     return (

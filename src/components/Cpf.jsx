@@ -1,10 +1,8 @@
 import React, { Component } from 'react'
 import * as firebase from 'firebase'
 // import axios from 'axios'
-import * as moment from 'moment'
 import { toast } from 'react-toastify'
 import { SemipolarSpinner } from 'react-epic-spinners'
-import {verifyCpf} from './modules/verifyCpf'
 
 import {validateEach, validateAll} from './modules/validateFields'
 
@@ -65,7 +63,7 @@ class Cpf extends Component {
     const { value, name } = e.target
     /* we need to send, name = {input name} | value = {input value} | requiredField = {array with required fields} | form = {state with the form values} */
     validateEach(name, value, requiredField, form).then((error) => {
-      console.log('ERROR: ',error)
+      console.log('VALIDATE ERROR: ',error)
       /* reset error, avoid same errors on bag */
       errorBag[name] = []
       /* set error */
@@ -77,26 +75,12 @@ class Cpf extends Component {
       console.log('Error BAG: ', errorBag)
       this.setState({errorBag})
     })
-
-    // let inputs = document.querySelectorAll('input')
-    // for (let i = 0; i < inputs.length; i++ ) {
-    //   /* add error */
-    //   if (requiredField.indexOf(name) > -1 && value === '') {
-    //     let error = errorBag[name]
-    //     error.push(name)
-    //     this.setState({errorBag})
-    //   }
-    //   /* remove error */
-    //   if(inputs[i].value !== '') {
-    //     errorBag[inputs[i].name] = []
-    //     this.setState({errorBag})
-    //   }
-    // }
   }
 
   submit = (e) => {
+    e.preventDefault()
     validateAll().then((result) => {
-      // console.log('Validate ALL: ', result)
+      console.log('Validate ALL: ', result)
     })
     // let errorBag = Object.keys(this.state.errorBag)
     // if(errorBag.length > 0) {
@@ -256,7 +240,7 @@ class Cpf extends Component {
       callback: this.updateValueFormat('dateBirth'),
       validate: this.validate,
       errorBag: errorBag.dateBirth,
-      value: form.dateBirth          
+      value: form.dateBirth         
     }
     const cpf = {
       label: 'CPF',
