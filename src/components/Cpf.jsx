@@ -84,15 +84,9 @@ class Cpf extends Component {
         this.createAcc()
       })
     })
-    // let errorBag = Object.keys(this.state.errorBag)
-    // if(errorBag.length > 0) {
-    //   return false
-    // }
-    // this.createAcc(e)
   }
 
   createAcc = (e) => {
-    e.preventDefault()
     let form = this.state.form
     this.setState({
       btnText: 'Criando Conta...',
