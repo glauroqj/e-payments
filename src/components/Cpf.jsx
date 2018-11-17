@@ -86,7 +86,7 @@ class Cpf extends Component {
     })
   }
 
-  createAcc = (e) => {
+  createAcc = () => {
     let form = this.state.form
     this.setState({
       btnText: 'Criando Conta...',

@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import * as firebase from 'firebase';
 import { SemipolarSpinner } from 'react-epic-spinners'
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify'
 import {verify} from '../components/modules/verifyLogin'
-import Loader from '../components/Loader';
+import Loader from '../components/Loader'
 import Logo from '../components/Logo'
+import Input from '../components/Input'
+
+import {validateEach, validateAll, verifyErrorBag} from '../components/modules/validateFields'
 
 import '../assets/login.css'
 
@@ -12,8 +15,15 @@ class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: '',
-      password: '',
+      form: {
+        email: '',
+        passwordLogin: ''
+      },
+      requiredField: ['email', 'passwordLogin'],
+      errorBag: {
+        email: [],
+        passwordLogin: []
+      },
       btnLoading: false,
       btnText: 'Acessar',
       loading: true
@@ -36,18 +46,10 @@ class Login extends Component {
     })
   }
 
-  handleInput = (e) => {
-    if(e.target.id === 'email') {
-      this.setState({
-        email: e.target.value
-      })
-    }
-
-    if(e.target.id === 'password') {
-      this.setState({
-        password: e.target.value
-      })
-    }
+  updateValue = (type) => (e) => {
+    let form = this.state.form
+    form[type] = e.target.value
+    this.setState({form})
   }
   
   createAcc = () => {
@@ -59,19 +61,48 @@ class Login extends Component {
     this.props.history.push('/forgot-password');
   }
 
+  validate = (e) => {
+    const {form, requiredField, errorBag} = this.state
+    const { value, name } = e.target
+    /* we need to send, name = {input name} | value = {input value} | requiredField = {array with required fields} | form = {state with the form values} */
+    validateEach(name, value, requiredField, form).then((error) => {
+      console.log('VALIDATE ERROR: ',error)
+      /* reset error, avoid same errors on bag */
+      errorBag[name] = []
+      /* set error */
+      errorBag[name] = error
+      if (error === null) {
+        /* reset error to empty */
+        errorBag[name] = []
+      }
+      console.log('Error BAG: ', errorBag)
+      this.setState({errorBag})
+    })
+  }
+
   submit = (e) => {
+    const {errorBag} = this.state
     e.preventDefault()
-    let state = this.state
-    if(state.email === '' || state.password === '') {
-      toast.error('Campos vazios')
-      return false;
-    }
+    validateAll().then((response) => {
+      verifyErrorBag(errorBag).then((response) => {
+        console.log('Now verify errorBag ', response)
+        if (!response) {
+          console.log('INVALID FORM')
+          return false
+        }
+        this.login()
+      })
+    })
+  }
+
+  login = () => {
+    let form = this.state.form
     this.setState({
       btnLoading: true,
       btnText: 'Verificando acesso...'
     });
     
-    firebase.auth().signInWithEmailAndPassword(state.email, state.password)
+    firebase.auth().signInWithEmailAndPassword(form.email, form.passwordLogin)
     .then((success) => {
       console.log(success)
       this.props.history.push('/dashboard');
@@ -84,9 +115,12 @@ class Login extends Component {
       if(error.code === 'auth/invalid-email') {
         toast.error('Email inexistente!')
       }
-      this.setState({
+      form = {
         email: '',
-        password: '',
+        passwordLogin: '',
+      }
+      this.setState({
+        form,
         btnText: 'Acessar',
         btnLoading: false
       });
@@ -94,6 +128,40 @@ class Login extends Component {
   }
 
   render() {
+    const {form, errorBag} = this.state
+    const email = {
+      label: 'E-mail',
+      class: '',
+      type: 'email',
+      id: 'email',
+      name: 'email',
+      placeholder: 'Ex: exemplo@gmail.com',
+      callback: this.updateValue('email'),
+      validate: this.validate,
+      errorBag: errorBag.email,
+      value: form.email
+    }
+    const password = {
+      label: 'Senha',
+      class: '',
+      type: 'password',
+      id: 'passwordLogin',
+      name: 'passwordLogin',
+      placeholder: '******',
+      callback: this.updateValue('passwordLogin'),
+      validate: this.validate,
+      errorBag: errorBag.passwordLogin,
+      value: form.passwordLogin
+    }
+    let col_xs_6 = 'col-sm-6'
+    let error_email = ''
+    let error_passwordLogin = ''
+    if (errorBag.email.length > 0) {
+      error_email += ' has-danger'
+    }
+    if (errorBag.passwordLogin.length > 0) {
+      error_passwordLogin += ' has-danger'
+    }
     return (
       <div className="login container">
         {this.state.loading &&
@@ -103,7 +171,6 @@ class Login extends Component {
           <div className="animated fadeIn">
             <ToastContainer autoClose={5000} hideProgressBar={true} position="top-right"/>
             <Logo />
-            <h5 className="login_title">Faça Login!</h5>
               <form action="" className="login_form"
                     onKeyDown={
                       (e) => {
@@ -115,15 +182,13 @@ class Login extends Component {
                     }
               >
               <div className="form-group row justify-content-sm-center">
-                <label className="col-sm-2 col-form-label">Email</label>
-                <div className="col-sm-6">
-                  <input type="text" className="form-control" id="email" placeholder="email@example.com" value={this.state.email} onChange={this.handleInput}/>
+                <div className={col_xs_6 + error_email}>
+                  <Input {...email} />
                 </div>
               </div>
               <div className="form-group row justify-content-sm-center">
-                <label className="col-sm-2 col-form-label">Senha</label>
-                <div className="col-sm-6">
-                  <input type="password" className="form-control" id="password" placeholder="*****" value={this.state.password} onChange={this.handleInput}/>
+                <div className={col_xs_6 + error_passwordLogin}>
+                  <Input {...password} />
                 </div>
               </div>
               <div className="form-group">
@@ -146,4 +211,4 @@ class Login extends Component {
   }
 }
 
-export default Login;
+export default Login
