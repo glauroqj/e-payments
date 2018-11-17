@@ -18,6 +18,7 @@
     "moment": "^2.22.2",
     "react": "^16.6.0",
     "react-autosuggest": "^9.4.1",
+    "react-currency-format": "^1.0.0",
     "react-dock": "^0.2.4",
     "react-dom": "^16.4.1",
     "react-epic-spinners": "^0.2.1",
