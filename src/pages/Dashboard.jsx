@@ -24,7 +24,7 @@ class Dashboard extends Component {
       form: {
         value: ''
       },
-      maintenance: false /* change to true */
+      maintenance: true /* change to true */
     }
   }
 
