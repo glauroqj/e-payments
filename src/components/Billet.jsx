@@ -141,8 +141,8 @@ class Billet extends Component {
       id: 'cep',
       name: 'cep',
       placeholder: '#####-###',
-      format: '###.###.###-##',
-      mask: '',
+      // format: '###.###.###-##',
+      mask: '999.999.999-99',
       callback: this.updateValueFormat('cep'),
       errorBag: errorBag.cep,
       value: billet.cep

@@ -4,7 +4,7 @@ import * as firebase from 'firebase'
 import { toast } from 'react-toastify'
 import { SemipolarSpinner } from 'react-epic-spinners'
 
-import {validateEach, validateAll} from './modules/validateFields'
+import {validateEach, validateAll, verifyErrorBag} from './modules/validateFields'
 
 import Input from './Input'
 import InputFormat from './InputFormat'
@@ -52,12 +52,6 @@ class Cpf extends Component {
     this.setState({form})
   }
 
-  updateValueFormat = (type) => (e) => {
-    let form = this.state.form
-    form[type] = e.formattedValue
-    this.setState({form})
-  }
-
   validate = (e) => {
     const {form, requiredField, errorBag} = this.state
     const { value, name } = e.target
@@ -78,9 +72,17 @@ class Cpf extends Component {
   }
 
   submit = (e) => {
+    const {errorBag} = this.state
     e.preventDefault()
-    validateAll().then((result) => {
-      console.log('Validate ALL: ', result)
+    validateAll().then((response) => {
+      verifyErrorBag(errorBag).then((response) => {
+        console.log('Now verify errorBag ', response)
+        if (!response) {
+          console.log('INVALID FORM')
+          return false
+        }
+        this.createAcc()
+      })
     })
     // let errorBag = Object.keys(this.state.errorBag)
     // if(errorBag.length > 0) {
@@ -185,9 +187,8 @@ class Cpf extends Component {
       id: 'telephone',
       name: 'telephone',
       placeholder: '(31) 9 8765-4321',
-      format: '(##) # ####-####',
-      mask: '',
-      callback: this.updateValueFormat('telephone'),
+      mask: '99 9 9999-9999',
+      callback: this.updateValue('telephone'),
       validate: this.validate,
       errorBag: errorBag.telephone,
       value: form.telephone
@@ -235,9 +236,8 @@ class Cpf extends Component {
       id: 'dateBirth',
       name: 'dateBirth',
       placeholder: '10/11/1980',
-      format: '##/##/####',
-      mask: '',
-      callback: this.updateValueFormat('dateBirth'),
+      mask: '99/99/9999',
+      callback: this.updateValue('dateBirth'),
       validate: this.validate,
       errorBag: errorBag.dateBirth,
       value: form.dateBirth         
@@ -249,9 +249,8 @@ class Cpf extends Component {
       id: 'cpf',
       name: 'cpf',
       placeholder: '222.222.222-22',
-      format: '###.###.###-##',
-      mask: '',
-      callback: this.updateValueFormat('cpf'),
+      mask: '999.999.999-99',
+      callback: this.updateValue('cpf'),
       validate: this.validate,
       errorBag: errorBag.cpf,
       value: form.cpf

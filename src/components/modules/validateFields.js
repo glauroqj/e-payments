@@ -67,22 +67,37 @@ function validateAll() {
   return new Promise((resolve) => {
     const validations = inputs.map((element, index) => {
       const {value} = element
-      console.log('ELEMENT: ', element)
       /* verify if input use component format, bug if focus on this inputs :( */
       if (value === '') {
         element.focus()
-        
+        element.blur()
       }
       return index
     })
 
     /* just resolce if inputs.length === count */
     if (inputs.length === validations.length) {
-      console.log('validations', validations.length, ' Inputs: ', inputs.length)
+      // console.log('validations', validations.length, ' Inputs: ', inputs.length)
       resolve(true)
     }
     // resolve(true)
   })
 }
 
-module.exports = {validateEach, validateAll}
+function verifyErrorBag(errorBag) {
+  console.log('Receive: ', errorBag)
+  const errorsArray = Object.keys(errorBag)
+  // console.log(errorsArray)
+  return new Promise((resolve) => {
+    errorsArray.map((name) => {
+      let error = errorBag[name].length
+      if (error > 0) {
+        resolve(false)
+      }
+      // console.log(error)
+    })
+    resolve(true)
+  })
+}
+
+module.exports = {validateEach, validateAll, verifyErrorBag}
