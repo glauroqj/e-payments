@@ -5,19 +5,23 @@ configure({ adapter: new Adapter() })
 import {verifyCpf} from './verifyCpf'
 
 describe('Verify CPF', () => {
-  it('Wrong CPF', () => {
+  it('Should Wrong CPF', () => {
     let cpf = '070.235.487-98'
     expect(verifyCpf(cpf)).toBe(false)
   })
-  it('Valid CPF', () => {
+  it('Should incomplete CPF', () => {
+    let cpf = '390.304.020'
+    expect(verifyCpf(cpf)).toBe(false)
+  })
+  it('Should Valid CPF', () => {
     let cpf = '390.304.020-75'
     expect(verifyCpf(cpf)).toBe(true)
   })
-  it('Invalid CPF', () => {
+  it('Should Invalid CPF', () => {
     let cpf = '000.000.000-00'
     expect(verifyCpf(cpf)).toBe(false)
   })
-  it('Rest === 0', () => {
+  it('Should Rest === 0', () => {
     let cpf = '123.456.789-00'
     expect(verifyCpf(cpf)).toBe(false)
   })

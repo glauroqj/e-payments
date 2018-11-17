@@ -21,10 +21,7 @@ class Navbar extends Component {
     })
   }
 
-  exit = (test) => {
-    if (test) {
-      return false
-    }
+  exit = () => {
     firebase.auth().signOut()
     .then((success) => {
       window.location.href = '/login'
