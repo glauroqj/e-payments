@@ -10,7 +10,8 @@ import ToggleTab from '../components/dashboard/ToggleTab'
 import Loader from '../components/Loader'
 import Maintenance from '../components/Maintenance'
 import Footer from '../components/Footer'
-import CurrencyFormat from 'react-currency-format'
+
+import InputFormat from '../components/InputFormat'
 
 import '../assets/dashboard.css'
 
@@ -26,7 +27,7 @@ class Dashboard extends Component {
       idSession: '',
       radio: 'option1',
       form: {},
-      maintenance: true /* change to true */
+      maintenance: false /* change to true */
     }
   }
 
@@ -141,17 +142,13 @@ class Dashboard extends Component {
                         <div className="input-group-prepend">
                           <span className="input-group-text">R$</span>
                         </div>
-                        <CurrencyFormat
+                        <InputFormat
                           className="form-control"
-                          thousandSeparator={'.'}
-                          decimalSeparator={','}
-                          decimalScale={2}
                           type={'tel'}
-                          fixedDecimalScale={true}
                           placeholder={'Doar outro valor'}
                           value={this.state.valueCustom}
-                          allowNegative={false}
-                          onValueChange={this.updateValue('custom')}
+                          onChange={this.updateValue('custom')}
+                          errorBag={[]}
                         />
                       </div>
                     </div>
