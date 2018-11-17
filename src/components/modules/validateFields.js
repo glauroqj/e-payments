@@ -1,9 +1,7 @@
-// import * as moment from 'moment'
-// import {verifyCpf} from './verifyCpf'
-// import {verifyCnpj} from './verifyCnpj'
 /* I'm not using polyfill {babel} :( */
 const moment = require('moment')
 const {verifyCpf} = require('./verifyCpf')
+const {verifyCnpj} = require('./verifyCnpj')
 /* name = {input name} | value = {input value} | requiredField = {array with required fields} | form = {state with the form values} */
 function validateEach(name, value, requiredField, form) {
   console.log('VALIDATE EACH')
@@ -66,6 +64,15 @@ function validateEach(name, value, requiredField, form) {
       }
     }
 
+    if (form.cnpj) {
+      if (!verifyCnpj(form.cnpj) && name === 'cnpj') {
+        errors.push('invalidCnpj')
+      }    
+      if (verifyCnpj(form.cnpj) && name === 'cnpj') {
+        errors.splice('invalidCnpj', 1)
+      }
+    }
+
     /* return array of errors to set on state */
     resolve(errors)
   })
@@ -76,7 +83,6 @@ function validateAll() {
   inputs = Array.from(inputs) /* convert NodeList to array */
   return new Promise((resolve) => {
     const validations = inputs.map((element, index) => {
-      const {value} = element
       /* verify if input use component format, bug if focus on this inputs :( */
         element.focus()
         element.blur()
