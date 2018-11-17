@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { toast } from 'react-toastify'
 import CurrencyFormat from 'react-currency-format'
 
-class DashboardValues extends Component {
+class Values extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -86,4 +86,4 @@ class DashboardValues extends Component {
   }
 }
 
-export default DashboardValues
+export default Values

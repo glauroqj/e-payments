@@ -132,6 +132,7 @@ class CreditCard extends Component {
   }
 
   render() {
+    const { valueDonation } = this.props
     const {cardCredit, errorBag} = this.state
     const name = {
       label: 'Seu nome como aparece no cartão',
@@ -318,7 +319,7 @@ class CreditCard extends Component {
                   <div className="form-group row mt-5">
                     <div className="col-sm-12">
                       <button type="button" id="button-confirm" className="btn btn-block btn-success btn-donation" onClick={this.submit}>
-                        {`Doar ${this.props.totalValue}`}
+                        {`Doar ${valueDonation}`}
                       </button>
                     </div>
                   </div>

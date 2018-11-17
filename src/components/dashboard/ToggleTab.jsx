@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import CreditCard from '../CreditCard'
 import Billet from '../Billet'
 
-class BoxToggleTabDashboard extends Component {
+class ToggleTab extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -17,7 +17,8 @@ class BoxToggleTabDashboard extends Component {
   }
 
   render() {
-    const { tab, valueSelected, valueCustom } = this.state
+    const { valueDonation } = this.props
+    const { tab } = this.state
     let classNameOptionTabCC = 'nav-link'
     let classNameTabPaneCC = 'tab-pane'
     let classNameOptionTabBillet = 'nav-link'
@@ -51,12 +52,12 @@ class BoxToggleTabDashboard extends Component {
         <div className="tab-content box-toggle-tab-content">
           <div className={classNameTabPaneCC}>
             {tab === 'credit-card' &&
-              <CreditCard totalValue={valueSelected !== ''?valueSelected:valueCustom}/>  
+              <CreditCard valueDonation={valueDonation}/>  
             }
           </div>
           <div className={classNameTabPaneBillet}>
             {tab === 'billet' &&
-              <Billet totalValue={valueSelected !== ''?valueSelected:valueCustom}/>
+              <Billet valueDonation={valueDonation}/>
             }
           </div>
         </div>
@@ -65,4 +66,4 @@ class BoxToggleTabDashboard extends Component {
   }
 }
 
-export default BoxToggleTabDashboard
+export default ToggleTab

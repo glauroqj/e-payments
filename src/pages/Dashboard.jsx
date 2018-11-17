@@ -5,7 +5,8 @@ import { ToastContainer, toast } from 'react-toastify'
 import {verify} from '../components/modules/verifyLogin'
 import Navbar from '../components/Navbar'
 
-import DashboardValues from '../components/dashboard/DashboardValues'
+import Values from '../components/dashboard/Values'
+import Options from '../components/dashboard/Options'
 import ToggleTab from '../components/dashboard/ToggleTab'
 
 import Loader from '../components/Loader'
@@ -25,7 +26,7 @@ class Dashboard extends Component {
       form: {
         value: ''
       },
-      maintenance: true /* change to true */
+      maintenance: false /* change to true */
     }
   }
 
@@ -58,41 +59,22 @@ class Dashboard extends Component {
     })
   }
 
-  updateValue = (type) => (e) => {
-    let state = this.state;
-    if(type === 'radio') {
-      state.radio = e.target.id
-    }
-    this.setState(state)
-  }
-
   updateDonationValue = (value) => {
     console.log('UPDATE DONATION VALUE: ', value)
     let form = this.state.form
     form.value = value
     this.setState({form})
   }
-  // saveOptionRadio = () => {
-  //   /* after donation is done, save on database preferences */
-  //   firebase.database().ref('users/' + this.state.user.uid).set({
-  //     radio: this.state.radio
-  //   })
-  //   .then(() => {
-  //     console.log('Saved')
-  //   })
 
-  //   /* get informations */
-  //   setTimeout(() => {
-  //     firebase.database().ref('users/' + this.state.user.uid).once('value')
-  //     .then((snapshot) => {
-  //       console.log('Get infos: ', snapshot.val())
-  //     })
-  //   }, 5000);
-
-  // }
+  updateOptionValue = (value) => {
+    console.log('UPDATE OPTION VALUE: ', value)
+    let state = this.state
+    state.radio = value
+    this.setState(state)
+  }
 
   render() {
-    const { loading, link, maintenance, user, radio } = this.state
+    const { loading, link, maintenance, user, radio, form } = this.state
     return (
       <div className="dashboard">
         {loading &&
@@ -109,36 +91,12 @@ class Dashboard extends Component {
 
             <div className={'container ' + (maintenance ? 'hide' : '')}>
               <div className="dashboard_values">
-                <DashboardValues
-                  updateDonateValue={this.updateDonationValue}
-                />
-                <div className="options-choice">
-                  <h4>Escolha uma das opções:</h4>
-                  <ul className="list-inline">
-                    <li className="list-inline-item">
-                      <div className={radio === 'option1'?'custom-control custom-radio active':'custom-control custom-radio'}>
-                        <input type="radio" id="option1" name="customRadio" className="custom-control-input" onChange={this.updateValue('radio')} checked={radio === 'option1'?'checked':''}/>
-                        <label className="custom-control-label" htmlFor="option1">
-                          <i className="fas fa-user-graduate"/> Quero apadrinhar um aluno
-                        </label>
-                      </div>
-                    </li>
-                    <li className="list-inline-item">
-                      <div className={radio === 'option2'?'custom-control custom-radio active':'custom-control custom-radio'}>
-                        <input type="radio" id="option2" name="customRadio" className="custom-control-input" onChange={this.updateValue('radio')} checked={radio === 'option2'?'checked':''}/>
-                        <label className="custom-control-label" htmlFor="option2">
-                          <i className="fas fa-university"/> Quero ajudar a instituição
-                        </label>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-
+                <Values updateDonateValue={this.updateDonationValue} />
+                <Options updateOptionValue={this.updateOptionValue} />
               </div>
 
               <ToggleTab 
-                valueSelected={this.state.valueSelected}
-                valueCustom={this.state.valueCustom}
+                valueDonation={form.value}
               />
               
             </div>
