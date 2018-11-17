@@ -4,6 +4,8 @@
   <img src='https://coveralls.io/repos/github/glauroqj/e-payments/badge.svg?branch=master' alt='Coverage Status' />
 </a>
 
+<a href="https://codeclimate.com/github/glauroqj/e-payments/maintainability"><img src="https://api.codeclimate.com/v1/badges/e8c13ee91e245ddf9ca9/maintainability" /></a>
+
 [![CircleCI](https://circleci.com/gh/glauroqj/e-payments/tree/master.svg?style=svg)](https://circleci.com/gh/glauroqj/e-payments/tree/master)
 
 - Libs
