@@ -1,4 +1,6 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
+import * as firebase from 'firebase'
+import { toast } from 'react-toastify'
 
 class Navbar extends Component {
   constructor(props) {
@@ -8,23 +10,38 @@ class Navbar extends Component {
       routes: [ 
         {route: '/dashboard', text: 'Quero Doar'}, 
         {route: '/my-account', text: 'Minha Conta'}, 
-      ]
+      ],
+      pathname: ''
     }
   }
 
-  exit = (e) => {
-    this.props.exit()
+  componentDidMount() {
+    this.setState({
+      pathname: window.location.pathname
+    })
   }
 
-  menu = (e) => {
+  exit = (test) => {
+    if (test) {
+      return false
+    }
+    firebase.auth().signOut()
+    .then((success) => {
+      window.location.href = '/login'
+    })
+    .catch((error) => {
+      toast.error('Ocorreu um erro, tente novamente.')
+    })
+  }
+
+  menu = () => {
     this.setState({
       showMenu: !this.state.showMenu
     })
   }
 
   render() {
-    const pathname = window.location.pathname
-    const { showMenu, routes } = this.state
+    const { showMenu, routes, pathname } = this.state
     const { user, link } = this.props
     let nav_item = 'nav-item'
     let show_menu = 'collapse navbar-collapse'
@@ -66,12 +83,12 @@ class Navbar extends Component {
             ))}
 
             <li className="nav-item">
-              <a className="nav-link" onClick={this.exit}>Sair</a>
+              <a className="nav-link exit" onClick={this.exit}>Sair</a>
             </li>
           </ul>
         </div>
       </nav>
-    );
+    )
   }
 }
 

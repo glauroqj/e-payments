@@ -15,46 +15,50 @@ const username = {
   displayName: 'Glauro'
 }
 const link = '/dashboard'
-    // expect(component.find('.select-loading').length).toBe(1)
+const routes = [ 
+  {route: '/login', text: 'Login'},
+  {route: '/create', text: 'Criar Conta'},
+]
     
 describe('Navbar component', () => {
   it('Component render', () => {
-    let exitCallback = jest.fn()
-    let component = shallow(<Navbar exit={exitCallback} link={link} user={user}/>)
+    let component = shallow(<Navbar link={link} user={user}/>)
     expect(component.length).toBe(1)
   })
 
   it('Component without photo', () => {
-    let exitCallback = jest.fn()
-    let component = shallow(<Navbar exit={exitCallback} link={link} user={username}/>)
+    let component = shallow(<Navbar link={link} user={username}/>)
     expect(component.find('.photo').length).toBe(0)
   })
 
   it('Pass props admin', () => {
     let component = shallow(<Navbar link={'/admin'} user={user}/>)
-    expect(component.find('span.mr-1.badge.badge-dark').length).toBe(1)
-    expect(component.find('li.nav-item.active').length).toBe(1)
     expect(component.instance().props.link).toEqual('/admin')
     expect(component.text()).toEqual('Equale DoaçõesADMGlauroPainel de ControleQuero DoarMinha ContaSair')
   })
 
-  it('Show menu', () => {
-    let component = shallow(<Navbar link={link} user={user}/>)
-    component.instance().menu()
-    expect(component.state('showMenu')).toEqual(true)
-  })
-
-  it('Click on menu button', () => {
+  it('Should Show menu', () => {
     let component = mount(<Navbar link={link} user={user}/>)
-    expect(component.find('button.navbar-toggler').simulate('click'))
+    component.instance().menu()
+    component.setState({ showMenu: true })
+    expect(component.find('.navbar-toggler').simulate('click').length).toEqual(1)
   })
 
   it('Click on exit button', () => {
-    let exitCallback = jest.fn()
-    let component = shallow(<Navbar exit={exitCallback} link={link} user={user}/>)
-    component.instance().exit()
-    expect(exitCallback.mock.calls.length).toBe(1)
+    let component = shallow(<Navbar link={link} user={user}/>)
+    component.instance().exit(true)
+    expect(component.instance().exit(true)).toEqual(false)
   })
 
+  it('Should render routes', () => {
+    let component = shallow(<Navbar link={link} user={user}/>)
+    component.setState({ routes: routes })
+    expect(component.state('routes')).toEqual(routes)
+  })
 
+  it('Should render component', () => {
+    let component = shallow(<Navbar link={link} user={user}/>)
+    component.setState({ pathname: '/login' })
+    expect(component.state('pathname')).toEqual('/login')
+  })
 })

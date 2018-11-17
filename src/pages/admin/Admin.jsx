@@ -141,17 +141,6 @@ class Admin extends Component {
 
   }
 
-  exit = () => {
-    // console.log('Deslogar')
-    firebase.auth().signOut()
-    .then((success) => {
-      this.props.history.push('/login');
-    })
-    .catch((error) => {
-      toast.error('Ocorreu um erro, tente novamente.')
-    })
-  }
-
   clickSideMenu = (value, e) => {
     let tab = this.state.tab
     tab = value
@@ -212,7 +201,7 @@ class Admin extends Component {
         {!this.state.loading &&
           <div className="animated fadeIn">
             <ToastContainer autoClose={5000} hideProgressBar={true} position="top-right"/>
-            <Navbar exit={this.exit} link={this.state.link} user={this.state.user}/>
+            <Navbar link={this.state.link} user={this.state.user}/>
             <div className="container">
               <div className="row">
                 <div className="col-sm-4">

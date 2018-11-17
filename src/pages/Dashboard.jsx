@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
-// import { SemipolarSpinner } from 'react-epic-spinners'
-import * as firebase from 'firebase'
-import { ToastContainer, toast } from 'react-toastify'
+import { ToastContainer } from 'react-toastify'
 import {verify} from '../components/modules/verifyLogin'
 import Navbar from '../components/Navbar'
 
@@ -48,17 +46,6 @@ class Dashboard extends Component {
 
   }
 
-  exit = () => {
-    // console.log('Deslogar')
-    firebase.auth().signOut()
-    .then((success) => {
-      this.props.history.push('/login');
-    })
-    .catch((error) => {
-      toast.error('Ocorreu um erro, tente novamente.')
-    })
-  }
-
   updateDonationValue = (value) => {
     console.log('UPDATE DONATION VALUE: ', value)
     let form = this.state.form
@@ -74,7 +61,7 @@ class Dashboard extends Component {
   }
 
   render() {
-    const { loading, link, maintenance, user, radio, form } = this.state
+    const { loading, link, maintenance, user, form } = this.state
     return (
       <div className="dashboard">
         {loading &&
@@ -83,7 +70,7 @@ class Dashboard extends Component {
         {!loading &&
           <div className="animated fadeIn">
             <ToastContainer autoClose={5000} hideProgressBar={true} position="top-right"/>
-            <Navbar exit={this.exit} link={link} user={user}/>
+            <Navbar link={link} user={user}/>
             
             {maintenance &&
               <Maintenance />

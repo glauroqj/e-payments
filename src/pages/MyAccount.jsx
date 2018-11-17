@@ -60,16 +60,6 @@ class MyAccount extends Component {
     })
   }
 
-  exit = () => {
-    firebase.auth().signOut()
-    .then((success) => {
-      this.props.history.push('/login')
-    })
-    .catch((error) => {
-      toast.error('Ocorreu um erro, tente novamente.')
-    })
-  }
-
   reloadState = (e) => {
     verify().then((response) => {
       this.setState({
@@ -117,7 +107,7 @@ class MyAccount extends Component {
         {!this.state.loading &&
           <div className="animated fadeIn">
             <ToastContainer autoClose={5000} hideProgressBar={true} position="top-right"/>
-            <Navbar exit={this.exit} link={this.state.link} user={this.state.user}/>
+            <Navbar link={this.state.link} user={this.state.user}/>
             <div className="container">
               <div className="myAccount_box row">
                 <div className="col-sm-4">
