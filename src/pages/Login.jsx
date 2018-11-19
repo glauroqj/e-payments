@@ -175,7 +175,7 @@ class Login extends Component {
                     onKeyDown={
                       (e) => {
                           if (e.key === 'Enter') {
-                              e.preventDefault();
+                              e.preventDefault()
                               this.submit(e)
                           }
                       }

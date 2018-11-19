@@ -1,18 +1,26 @@
-import React, { Component } from 'react';
-import * as firebase from 'firebase';
+import React, { Component } from 'react'
+import * as firebase from 'firebase'
 import { SemipolarSpinner } from 'react-epic-spinners'
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify'
 import {verify} from '../components/modules/verifyLogin'
-import Loader from '../components/Loader';
-import Logo from '../components/Logo';
+import Loader from '../components/Loader'
+import Logo from '../components/Logo'
+import Input from '../components/Input'
+import {validateEach, validateAll, verifyErrorBag} from '../components/modules/validateFields'
 
 import '../assets/forgot-password.css'
 
 class ForgotPassword extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
-      email: '',
+      form: {
+        email: ''
+      },
+      requiredField: ['email'],
+      errorBag: {
+        email: []
+      },
       btnLoading: false,
       btnText: 'Enviar Email',
       loading: true,
@@ -25,8 +33,8 @@ class ForgotPassword extends Component {
     verify().then((user) => {
       // console.log('LOGED: ', user)
       /* redirect to dashboard */
-      this.props.history.push('/dashboard');
-      return false;
+      this.props.history.push('/dashboard')
+      return false
     })
     .catch((error) => {
       console.log('Not Loged: ')
@@ -36,29 +44,59 @@ class ForgotPassword extends Component {
     })
   }
 
-  handleInput = (type) => (e) => {
-    let state = this.state
-    state[type] = e.target.value
-    this.setState(state)
+  updateValue = (type) => (e) => {
+    let form = this.state.form
+    form[type] = e.target.value
+    this.setState({form})
+  }
+
+  validate = (e) => {
+    const {form, requiredField, errorBag} = this.state
+    const { value, name } = e.target
+    /* we need to send, name = {input name} | value = {input value} | requiredField = {array with required fields} | form = {state with the form values} */
+    validateEach(name, value, requiredField, form).then((error) => {
+      console.log('VALIDATE ERROR: ',error)
+      /* reset error, avoid same errors on bag */
+      errorBag[name] = []
+      /* set error */
+      errorBag[name] = error
+      if (error === null) {
+        /* reset error to empty */
+        errorBag[name] = []
+      }
+      console.log('Error BAG: ', errorBag)
+      this.setState({errorBag})
+    })
   }
 
   submit = (e) => {
-    e.preventDefault();
-    let state = this.state;
-    if(state.email === '') {
-      toast.error('Campos vazios')
-      return false;
-    }
+    const {errorBag} = this.state
+    e.preventDefault()
+    validateAll().then((response) => {
+      verifyErrorBag(errorBag).then((response) => {
+        console.log('Now verify errorBag ', response)
+        if (!response) {
+          console.log('INVALID FORM')
+          return false
+        }
+        this.getNewPassword()
+      })
+    })
+  }
+
+  getNewPassword = () => {
+    let form = this.state.form
+
     this.setState({
       btnLoading: true,
       btnText: 'Enviando email...'
-    });
+    })
     
-    firebase.auth().sendPasswordResetEmail(state.email)
+    firebase.auth().sendPasswordResetEmail(form.email)
     .then((success) => {
       this.setState({
         emailSended: true
-      });
+      })
       // this.props.history.push('/dashboard');
     })
     .catch((error) => {
@@ -69,21 +107,42 @@ class ForgotPassword extends Component {
       if(error.code === 'auth/user-not-found') {
         toast.error('Email não existe!')
       }
+      form = {
+        email: ''
+      }
       this.setState({
-        email: '',
+        form,
         btnText: 'Enviar Email',
         btnLoading: false
-      });
-    });
+      })
+    })
   }
 
   render() {
+    const { form, errorBag, loading, emailSended, btnLoading, btnText } = this.state
+    const email = {
+      label: 'E-mail',
+      class: '',
+      type: 'email',
+      id: 'email',
+      name: 'email',
+      placeholder: 'Ex: exemplo@gmail.com',
+      callback: this.updateValue('email'),
+      validate: this.validate,
+      errorBag: errorBag.email,
+      value: form.email
+    }
+    let col_xs_6 = 'col-sm-6'
+    let error_email = ''
+    if (errorBag.email.length > 0) {
+      error_email += ' has-danger'
+    }
     return (
       <div className="forgotPassword container animated fadeIn">
-        {(this.state.loading && !this.state.emailSended) &&
+        {(loading && !emailSended) && (
           <Loader text="Carregando Resetar Senha" color="#3e5472"/>
-        }
-        {(!this.state.loading && !this.state.emailSended) &&
+        )}
+        {(!loading && !emailSended) && (
           <div className="animated fadeIn">
             <ToastContainer autoClose={5000} hideProgressBar={true} position="top-right"/>
             <Logo />
@@ -93,36 +152,37 @@ class ForgotPassword extends Component {
                     onKeyDown={
                       (e) => {
                           if (e.key === 'Enter') {
-                              e.preventDefault();
+                              e.preventDefault()
                               this.submit(e)
                           }
                       }
                     }
               >
                 <div className="form-group row justify-content-sm-center">
-                  <label className="col-sm-2 col-form-label">Email</label>
-                  <div className="col-sm-6">
-                    <input type="email" className="form-control" id="email" placeholder="email@example.com" value={this.state.email} onChange={this.handleInput('email')}/>
+                  <div className={col_xs_6 + error_email}>
+                    <Input {...email} />
                   </div>
                 </div>
-                <div className="form-group">
+
+                <div className="form-group mt-5">
                   <a href="/login" className="btn btn-link">Voltar</a>
-                  <button type="submit" className="btn btn-primary" disabled={this.state.btnLoading?'disbled':''} onClick={this.submit}>
-                    {this.state.btnLoading &&
+                  <button type="submit" className="btn btn-primary" disabled={btnLoading?'disbled':''} onClick={this.submit}>
+                    {btnLoading &&
                       <SemipolarSpinner size={30} color="white"/>
                     }
-                    <div>{this.state.btnText}</div>
+                    <div>{btnText}</div>
                   </button>
                 </div>
+
               </form>
           </div>
-        }
-        {this.state.emailSended && 
+        )}
+        {emailSended && (
           <h2>Email enviado! Em poucos instantes verifique seu e-mail para resetar sua senha!</h2>
-        }
+        )}
       </div>
     );
   }
 }
 
-export default ForgotPassword;
+export default ForgotPassword
