@@ -84,7 +84,7 @@ class Maintenance extends Component {
                       <a href="http://pag.ae/bkDXSpX" className="btn btn-success btn-lg" >R$32,40</a>
                     </li>
                     <li className="list-inline-item">
-                      <a href="http://pag.ae/blDXSdQ" className="btn btn-success btn-lg" >R$16,20</a>
+                      <a href="http://pag.ae/7Up3C5jhJ" className="btn btn-success btn-lg" >R$16,20</a>
                     </li>
                     <li className="list-inline-item">
                       <button type="button" className="btn btn-success btn-lg" onClick={this.doantion}>Doar outro valor</button>
